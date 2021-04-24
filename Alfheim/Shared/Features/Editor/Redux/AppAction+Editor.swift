@@ -20,7 +20,7 @@ extension AppAction {
     enum Field {
       case amount(String)
       case currency(Currency)
-      case source(UUID?)
+      case source(Alfheim.Account?)
       case target(Alfheim.Account?)
       case date(Date)
       case notes(String)

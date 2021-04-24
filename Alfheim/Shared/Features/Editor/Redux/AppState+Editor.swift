@@ -43,7 +43,6 @@ extension AppState {
     var source: Alfheim.Account? = nil
     var attachments: [Alfheim.Attachment] = []
 
-
     var accounts: [Alfheim.Account] = []
 
     var isValid: Bool = false
@@ -66,6 +65,9 @@ extension AppState.Editor {
       number = nil
       repeated = .never
       cleared = true
+      source = nil
+      target = nil
+      attachments = []
     case .edit(let transaction):
       amount = "\(transaction.amount)"
       currency = Currency(rawValue: Int(transaction.currency)) ?? .cny

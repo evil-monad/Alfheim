@@ -59,16 +59,13 @@ extension AppReducers {
           state.repeated = repeated
         case .cleared(let cleared):
           state.cleared = cleared
-        case .target(let account):
-          if let a = account {
-            state.target = a
+        case .source(let account):
+          if let account = account {
+            state.source = account
           }
-//          let persistence = Persistences.Account(context: environment.context!)
-//          state.target = persistence.account(withID: id)
-        case .source(let id):
-          if let id = id {
-          let persistence = Persistences.Account(context: environment.context!)
-            state.source = persistence.account(withID: id)
+        case .target(let account):
+          if let account = account {
+            state.target = account
           }
         case .attachment:
           state.attachments = []

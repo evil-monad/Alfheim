@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 
+enum Transfer {
+  case `in`
+  case out
+}
+
 struct TransactionViewState: Identifiable {
   let transaction: Alfheim.Transaction
 
@@ -19,6 +24,7 @@ struct TransactionViewState: Identifiable {
   let title: String
   let source: String
   let target: String
+  let isSource: Bool
 
   let amount: Double
   let currency: Currency
@@ -27,7 +33,7 @@ struct TransactionViewState: Identifiable {
 }
 
 extension TransactionViewState {
-  init(transaction: Alfheim.Transaction, tag: Alne.Tagit) {
+  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, isSource: Bool = true) {
     self.transaction = transaction
     self.id = transaction.id.uuidString
     self.tag = tag
@@ -35,6 +41,7 @@ extension TransactionViewState {
     self.title = transaction.payee.map { "@\($0)" } ?? transaction.notes
     self.source = "\(transaction.source?.emoji ?? "")\(transaction.source?.name ?? "")"
     self.target = "\(transaction.target?.emoji ?? "")\(transaction.target?.name ?? "")"
+    self.isSource = isSource
 
     self.amount = transaction.amount
     self.currency = Currency(rawValue: Int(transaction.currency)) ?? .cny

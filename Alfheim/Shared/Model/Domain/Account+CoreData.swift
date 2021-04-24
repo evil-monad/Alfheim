@@ -30,8 +30,8 @@ final class Account: NSManagedObject, Identifiable {
 
 extension Account {
   var transactions: [Transaction] {
-    if let s = sources {
-      return s.allObjects as! [Transaction]
+    if let s = sources?.allObjects as? [Transaction], let t = targets?.allObjects as? [Transaction] {
+      return s + t
     } else {
       return []
     }

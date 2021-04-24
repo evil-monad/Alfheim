@@ -52,42 +52,6 @@ struct AccountPicker<Label>: View where Label: View {
         }
       }
     }
-//    List {
-//      Section(
-//        header:
-//          Text("ASSETS")
-//      ) {
-//        Text("Checking")
-//      }
-//
-//      Section(
-//        header:
-//          Text("LIABLITIES")
-//      ) {
-//        Text("Credit Card")
-//      }
-//
-//      Section(
-//        header:
-//          Text("INCOME")
-//      ) {
-//        Text("Salary")
-//      }
-//
-//      Section(
-//        header:
-//          Text("EXPENSES")
-//      ) {
-//        Text("Food & Drink")
-//      }
-//
-//      Section(
-//        header:
-//          Text("EQUITY")
-//      ) {
-//        Text("Opening Balance")
-//      }
-//    }
     .listStyle(InsetGroupedListStyle())
   }
 }

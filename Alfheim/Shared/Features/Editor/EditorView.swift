@@ -18,21 +18,22 @@ struct EditorView: View {
   }
 
   var body: some View {
-    WithViewStore(self.store) { viewStore in
+    WithViewStore(store) { viewStore in
       List {
         Section(header: Spacer()) {
           HStack {
             AccountPicker(
               viewStore.state.groupedAccounts,
-              selection: viewStore.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0?.id)) }),
+              selection: viewStore.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) }),
               label: Text(viewStore.source?.name ?? "Select Account")
             )
             TextField(
-              "+0.00",
+              "0.00",
               text: viewStore.binding(get: { $0.amount }, send: { AppAction.Editor.changed(.amount($0)) }))
               .keyboardType(.decimalPad)
               .multilineTextAlignment(.trailing)
               .padding(.trailing, -2.0)
+              .frame(minWidth: 100)
             Text("\(viewStore.currency.symbol)")
               .foregroundColor(.gray)
               .opacity(0.8)
@@ -44,22 +45,15 @@ struct EditorView: View {
               selection: viewStore.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) }),
               label: Text(viewStore.target?.name ?? "Select Account")
             )
-//            ZStack {
-//              Text(viewStore.target?.name ?? "Select Account")
-//              NavigationLink(destination: AccountList()) {
-//                EmptyView()
-//              }
-//              .buttonStyle(PlainButtonStyle())
-//              .frame(width: 0)
-//              .opacity(0.0)
-//            }
             Spacer()
-            if viewStore.amount != "" {
-              Text("-\(viewStore.amount)")
+            if let amount = Double(viewStore.amount) {
+              Text("\(-amount, specifier: "%.2f")")
+                .foregroundColor(.gray)
+                .opacity(0.8)
                 .multilineTextAlignment(.trailing)
                 .padding(.trailing, -2.0)
             } else {
-              Text("-\(viewStore.amount)")
+              Text("0.00")
                 .foregroundColor(.gray)
                 .opacity(0.8)
                 .multilineTextAlignment(.trailing)

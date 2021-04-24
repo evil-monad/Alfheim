@@ -29,12 +29,8 @@ struct OverviewView: View {
             Spacer().frame(height: 36)
 
             ForEach(viewStore.account.transactions) { transaction in
-              Text(transaction.notes)
+              TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, isSource: transaction.source == viewStore.account))
             }
-
-            //TransactionRow(transaction: TransactionViewState.mock(cxt: viewContext))
-            //TransactionRow(transaction: TransactionViewState.mock(cxt: viewContext))
-            
           }
           .padding(18)
         }
@@ -58,6 +54,7 @@ struct OverviewView: View {
         }
       )
     }
+    .frame(maxWidth: 500)
   }
 }
 
