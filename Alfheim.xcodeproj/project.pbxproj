@@ -573,10 +573,7 @@
 		FAC2BC1225CE34B300169800 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
-				1F91CA01241A4CE000B552E7 /* AppState+Transaction.swift */,
-				1F91CA03241A4CEE00B552E7 /* AppAction+Transaction.swift */,
-				1F91CA05241A4CF900B552E7 /* AppEffect+Transaction.swift */,
-				FAF2AA36241DF75900EE40AA /* AppReducer+Transaction.swift */,
+				FAC7923D263405420037746C /* Redux */,
 				789E8E6F23EA96FC006D180B /* TransactionList.swift */,
 				782403F323F6D79F00478338 /* TransactionRow.swift */,
 				782403F523F6DBAF00478338 /* TransactionsView.swift */,
@@ -606,6 +603,17 @@
 			name = Editor;
 			path = Alfheim/Shared/Features/Editor;
 			sourceTree = SOURCE_ROOT;
+		};
+		FAC7923D263405420037746C /* Redux */ = {
+			isa = PBXGroup;
+			children = (
+				1F91CA01241A4CE000B552E7 /* AppState+Transaction.swift */,
+				1F91CA03241A4CEE00B552E7 /* AppAction+Transaction.swift */,
+				1F91CA05241A4CF900B552E7 /* AppEffect+Transaction.swift */,
+				FAF2AA36241DF75900EE40AA /* AppReducer+Transaction.swift */,
+			);
+			path = Redux;
+			sourceTree = "<group>";
 		};
 		FAE84B3625B3F8600027E215 /* Components */ = {
 			isa = PBXGroup;

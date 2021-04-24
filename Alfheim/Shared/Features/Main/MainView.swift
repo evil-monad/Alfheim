@@ -16,23 +16,19 @@ struct MainView: View {
   #endif
 
   var body: some View {
-//    #if os(iOS)
-//    if horizontalSizeClass == .compact {
-//      OverviewView()
-//    } else {
-//      SidebarNavigation()
-//    }
-//    #else
+    #if os(iOS)
+    if horizontalSizeClass == .compact {
+      ListNavigation(store: store)
+    } else {
+      SidebarNavigation(store: store)
+    }
+    #else
     SidebarNavigation(store: store)
-//    #endif
+    #endif
   }
 }
 
 struct SidebarNavigation: View {
-  #if os(iOS)
-  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  #endif
-
   let store: Store<AppState, AppAction>
 
   var body: some View {
@@ -53,24 +49,7 @@ struct Sidebar: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    WithViewStore(store) { viewStore in
-      List {
-        ForEachStore(
-          self.store.scope(
-            state: \.overviews,
-            action: AppAction.overview
-          )
-        ) { overviewStore in
-          WithViewStore(overviewStore) { viewStore in
-            NavigationLink(
-              destination:
-                OverviewView(store: overviewStore)
-            ) {
-              Label(viewStore.account.name, systemImage: "folder.circle")
-            }
-          }
-        }
-      }
+    Home(store: store)
       .listStyle(SidebarListStyle())
       .navigationBarTitle("Clic")
       .navigationBarItems(
@@ -96,6 +75,71 @@ struct Sidebar: View {
 //          }
 //        }
 //      })
+//    }
+  }
+}
+
+struct ListNavigation: View {
+  let store: Store<AppState, AppAction>
+
+  var body: some View {
+    NavigationView {
+      WithViewStore(store) { viewStore in
+        ContentView(store: store)
+          .onAppear {
+            viewStore.send(.load)
+          }
+      }
+    }
+  }
+}
+
+struct ContentView: View {
+  let store: Store<AppState, AppAction>
+
+  var body: some View {
+    Home(store: store)
+      .listStyle(InsetGroupedListStyle())
+      .navigationBarTitle("Clic")
+      .navigationBarItems(
+        trailing: Button(action: {
+          //viewStore.send(.cleanup)
+        }) {
+          Image(systemName: "gear")
+        }
+      )
+  }
+}
+
+struct Home: View {
+  let store: Store<AppState, AppAction>
+  
+  var body: some View {
+    WithViewStore(store) { viewStore in
+      List {
+        ForEachStore(
+          self.store.scope(
+            state: \.overviews,
+            action: AppAction.overview
+          )
+        ) { overviewStore in
+          WithViewStore(overviewStore) { viewStore in
+            DisclosureGroup(
+              isExpanded: .constant(true),
+              content: {
+                NavigationLink(
+                  destination:
+                    OverviewView(store: overviewStore)
+                ) {
+                  Text("\(viewStore.account.emoji ?? "") \(viewStore.account.name)")
+                }
+              },
+              label: {
+                Label(viewStore.account.name, systemImage: "folder.circle")
+              })
+          }
+        }
+      }
     }
   }
 }
