@@ -24,7 +24,7 @@ final class Account: NSManagedObject, Identifiable {
   // relationship
   @NSManaged var targets: NSSet?
   @NSManaged var sources: NSSet?
-  @NSManaged var children: NSSet?
+  @NSManaged var children: Set<Account>?
   @NSManaged var parent: Account?
 }
 
@@ -39,6 +39,20 @@ extension Account {
 
   var root: Bool {
     return parent == nil
+  }
+
+  var optinalChildren: [Account]? {
+    guard let children = children, !children.isEmpty else {
+      return nil
+    }
+    return Array(children)
+  }
+}
+
+// for ui
+extension Account {
+  var hasChildren: Bool {
+    return !(children?.isEmpty ?? true)
   }
 }
 
@@ -58,5 +72,21 @@ extension Account {
       return false
     }
     return true
+  }
+}
+
+extension NSSet {
+  func array<T: Hashable>() -> [T] {
+    let array = self.compactMap { $0 as? T }
+    return array
+  }
+}
+
+extension Optional where Wrapped == NSSet {
+  func array<T: Hashable>(of: T.Type) -> [T] {
+    if let set = self as? Set<T> {
+      return Array(set)
+    }
+    return [T]()
   }
 }

@@ -51,5 +51,24 @@ extension AppEffects {
       }
       .eraseToEffect()
     }
+
+    static func create(account: Alfheim.Account, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
+        return Effect.none
+      }
+
+      let persistence = Persistences.Account(context: context)
+
+      return Future { promise in
+        do {
+          try persistence.save()
+          promise(.success(true))
+        } catch {
+          print("Create transaction failed: \(error)")
+          promise(.failure(error as NSError))
+        }
+      }
+      .eraseToEffect()
+    }
   }
 }

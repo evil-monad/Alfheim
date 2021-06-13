@@ -23,6 +23,10 @@ extension Alne {
       case expenses
       case liabilities
       case equity
+
+      var name: String {
+        rawValue
+      }
     }
   }
 }

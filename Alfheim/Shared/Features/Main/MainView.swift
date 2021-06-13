@@ -28,6 +28,7 @@ struct MainView: View {
   }
 }
 
+/// iPad & Mac
 struct SidebarNavigation: View {
   let store: Store<AppState, AppAction>
 
@@ -49,36 +50,22 @@ struct Sidebar: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    Home(store: store)
-      .listStyle(SidebarListStyle())
-      .navigationBarTitle("Clic")
-      .navigationBarItems(
-        trailing: Button(action: {
-          //viewStore.send(.cleanup)
-        }) {
-          Image(systemName: "gear")
-        }
-      )
-//      .sheet(
-//        isPresented: binding.isSettingsPresented,
-//        onDismiss: {
-//          self.store.dispatch(.overview(.toggleSettings(presenting: false)))
-//      }) {
-//        SettingsView()
-//      }
-//      .toolbar(content: {
-//        ToolbarItem(placement: .primaryAction) {
-//          Button(action: {
-//            //store.dispatch(.cleanup)
-//          }) {
-//            Label("Settings", systemImage: "gear")
-//          }
-//        }
-//      })
-//    }
+    WithViewStore(store) { vs in
+      Home(store: store)
+        .listStyle(.insetGrouped)
+        .navigationBarTitle("Clic")
+        .navigationBarItems(
+          trailing: Button(action: {
+            vs.send(.cleanup)
+          }) {
+            Image(systemName: "gear")
+          }
+        )
+    }
   }
 }
 
+/// iOS
 struct ListNavigation: View {
   let store: Store<AppState, AppAction>
 
@@ -98,47 +85,55 @@ struct ContentView: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    Home(store: store)
-      .listStyle(InsetGroupedListStyle())
-      .navigationBarTitle("Clic")
-      .navigationBarItems(
-        trailing: Button(action: {
-          //viewStore.send(.cleanup)
+    WithViewStore(store) { vs in
+      Home(store: store)
+        .listStyle(.insetGrouped)
+        .navigationBarTitle("Clic")
+        .navigationBarItems(
+          trailing: Button(action: {
+          vs.send(.cleanup)
         }) {
           Image(systemName: "gear")
         }
-      )
+        )
+    }
   }
 }
 
 struct Home: View {
   let store: Store<AppState, AppAction>
-  
+
   var body: some View {
-    WithViewStore(store) { viewStore in
-      List {
-        ForEachStore(
-          self.store.scope(
-            state: \.overviews,
-            action: AppAction.overview
-          )
-        ) { overviewStore in
-          WithViewStore(overviewStore) { viewStore in
-            DisclosureGroup(
-              isExpanded: .constant(true),
-              content: {
-                NavigationLink(
-                  destination:
-                    OverviewView(store: overviewStore)
-                ) {
-                  Text("\(viewStore.account.emoji ?? "") \(viewStore.account.name)")
-                }
-              },
-              label: {
-                Label(viewStore.account.name, systemImage: "folder.circle")
-              })
-          }
+    WithViewStore(store) { vs in
+      AccountList(accounts: vs.accounts.filter { $0.parent == nil })
+    }
+  }
+}
+
+struct AccountList: View {
+  var accounts: [Account]
+
+  var body: some View {
+    List(accounts, children: \.optinalChildren) { account in
+      ZStack {
+        HStack {
+          Text("\(account.emoji ?? "") \(account.name)")
+          Spacer()
         }
+
+        NavigationLink {
+          OverviewView(
+            store: Store(
+              initialState: AppState.Overview(account: account),
+              reducer: AppReducers.Overview.reducer,
+              environment: AppEnvironment()
+            )
+          )
+        } label: {
+          EmptyView()
+        }
+        .buttonStyle(.plain)
+        .opacity(account.hasChildren ? 0: 1)
       }
     }
   }

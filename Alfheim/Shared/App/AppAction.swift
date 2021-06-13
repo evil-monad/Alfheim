@@ -22,6 +22,7 @@ enum AppAction {
   case load
   case loaded([Alfheim.Account])
   case cleanup
+  case new
 }
 
 extension AppAction {

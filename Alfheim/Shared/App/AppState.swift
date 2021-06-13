@@ -11,6 +11,8 @@ import Foundation
 struct AppState: Equatable {
   var overviews: [Overview] = []
   //var editor = Editor()
+
+  var sidebar: [Alfheim.Account] = []
 }
 
 extension AppState {

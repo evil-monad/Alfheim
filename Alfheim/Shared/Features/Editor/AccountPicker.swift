@@ -56,8 +56,8 @@ struct AccountPicker<Label>: View where Label: View {
   }
 }
 
-
-struct AccountList: View {
+/*
+struct RootAccountList: View {
   var body: some View {
     List {
       Section(
@@ -99,3 +99,4 @@ struct AccountList: View {
   }
 
 }
+*/

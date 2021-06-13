@@ -17,10 +17,27 @@ enum AppReducers {
       case .load:
         return AppEffects.Account.load(environment: environment)
       case .loaded(let accounts):
+        state.sidebar = accounts
         state.overviews = accounts.map { AppState.Overview(account: $0) }
         return .none
       case .cleanup:
         return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
+          .replaceError(with: false)
+          .ignoreOutput()
+          .eraseToEffect()
+          .fireAndForget()
+      case .new:
+        let expenses = Alfheim.Account(context: environment.context!)
+        expenses.id = UUID()
+        expenses.name = "Food"
+        expenses.introduction = "Expenses account are where you spend money for (e.g. food)."
+        expenses.group = Alne.Account.Group.expenses.name
+        expenses.currency = Int16(0)
+        expenses.tag = "#FF2601"
+        expenses.emoji = "🍉"
+        expenses.parent = state.accounts.first
+
+        return AppEffects.Account.create(account: expenses, context: environment.context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
