@@ -17,7 +17,7 @@ struct OverviewView: View {
   @State private var presentingStatistics = false
 
   var body: some View {
-    WithViewStore(store) { viewStore in
+    WithViewStore(store) { vs in
       GeometryReader { geometry in
         ScrollView(.vertical, showsIndicators: false) {
           VStack {
@@ -28,31 +28,33 @@ struct OverviewView: View {
             }
             Spacer().frame(height: 36)
 
-            ForEach(viewStore.account.transactions) { transaction in
-              TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, isSource: transaction.source == viewStore.account))
+            ForEach(vs.account.transactions) { transaction in
+              TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, isSource: transaction.source == vs.account))
             }
           }
           .padding(18)
         }
       }
-      .navigationBarTitle(viewStore.account.name)
-      .navigationBarItems(
-        trailing: Button(action: {
-          viewStore.send(.toggleNewTransaction(presenting: true))
-        }) {
-          Image(systemName: "plus.circle").padding(.vertical).font(.system(size: 18)).padding(.leading)
+      .navigationBarTitle(vs.account.name)
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Button {
+            vs.send(.toggleNewTransaction(presenting: true))
+          } label: {
+            Image(systemName: "plus.circle")
+          }
         }
-        .sheet(
-          isPresented: viewStore.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })
-        ) {
-          ComposerView(
-            store: store.scope(
-              state: \.editor,
-              action: AppAction.Overview.editor),
-            mode: .new
-          )
-        }
-      )
+      }
+      .sheet(
+        isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })
+      ) {
+        ComposerView(
+          store: store.scope(
+            state: \.editor,
+            action: AppAction.Overview.editor),
+          mode: .new
+        )
+      }
     }
     .frame(maxWidth: 500)
   }

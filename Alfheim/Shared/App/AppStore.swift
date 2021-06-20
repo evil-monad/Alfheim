@@ -10,5 +10,3 @@ import Foundation
 import ComposableArchitecture
 
 typealias AppStore = Store<AppState, AppAction>
-
-// Observer bindings

@@ -52,8 +52,8 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func create(account: Alfheim.Account, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
-      guard let context = context else {
+    static func create(account: Alfheim.Account, environment: AppEnvironment) -> Effect<Bool, NSError> {
+      guard let context = environment.context else {
         return Effect.none
       }
 

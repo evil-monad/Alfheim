@@ -19,4 +19,8 @@ extension AppState {
   var accounts: [Alfheim.Account] {
     overviews.map { $0.account }
   }
+
+  var rootAccounts: [Alfheim.Account] {
+    accounts.filter { $0.root }
+  }
 }

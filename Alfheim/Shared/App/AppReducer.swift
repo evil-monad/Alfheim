@@ -26,7 +26,7 @@ enum AppReducers {
           .ignoreOutput()
           .eraseToEffect()
           .fireAndForget()
-      case .new:
+      case .add:
         let expenses = Alfheim.Account(context: environment.context!)
         expenses.id = UUID()
         expenses.name = "Food"
@@ -37,7 +37,7 @@ enum AppReducers {
         expenses.emoji = "🍉"
         expenses.parent = state.accounts.first
 
-        return AppEffects.Account.create(account: expenses, context: environment.context)
+        return AppEffects.Account.create(account: expenses, environment: environment)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()

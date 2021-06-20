@@ -19,10 +19,13 @@ enum AppAction {
 //  case startImport
 //  case finishImport
 
+  // Account
   case load
   case loaded([Alfheim.Account])
   case cleanup
-  case new
+  case add
+
+  case newTransaction
 }
 
 extension AppAction {
