@@ -56,9 +56,15 @@ extension AppState {
     }
 
     var amount: Double {
-      periodTransactions
-        .map { $0.amount }
+      let deposits = periodTransactions.filter { $0.target == account }
+        .map { abs($0.amount) }
         .reduce(0.0, +)
+
+      let withdrawal = periodTransactions.filter { $0.source == account }
+        .map { abs($0.amount) }
+        .reduce(0.0, +)
+
+      return deposits - withdrawal
     }
 
     var amountText: String {

@@ -118,9 +118,9 @@
 		FAEC037D240ADA34003BFE2C /* Catemoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEC037C240ADA34003BFE2C /* Catemoji.swift */; };
 		FAF2AA37241DF75900EE40AA /* AppReducer+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA36241DF75900EE40AA /* AppReducer+Transaction.swift */; };
 		FAF2AA42241DF8D200EE40AA /* Array+Alfheim.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA41241DF8D200EE40AA /* Array+Alfheim.swift */; };
-		FAF2AA45241DF97700EE40AA /* AppReducer+Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA44241DF97700EE40AA /* AppReducer+Overview.swift */; };
-		FAF2AA47241DF9F200EE40AA /* AppState+Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA46241DF9F200EE40AA /* AppState+Overview.swift */; };
-		FAF2AA49241DFA0D00EE40AA /* AppAction+Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA48241DFA0D00EE40AA /* AppAction+Overview.swift */; };
+		FAF2AA45241DF97700EE40AA /* Overview+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA44241DF97700EE40AA /* Overview+Reducer.swift */; };
+		FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA46241DF9F200EE40AA /* Overview+State.swift */; };
+		FAF2AA49241DFA0D00EE40AA /* Overview+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA48241DFA0D00EE40AA /* Overview+Action.swift */; };
 		FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF380332413FAC800C592D4 /* CloudKit.framework */; };
 		FAF380372414BA1700C592D4 /* Persistences+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF380362414BA1700C592D4 /* Persistences+Account.swift */; };
 		FAF380392414BA2400C592D4 /* Persistences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF380382414BA2400C592D4 /* Persistences.swift */; };
@@ -266,9 +266,9 @@
 		FAEC037C240ADA34003BFE2C /* Catemoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catemoji.swift; sourceTree = "<group>"; };
 		FAF2AA36241DF75900EE40AA /* AppReducer+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppReducer+Transaction.swift"; sourceTree = "<group>"; };
 		FAF2AA41241DF8D200EE40AA /* Array+Alfheim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Alfheim.swift"; sourceTree = "<group>"; };
-		FAF2AA44241DF97700EE40AA /* AppReducer+Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppReducer+Overview.swift"; sourceTree = "<group>"; };
-		FAF2AA46241DF9F200EE40AA /* AppState+Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Overview.swift"; sourceTree = "<group>"; };
-		FAF2AA48241DFA0D00EE40AA /* AppAction+Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppAction+Overview.swift"; sourceTree = "<group>"; };
+		FAF2AA44241DF97700EE40AA /* Overview+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Overview+Reducer.swift"; sourceTree = "<group>"; };
+		FAF2AA46241DF9F200EE40AA /* Overview+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Overview+State.swift"; sourceTree = "<group>"; };
+		FAF2AA48241DFA0D00EE40AA /* Overview+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Overview+Action.swift"; sourceTree = "<group>"; };
 		FAF380312413FAA700C592D4 /* Alfheim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alfheim.entitlements; sourceTree = "<group>"; };
 		FAF380332413FAC800C592D4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		FAF380362414BA1700C592D4 /* Persistences+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Account.swift"; sourceTree = "<group>"; };
@@ -512,6 +512,16 @@
 			path = Kit;
 			sourceTree = "<group>";
 		};
+		FA7368E72688A5C900BCF659 /* Redux */ = {
+			isa = PBXGroup;
+			children = (
+				FAF2AA46241DF9F200EE40AA /* Overview+State.swift */,
+				FAF2AA48241DFA0D00EE40AA /* Overview+Action.swift */,
+				FAF2AA44241DF97700EE40AA /* Overview+Reducer.swift */,
+			);
+			path = Redux;
+			sourceTree = "<group>";
+		};
 		FA83857C24A478FA0011E0D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -551,9 +561,7 @@
 		FAC2BC0E25CE343800169800 /* Overview */ = {
 			isa = PBXGroup;
 			children = (
-				FAF2AA46241DF9F200EE40AA /* AppState+Overview.swift */,
-				FAF2AA48241DFA0D00EE40AA /* AppAction+Overview.swift */,
-				FAF2AA44241DF97700EE40AA /* AppReducer+Overview.swift */,
+				FA7368E72688A5C900BCF659 /* Redux */,
 				1F39993023D6A0A400E6BBD9 /* OverviewView.swift */,
 				1F45EBDA2423605D0058AEDC /* AccountCard.swift */,
 			);
@@ -875,7 +883,7 @@
 				1F91CA08241A4D9800B552E7 /* AppReducer+Account.swift in Sources */,
 				1F39992B23D697F700E6BBD9 /* Histogram.swift in Sources */,
 				FABEBB90245DB2CE00637226 /* View+Modal.swift in Sources */,
-				FAF2AA49241DFA0D00EE40AA /* AppAction+Overview.swift in Sources */,
+				FAF2AA49241DFA0D00EE40AA /* Overview+Action.swift in Sources */,
 				FAEABD4625CE2B41003D866E /* Reducer.swift in Sources */,
 				FAE434D624B815580035F0ED /* TransactionListViewState.swift in Sources */,
 				1F91C9F4241A4BA000B552E7 /* AppState+Account.swift in Sources */,
@@ -898,7 +906,7 @@
 				783793DE25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift in Sources */,
 				FAF3803D24152EED00C592D4 /* Persistences+Transaction.swift in Sources */,
 				789E8E6923E80FFC006D180B /* Transaction.swift in Sources */,
-				FAF2AA47241DF9F200EE40AA /* AppState+Overview.swift in Sources */,
+				FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */,
 				1F39990023D6958700E6BBD9 /* Alfheim.xcdatamodeld in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
@@ -925,7 +933,7 @@
 				FA32138B2498A593006BC855 /* Color+Category.swift in Sources */,
 				FACF2A7A23FFD2B7003BB675 /* AccountDetailList.swift in Sources */,
 				1F39995A23D7F75500E6BBD9 /* Slice.swift in Sources */,
-				FAF2AA45241DF97700EE40AA /* AppReducer+Overview.swift in Sources */,
+				FAF2AA45241DF97700EE40AA /* Overview+Reducer.swift in Sources */,
 				1F39992923D6963600E6BBD9 /* Indicator.swift in Sources */,
 				1F91C9F8241A4BC200B552E7 /* AppEffect+Account.swift in Sources */,
 				1F45EBDB2423605D0058AEDC /* AccountCard.swift in Sources */,
