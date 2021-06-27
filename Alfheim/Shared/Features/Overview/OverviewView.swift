@@ -17,7 +17,6 @@ struct OverviewView: View {
       List {
         Section {
           AccountCard(store: store)
-            .listRowInsets(EdgeInsets())
             .frame(height: 200)
         } header: {
           Header(vs.period.display)
@@ -25,7 +24,9 @@ struct OverviewView: View {
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)
 
-        TransactionCard(store: store)
+        if !vs.recentTransactions.isEmpty {
+          TransactionCard(store: store)
+        }
       }
       .navigationTitle(vs.account.name)
       .toolbar {
@@ -55,17 +56,13 @@ private struct TransactionCard: View {
   var body: some View {
     WithViewStore(store) { vs in
       Section {
-        ForEach(vs.account.transactions) { transaction in
+        ForEach(vs.recentTransactions) { transaction in
           TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, deposit: transaction.target == vs.account))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
-        HStack {
-          Text("Transactions").font(.subheadline).foregroundColor(.primary)
-          Spacer()
-          Image(systemName: "chevron.right")
-        }
-        .listRowInsets(EdgeInsets())
+        Header("Transactions")
+          .listRowInsets(EdgeInsets())
       }
     }
   }

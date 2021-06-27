@@ -71,5 +71,10 @@ extension AppState {
       let symbol = Alne.Currency(rawValue: Int(account.currency))?.symbol
       return "\(symbol ?? "")\(String(format: "%.2f", amount))"
     }
+
+    // recent 5 transactions
+    var recentTransactions: [Alfheim.Transaction] {
+      Array(transactions.prefix(5))
+    }
   }
 }
