@@ -22,7 +22,7 @@ struct OverviewView: View {
         } header: {
           Header(vs.period.display)
         }
-        .listRowInsets(EdgeInsets.default)
+        .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)
 
         TransactionCard(store: store)
@@ -58,14 +58,15 @@ private struct TransactionCard: View {
         ForEach(vs.account.transactions) { transaction in
           TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, deposit: transaction.target == vs.account))
         }
+        .listRowInsets(EdgeInsets.default)
       } header: {
         HStack {
           Text("Transactions").font(.subheadline).foregroundColor(.primary)
           Spacer()
           Image(systemName: "chevron.right")
         }
+        .listRowInsets(EdgeInsets())
       }
-      .listRowInsets(EdgeInsets.default)
     }
   }
 }
