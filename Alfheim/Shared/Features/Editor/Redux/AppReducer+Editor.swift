@@ -39,7 +39,7 @@ extension AppReducers {
         }
       case .loadAccounts:
         return AppEffects.Editor.loadAccounts(environment: environment)
-      case .loadedAccounts(let accounts):
+      case .didLoadAccounts(let accounts):
         state.accounts = accounts
       case .changed(let field):
         switch field {

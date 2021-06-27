@@ -24,7 +24,7 @@ struct TransactionViewState: Identifiable {
   let title: String
   let source: String
   let target: String
-  let isSource: Bool
+  let deposit: Bool
 
   let amount: Double
   let currency: Currency
@@ -33,7 +33,7 @@ struct TransactionViewState: Identifiable {
 }
 
 extension TransactionViewState {
-  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, isSource: Bool = true) {
+  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true) {
     self.transaction = transaction
     self.id = transaction.id.uuidString
     self.tag = tag
@@ -41,12 +41,20 @@ extension TransactionViewState {
     self.title = transaction.payee.map { "@\($0)" } ?? transaction.notes
     self.source = "\(transaction.source?.emoji ?? "")\(transaction.source?.name ?? "")"
     self.target = "\(transaction.target?.emoji ?? "")\(transaction.target?.name ?? "")"
-    self.isSource = isSource
+    self.deposit = deposit
 
     self.amount = transaction.amount
     self.currency = Currency(rawValue: Int(transaction.currency)) ?? .cny
 
     self.date = transaction.date
+  }
+
+  var forward: Bool {
+    if deposit {
+      return amount >= 0
+    } else {
+      return amount < 0
+    }
   }
 }
 

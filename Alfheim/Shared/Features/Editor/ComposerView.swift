@@ -10,8 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct ComposerView: View {
-  // alternative dismiss
-  @Environment(\.presentationMode) var presentationMode
+  @Environment(\.dismiss) var dismiss
   let store: Store<AppState.Editor, AppAction.Editor>
 
   let mode: EditorView.Mode
@@ -20,25 +19,29 @@ struct ComposerView: View {
     NavigationView {
       WithViewStore(store) { viewStore in
         EditorView(store: store)
-          .navigationBarTitle(viewStore.isNew ? " New Transaction" : "Edit Transaction")
-          .navigationBarItems(
-            leading: Button(action: {
-              self.presentationMode.wrappedValue.dismiss()
-            }) {
-              Text("Cancel")
-            },
-            trailing: Button(action: {
-              let action = AppAction.Editor.save(viewStore.transaction, mode: viewStore.isNew ? .new : .update)
-              viewStore.send(action)
-              self.presentationMode.wrappedValue.dismiss()
-            }) {
-              Text("Save").bold()
+          .navigationTitle(viewStore.isNew ? " New Transaction" : "Edit Transaction")
+          .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+              Button {
+                let action = AppAction.Editor.save(viewStore.transaction, mode: viewStore.isNew ? .new : .update)
+                viewStore.send(action)
+                dismiss()
+              } label: {
+                Text("Save").bold()
+              }
+              .disabled(!viewStore.isValid)
             }
-            .disabled(!viewStore.isValid)
-          )
+            ToolbarItem(placement: .cancellationAction) {
+              Button {
+                dismiss()
+              } label: {
+                Text("Cancel")
+              }
+            }
+          }
       }
     }
-    .navigationViewStyle(StackNavigationViewStyle())
+    .navigationViewStyle(.stack)
   }
 }
 

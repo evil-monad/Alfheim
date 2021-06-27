@@ -13,10 +13,7 @@ struct AccountCard: View {
   let store: Store<AppState.Overview, AppAction.Overview>
 
   @State private var flipped: Bool = false
-
   private let cornerRadius: CGFloat = 20
-
-  lazy var viewStore: ViewStore<AppState.Overview, AppAction.Overview> = ViewStore(store)
 
   var body: some View {
     WithViewStore(store) { viewStore in
@@ -29,7 +26,6 @@ struct AccountCard: View {
               startPoint: .top,
               endPoint: .bottom
             ))
-            .shadow(radius: 8)
           )
       } back: {
         Back(store: store, onFlip: { self.flip(false) })
@@ -40,7 +36,6 @@ struct AccountCard: View {
               startPoint: .top,
               endPoint: .bottom
             ))
-            .shadow(radius: 8)
           )
       }
       .animation(Animation.spring(response: 0.35, dampingFraction: 0.7), value: flipped)
@@ -58,24 +53,10 @@ struct AccountCard: View {
             ZStack {
               HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 6) {
-                  Button(action: {
-                    //self.store.dispatch(.overview(.toggleAccountDetail(presenting: true)))
-                  }) {
-                    Text(viewStore.account.name)
-                      .font(.system(size: 22, weight: .semibold))
-                      .foregroundColor(.primary)
+                  Button {
+                  } label: {
+                    Text("Alfheim")
                   }
-
-                  Button(action: {
-
-                  }, label: {
-                    Image(systemName: "chevron.right")
-                      .resizable()
-                      .frame(width: 8, height: 8)
-                      .foregroundColor(.secondary).padding(.bottom, -1)
-                    Text(viewStore.period.display).font(.callout)
-                      .foregroundColor(.secondary).padding(.leading, -4)
-                  })
                   Spacer()
                 }
                 Spacer()
@@ -93,9 +74,9 @@ struct AccountCard: View {
 
           },
           image: {
-            Button(action: {
+            Button {
               self.onFlip()
-            }) {
+            } label: {
               Image(systemName: "info.circle")
                 .foregroundColor(.primary)
             }
@@ -103,9 +84,6 @@ struct AccountCard: View {
       }
     }
   }
-
-//  private var front: some View {
-//  }
 
   struct Back: View {
     let store: Store<AppState.Overview, AppAction.Overview>
@@ -133,28 +111,6 @@ struct AccountCard: View {
       }
     }
   }
-
-//  private var back: some View {
-//    Card(
-//      content: {
-//        VStack {
-//          Spacer()
-//          Text(account.introduction)
-//          Spacer()
-//          HStack {
-//            Spacer()
-//            Text("made with ❤️").font(.footnote)
-//          }
-//        }
-//      },
-//      image: {
-//        Image(systemName: "dollarsign.circle.fill")
-//          .foregroundColor(.primary)
-//      })
-//      .onTapGesture {
-//        self.flip(false)
-//      }
-//  }
 
   private func flip(_ flag: Bool) {
     withAnimation(.easeOut(duration: 0.35)) {

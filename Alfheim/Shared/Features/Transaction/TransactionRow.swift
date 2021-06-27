@@ -19,30 +19,36 @@ struct TransactionRow: View {
           .lineLimit(1)
         Spacer()
         HStack {
-          if transaction.isSource {
-            Text(transaction.source)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.red)
-            Text("<-")
-              .foregroundColor(.gray)
+          if transaction.deposit {
             Text(transaction.target)
               .font(.system(size: 14, weight: .medium))
               .foregroundColor(.green)
           } else {
-            Text(transaction.target)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.green)
-            Text("->")
-              .foregroundColor(.gray)
             Text(transaction.source)
               .font(.system(size: 14, weight: .medium))
               .foregroundColor(.red)
+          }
+
+          if transaction.forward {
+            Image(systemName: "arrow.forward").font(.system(size: 11))
+          } else {
+            Image(systemName: "arrow.backward").font(.system(size: 11))
+          }
+
+          if transaction.deposit {
+            Text(transaction.source)
+              .font(.system(size: 14, weight: .medium))
+              .foregroundColor(.red)
+          } else {
+            Text(transaction.target)
+              .font(.system(size: 14, weight: .medium))
+              .foregroundColor(.green)
           }
         }
       }
       Spacer()
       VStack(alignment: .trailing) {
-        Text("\(transaction.isSource && transaction.amount >= 0 ? "+" : "-")\(transaction.currency.symbol)\(String(format: "%.1f", transaction.amount))")
+        Text("\(transaction.forward ? "-" : "+")\(transaction.currency.symbol)\(String(format: "%.1f", abs(transaction.amount)))")
           .font(.system(size: 28, weight: .semibold))
           .foregroundColor(Color(tagit: transaction.tag))
         Spacer()

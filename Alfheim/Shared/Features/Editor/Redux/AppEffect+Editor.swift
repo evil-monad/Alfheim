@@ -22,7 +22,7 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map {
-          .loadedAccounts($0)
+          .didLoadAccounts($0)
         }
         .eraseToEffect()
     }

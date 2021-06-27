@@ -112,8 +112,8 @@ struct EditorView: View {
           }
         }
       }
-      .listStyle(InsetGroupedListStyle())
-      .onAppear {
+      .listStyle(.insetGrouped)
+      .task {
         viewStore.send(.loadAccounts)
       }
     }

@@ -32,6 +32,7 @@ extension AppState {
       print("init")
       self.account = account
       self.id = account.id
+      self.editor = Editor(target: account)
     }
 
     var transactions: [Alfheim.Transaction] {

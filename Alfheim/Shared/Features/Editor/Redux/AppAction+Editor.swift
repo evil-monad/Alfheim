@@ -15,7 +15,7 @@ extension AppAction {
     case new
     case changed(Field)
     case loadAccounts
-    case loadedAccounts([Alfheim.Account])
+    case didLoadAccounts([Alfheim.Account])
 
     enum Field {
       case amount(String)

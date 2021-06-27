@@ -118,6 +118,10 @@ extension AppState.Editor {
   var groupedAccounts: [String: [Alfheim.Account]] {
     return accounts.grouped(by: { $0.group })
   }
+
+  var rootAccounts: [Alfheim.Account] {
+    accounts.filter { $0.root }
+  }
 }
 
 extension String {

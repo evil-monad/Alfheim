@@ -71,6 +71,7 @@
 		FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA527AC824095C9800CEC549 /* Date+Alfheim.swift */; };
 		FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F768524261F7D00277B6E /* InputTextField.swift */; };
 		FA66C7D92427B40000462C46 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA66C7D82427B40000462C46 /* SearchBar.swift */; };
+		FA7368E62687441200BCF659 /* Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7368E52687441200BCF659 /* Hierarchy.swift */; };
 		FA83858524A479EF0011E0D7 /* Filled40x40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */; };
 		FA83858624A479EF0011E0D7 /* Filled40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857E24A479EF0011E0D7 /* Filled40x40@2x.png */; };
 		FA83858724A479EF0011E0D7 /* Filled60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857F24A479EF0011E0D7 /* Filled60x60@2x.png */; };
@@ -218,6 +219,7 @@
 		FA527AC824095C9800CEC549 /* Date+Alfheim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Alfheim.swift"; sourceTree = "<group>"; };
 		FA5F768524261F7D00277B6E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		FA66C7D82427B40000462C46 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		FA7368E52687441200BCF659 /* Hierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hierarchy.swift; sourceTree = "<group>"; };
 		FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled40x40@3x.png"; sourceTree = "<group>"; };
 		FA83857E24A479EF0011E0D7 /* Filled40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled40x40@2x.png"; sourceTree = "<group>"; };
 		FA83857F24A479EF0011E0D7 /* Filled60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@2x.png"; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 				FABEBB8B245D826300637226 /* TextAlert.swift */,
 				78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */,
 				FAEAA0402461278F003C6799 /* Emojis.swift */,
+				FA7368E52687441200BCF659 /* Hierarchy.swift */,
 			);
 			path = Kit;
 			sourceTree = "<group>";
@@ -861,6 +864,7 @@
 				789E8E6C23E810A6006D180B /* Account.swift in Sources */,
 				FAEABD6325CE3011003D866E /* AppStore.swift in Sources */,
 				1F3998FD23D6958700E6BBD9 /* SceneDelegate.swift in Sources */,
+				FA7368E62687441200BCF659 /* Hierarchy.swift in Sources */,
 				783793D425D128F000ECD0D4 /* AppState+Editor.swift in Sources */,
 				783793D525D128F000ECD0D4 /* AppAction+Editor.swift in Sources */,
 				FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */,

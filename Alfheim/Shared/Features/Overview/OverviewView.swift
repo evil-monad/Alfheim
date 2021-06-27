@@ -10,32 +10,24 @@ import SwiftUI
 import ComposableArchitecture
 
 struct OverviewView: View {
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-  @Environment(\.managedObjectContext) var viewContext
   let store: Store<AppState.Overview, AppAction.Overview>
-
-  @State private var presentingStatistics = false
 
   var body: some View {
     WithViewStore(store) { vs in
-      GeometryReader { geometry in
-        ScrollView(.vertical, showsIndicators: false) {
-          VStack {
-            AccountCard(store: store)
-              .frame(height: geometry.size.width*9/16)
-              .onTapGesture {
-                presentingStatistics.toggle()
-            }
-            Spacer().frame(height: 36)
-
-            ForEach(vs.account.transactions) { transaction in
-              TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, isSource: transaction.source == vs.account))
-            }
-          }
-          .padding(18)
+      List {
+        Section {
+          AccountCard(store: store)
+            .listRowInsets(EdgeInsets())
+            .frame(height: 200)
+        } header: {
+          Header(vs.period.display)
         }
+        .listRowInsets(EdgeInsets.default)
+        .listRowBackground(Color.clear)
+
+        TransactionCard(store: store)
       }
-      .navigationBarTitle(vs.account.name)
+      .navigationTitle(vs.account.name)
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Button {
@@ -45,9 +37,7 @@ struct OverviewView: View {
           }
         }
       }
-      .sheet(
-        isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })
-      ) {
+      .sheet(isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })) {
         ComposerView(
           store: store.scope(
             state: \.editor,
@@ -56,7 +46,43 @@ struct OverviewView: View {
         )
       }
     }
-    .frame(maxWidth: 500)
+  }
+}
+
+private struct TransactionCard: View {
+  let store: Store<AppState.Overview, AppAction.Overview>
+
+  var body: some View {
+    WithViewStore(store) { vs in
+      Section {
+        ForEach(vs.account.transactions) { transaction in
+          TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, deposit: transaction.target == vs.account))
+        }
+      } header: {
+        HStack {
+          Text("Transactions").font(.subheadline).foregroundColor(.primary)
+          Spacer()
+          Image(systemName: "chevron.right")
+        }
+      }
+      .listRowInsets(EdgeInsets.default)
+    }
+  }
+}
+
+struct Header: View {
+  let text: Text
+
+  init(_ text: String) {
+    self.text = Text(text)
+  }
+
+  var body: some View {
+    HStack {
+      text.font(.subheadline).foregroundColor(.primary)
+      Spacer()
+      Image(systemName: "chevron.right")
+    }
   }
 }
 

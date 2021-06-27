@@ -28,75 +28,55 @@ struct AccountPicker<Label>: View where Label: View {
       NavigationLink(destination: content, isActive: $isContentActive) {
         EmptyView()
       }
-      .buttonStyle(PlainButtonStyle())
+      .buttonStyle(.plain)
       .frame(width: 0)
       .opacity(0.0)
     }
   }
 
   private var content: some View {
-    List {
-      ForEach(Array(accounts.keys), id: \.self) { key in
-        Section(
-          header:
-            Text(key.uppercased())
-        ) {
-          ForEach(accounts[key] ?? [], id: \.id) { acc in
-            Button(action: {
-              self.selection.wrappedValue = acc
-              self.isContentActive = false
-            }) {
-              Text(acc.name)
+    Hierarchy(accounts) { account in
+      Button {
+        selection.wrappedValue = account
+        isContentActive = false
+      } label: {
+        HStack {
+          Group {
+            if let selection = selection, selection.wrappedValue == account {
+              Image(systemName: "checkmark").foregroundColor(.blue)
+            } else {
+              Text("\(account.emoji ?? "")")
             }
           }
+          .frame(width: 22)
+          Text(account.name)
         }
       }
     }
-    .listStyle(InsetGroupedListStyle())
+    .listStyle(.insetGrouped)
   }
 }
 
-/*
-struct RootAccountList: View {
+/// Only for account picker
+private struct Hierarchy<RowContent>: View where RowContent: View {
+  private let groupAccount: [String: [Alfheim.Account]]
+  private let rowContent: (Alfheim.Account) -> RowContent
+
+  init(_ data: [String: [Alfheim.Account]], rowContent: @escaping (Alfheim.Account) -> RowContent) {
+    self.groupAccount = data
+    self.rowContent = rowContent
+  }
+
   var body: some View {
     List {
-      Section(
-        header:
-          Text("ASSETS")
-      ) {
-        Text("Checking")
-      }
-
-      Section(
-        header:
-          Text("LIABLITIES")
-      ) {
-        Text("Credit Card")
-      }
-
-      Section(
-        header:
-          Text("INCOME")
-      ) {
-        Text("Salary")
-      }
-
-      Section(
-        header:
-          Text("EXPENSES")
-      ) {
-        Text("Food & Drink")
-      }
-
-      Section(
-        header:
-          Text("EQUITY")
-      ) {
-        Text("Opening Balance")
+      ForEach(Array(groupAccount.keys).sorted(), id: \.self) { group in
+        Section {
+          let account: [Alfheim.Account] = groupAccount[group] ?? []
+          RecursiveView(account, children: \.optinalChildren, rowContent: rowContent)
+        } header: {
+          Text(group.uppercased())
+        }
       }
     }
-    .listStyle(InsetGroupedListStyle())
   }
-
 }
-*/

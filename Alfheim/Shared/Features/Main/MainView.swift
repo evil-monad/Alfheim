@@ -142,21 +142,23 @@ struct Home: View {
     WithViewStore(store) { vs in
       List {
         Section(header: Spacer()) {
-          AccountMenu(store: store)
-            .listRowBackground(Color.clear)
+          MainMenu(store: store)
+            .listRowBackground(Color(UIColor.systemGroupedBackground))
             .buttonStyle(.plain)
             .onTapGesture {}
             .onLongPressGesture {}
         }
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
-        .listRowBackground(Color.clear)
+        .listRowBackground(Color(UIColor.systemGroupedBackground))
         .buttonStyle(.plain)
 
-        Section(header: Text("Accounts").font(.headline).foregroundColor(.primary)) {
+        Section {
           OutlineGroup(vs.rootAccounts, children: \.optinalChildren) { account in
             AccountRow(account: account)
           }
+        } header: {
+          Text("Accounts").font(.headline).foregroundColor(.primary)
         }
         .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
       }
@@ -168,7 +170,7 @@ struct Home: View {
 /// Don't use AccountList in Home
 /// children 更新时，不会刷新！
 struct AccountList: View {
-  var accounts: [Account]
+  let accounts: [Account]
 
   var body: some View {
     List(accounts, children: \.optinalChildren) { account in
@@ -178,6 +180,7 @@ struct AccountList: View {
 }
 
 private struct AccountRow: View {
+  @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
   let account: Account
 
   var body: some View {
@@ -191,7 +194,7 @@ private struct AccountRow: View {
         OverviewView(store: Store(
             initialState: AppState.Overview(account: account),
             reducer: AppReducers.Overview.reducer,
-            environment: AppEnvironment()
+            environment: AppEnvironment(context: viewContext)
           )
         )
       } label: {
@@ -203,7 +206,7 @@ private struct AccountRow: View {
   }
 }
 
-struct AccountMenu: View {
+struct MainMenu: View {
   let store: Store<AppState, AppAction>
   @State private var selection: Int? = nil
 
@@ -327,6 +330,10 @@ struct NavigationRow<Label, Destination> : View where Label : View, Destination 
   }
 }
 
+extension EdgeInsets {
+  static let `default` = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16)
+}
+
 #if DEBUG
 //struct AccountMenu_Previews: PreviewProvider {
 //  static var previews: some View {
@@ -342,7 +349,7 @@ struct Home_Previews: PreviewProvider {
   static var previews: some View {
     List {
       Section(header: EmptyView()) {
-        AccountMenu(store: AppStore(initialState: AppState(), reducer: AppReducers.appReducer, environment: AppEnvironment.default)).listRowBackground(Color.clear)
+        MainMenu(store: AppStore(initialState: AppState(), reducer: AppReducers.appReducer, environment: AppEnvironment.default)).listRowBackground(Color.clear)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
