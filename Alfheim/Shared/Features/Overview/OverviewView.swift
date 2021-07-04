@@ -110,7 +110,7 @@ private struct StatisticsSection: View {
     let showsValue: Bool = false
     
     var body: some View {
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading, spacing: 6) {
         ForEach(0..<histogram.units.count) { index in
           HStack(spacing: 0) {
             HStack {
@@ -149,7 +149,7 @@ private struct StatisticsSection: View {
               .frame(width: 40)
             }
           }
-          .frame(height: 30)
+          .frame(height: 28)
         }
       }
     }
