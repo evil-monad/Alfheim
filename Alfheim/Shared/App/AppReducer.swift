@@ -29,12 +29,12 @@ enum AppReducers {
       case .add:
         let expenses = Alfheim.Account(context: environment.context!)
         expenses.id = UUID()
-        expenses.name = "Food"
-        expenses.introduction = "Expenses account are where you spend money for (e.g. food)."
+        expenses.name = "Drink"
+        expenses.introduction = "Expenses account are where you spend money for (e.g. drink)."
         expenses.group = Alne.Account.Group.expenses.name
         expenses.currency = Int16(0)
         expenses.tag = "#FF2601"
-        expenses.emoji = "🍉"
+        expenses.emoji = "🍹"
         expenses.parent = state.accounts.first
 
         return AppEffects.Account.create(account: expenses, environment: environment)
@@ -56,6 +56,6 @@ enum AppReducers {
 //        state: \.editor,
 //        action: /AppAction.editor,
 //        environment: { _ in AppEnvironment.Editor(validator: Validator()) }
-//      )
+//      )	
   )
 }

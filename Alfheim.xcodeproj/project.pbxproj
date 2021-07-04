@@ -40,13 +40,13 @@
 		1F8AC495241210AF006D9551 /* EditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8AC494241210AE006D9551 /* EditorViewModel.swift */; };
 		1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8AC49824122619006D9551 /* CurrencyFormatter.swift */; };
 		1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F02419DF1F00B552E7 /* Publishers+FetchRequest.swift */; };
-		1F91C9F4241A4BA000B552E7 /* AppState+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F3241A4BA000B552E7 /* AppState+Account.swift */; };
-		1F91C9F6241A4BB100B552E7 /* AppAction+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F5241A4BB100B552E7 /* AppAction+Account.swift */; };
-		1F91C9F8241A4BC200B552E7 /* AppEffect+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F7241A4BC200B552E7 /* AppEffect+Account.swift */; };
+		1F91C9F4241A4BA000B552E7 /* Account+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F3241A4BA000B552E7 /* Account+State.swift */; };
+		1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F5241A4BB100B552E7 /* Account+Action.swift */; };
+		1F91C9F8241A4BC200B552E7 /* Account+Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91C9F7241A4BC200B552E7 /* Account+Effect.swift */; };
 		1F91CA02241A4CE000B552E7 /* AppState+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA01241A4CE000B552E7 /* AppState+Transaction.swift */; };
 		1F91CA04241A4CEE00B552E7 /* AppAction+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA03241A4CEE00B552E7 /* AppAction+Transaction.swift */; };
 		1F91CA06241A4CF900B552E7 /* AppEffect+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA05241A4CF900B552E7 /* AppEffect+Transaction.swift */; };
-		1F91CA08241A4D9800B552E7 /* AppReducer+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA07241A4D9800B552E7 /* AppReducer+Account.swift */; };
+		1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA07241A4D9800B552E7 /* Account+Reducer.swift */; };
 		1FFA61132429C187005C628C /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFA61122429C187005C628C /* Payment.swift */; };
 		782403F423F6D79F00478338 /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F323F6D79F00478338 /* TransactionRow.swift */; };
 		782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F523F6DBAF00478338 /* TransactionsView.swift */; };
@@ -189,13 +189,13 @@
 		1F8AC494241210AE006D9551 /* EditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewModel.swift; sourceTree = "<group>"; };
 		1F8AC49824122619006D9551 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
 		1F91C9F02419DF1F00B552E7 /* Publishers+FetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+FetchRequest.swift"; sourceTree = "<group>"; };
-		1F91C9F3241A4BA000B552E7 /* AppState+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Account.swift"; sourceTree = "<group>"; };
-		1F91C9F5241A4BB100B552E7 /* AppAction+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppAction+Account.swift"; sourceTree = "<group>"; };
-		1F91C9F7241A4BC200B552E7 /* AppEffect+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEffect+Account.swift"; sourceTree = "<group>"; };
+		1F91C9F3241A4BA000B552E7 /* Account+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+State.swift"; sourceTree = "<group>"; };
+		1F91C9F5241A4BB100B552E7 /* Account+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Action.swift"; sourceTree = "<group>"; };
+		1F91C9F7241A4BC200B552E7 /* Account+Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Effect.swift"; sourceTree = "<group>"; };
 		1F91CA01241A4CE000B552E7 /* AppState+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppState+Transaction.swift"; sourceTree = "<group>"; };
 		1F91CA03241A4CEE00B552E7 /* AppAction+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppAction+Transaction.swift"; sourceTree = "<group>"; };
 		1F91CA05241A4CF900B552E7 /* AppEffect+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEffect+Transaction.swift"; sourceTree = "<group>"; };
-		1F91CA07241A4D9800B552E7 /* AppReducer+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppReducer+Account.swift"; sourceTree = "<group>"; };
+		1F91CA07241A4D9800B552E7 /* Account+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Reducer.swift"; sourceTree = "<group>"; };
 		1FFA61122429C187005C628C /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		782403F323F6D79F00478338 /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
 		782403F523F6DBAF00478338 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
@@ -486,6 +486,17 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		FA26F4052691A01B006BDBF0 /* Redux */ = {
+			isa = PBXGroup;
+			children = (
+				1F91C9F3241A4BA000B552E7 /* Account+State.swift */,
+				1F91C9F5241A4BB100B552E7 /* Account+Action.swift */,
+				1F91CA07241A4D9800B552E7 /* Account+Reducer.swift */,
+				1F91C9F7241A4BC200B552E7 /* Account+Effect.swift */,
+			);
+			path = Redux;
+			sourceTree = "<group>";
+		};
 		FA527AC724095C5200CEC549 /* Kit */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,10 +590,7 @@
 		FAC2BC0F25CE346E00169800 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				1F91C9F3241A4BA000B552E7 /* AppState+Account.swift */,
-				1F91C9F5241A4BB100B552E7 /* AppAction+Account.swift */,
-				1F91CA07241A4D9800B552E7 /* AppReducer+Account.swift */,
-				1F91C9F7241A4BC200B552E7 /* AppEffect+Account.swift */,
+				FA26F4052691A01B006BDBF0 /* Redux */,
 				782403F723F83A6600478338 /* AccountDetail.swift */,
 				FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */,
 			);
@@ -888,13 +896,13 @@
 				1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */,
 				1F39995E23D805C600E6BBD9 /* PieChart.swift in Sources */,
 				FAF380392414BA2400C592D4 /* Persistences.swift in Sources */,
-				1F91CA08241A4D9800B552E7 /* AppReducer+Account.swift in Sources */,
+				1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */,
 				1F39992B23D697F700E6BBD9 /* Histogram.swift in Sources */,
 				FABEBB90245DB2CE00637226 /* View+Modal.swift in Sources */,
 				FAF2AA49241DFA0D00EE40AA /* Overview+Action.swift in Sources */,
 				FAEABD4625CE2B41003D866E /* Reducer.swift in Sources */,
 				FAE434D624B815580035F0ED /* TransactionListViewState.swift in Sources */,
-				1F91C9F4241A4BA000B552E7 /* AppState+Account.swift in Sources */,
+				1F91C9F4241A4BA000B552E7 /* Account+State.swift in Sources */,
 				782403F423F6D79F00478338 /* TransactionRow.swift in Sources */,
 				1F39993323D6D53200E6BBD9 /* QuadCurve.swift in Sources */,
 				FAEC037D240ADA34003BFE2C /* Catemoji.swift in Sources */,
@@ -924,7 +932,7 @@
 				FABEBB8C245D826300637226 /* TextAlert.swift in Sources */,
 				FAF3803B2414C5D600C592D4 /* Publishers+CoreData.swift in Sources */,
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
-				1F91C9F6241A4BB100B552E7 /* AppAction+Account.swift in Sources */,
+				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
 				FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */,
 				FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */,
 				1F2379B323D83BD900B4E79E /* Bar.swift in Sources */,
@@ -943,7 +951,7 @@
 				1F39995A23D7F75500E6BBD9 /* Slice.swift in Sources */,
 				FAF2AA45241DF97700EE40AA /* Overview+Reducer.swift in Sources */,
 				1F39992923D6963600E6BBD9 /* Indicator.swift in Sources */,
-				1F91C9F8241A4BC200B552E7 /* AppEffect+Account.swift in Sources */,
+				1F91C9F8241A4BC200B552E7 /* Account+Effect.swift in Sources */,
 				1F45EBDB2423605D0058AEDC /* AccountCard.swift in Sources */,
 				1F1CF967240622A500828426 /* Shape+Divided.swift in Sources */,
 				FAEC037B240AB840003BFE2C /* Color+Tagit.swift in Sources */,
