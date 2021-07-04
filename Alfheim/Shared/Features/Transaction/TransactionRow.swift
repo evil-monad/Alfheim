@@ -19,15 +19,9 @@ struct TransactionRow: View {
           .lineLimit(1)
         Spacer()
         HStack {
-          if transaction.deposit {
-            Text(transaction.target)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.green)
-          } else {
-            Text(transaction.source)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.red)
-          }
+          Text(transaction.from)
+            .font(.system(size: 14, weight: .medium))
+            .foregroundColor(.green)
 
           if transaction.forward {
             Image(systemName: "arrow.forward").font(.system(size: 11))
@@ -35,15 +29,9 @@ struct TransactionRow: View {
             Image(systemName: "arrow.backward").font(.system(size: 11))
           }
 
-          if transaction.deposit {
-            Text(transaction.source)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.red)
-          } else {
-            Text(transaction.target)
-              .font(.system(size: 14, weight: .medium))
-              .foregroundColor(.green)
-          }
+          Text(transaction.to)
+            .font(.system(size: 14, weight: .medium))
+            .foregroundColor(.red)
         }
       }
       Spacer()

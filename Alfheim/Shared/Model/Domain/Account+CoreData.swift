@@ -49,6 +49,21 @@ extension Account {
   }
 }
 
+// deposit & withdrawal
+extension Account {
+  var amount: Double {
+    let deposits = transactions.filter { $0.target == self }
+      .map { abs($0.amount) }
+      .reduce(0.0, +)
+
+    let withdrawal = transactions.filter { $0.source == self }
+      .map { abs($0.amount) }
+      .reduce(0.0, +)
+
+    return deposits - withdrawal
+  }
+}
+
 // for ui
 extension Account {
   var hasChildren: Bool {

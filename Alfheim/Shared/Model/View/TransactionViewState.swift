@@ -56,6 +56,14 @@ extension TransactionViewState {
       return amount < 0
     }
   }
+
+  var from: String {
+    deposit ? target : source
+  }
+
+  var to: String {
+    deposit ? source : target
+  }
 }
 
 extension TransactionViewState {

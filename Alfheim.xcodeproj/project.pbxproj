@@ -522,6 +522,13 @@
 			path = Redux;
 			sourceTree = "<group>";
 		};
+		FA7368E82688A9A000BCF659 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
 		FA83857C24A478FA0011E0D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,6 +547,7 @@
 		FAC2BC0C25CE340700169800 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				FA7368E82688A9A000BCF659 /* Statistics */,
 				FAC2BC3625CED0B300169800 /* Editor */,
 				FAC2BC1225CE34B300169800 /* Transaction */,
 				FAC2BC0F25CE346E00169800 /* Account */,

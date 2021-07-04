@@ -56,11 +56,11 @@ extension AppState {
     }
 
     var amount: Double {
-      let deposits = periodTransactions.filter { $0.target == account }
+      let deposits = periodTransactions.filter { ($0.target == account && $0.amount < 0) || ($0.source == account && $0.amount >= 0) }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
-      let withdrawal = periodTransactions.filter { $0.source == account }
+      let withdrawal = periodTransactions.filter { ($0.target == account && $0.amount >= 0 ) || ($0.source == account && $0.amount < 0)  }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
@@ -71,10 +71,32 @@ extension AppState {
       let symbol = Alne.Currency(rawValue: Int(account.currency))?.symbol
       return "\(symbol ?? "")\(String(format: "%.2f", amount))"
     }
+  }
+}
 
-    // recent 5 transactions
-    var recentTransactions: [Alfheim.Transaction] {
-      Array(transactions.prefix(5))
+// Recent transaction
+extension AppState.Overview {
+  var showRecentTransactionsSection: Bool {
+    return !recentTransactions.isEmpty
+  }
+
+  // prefix 5
+  var recentTransactions: [Alfheim.Transaction] {
+    Array(transactions.prefix(5))
+  }
+}
+
+// Stat
+extension AppState.Overview {
+  var showStatisticsSection: Bool {
+    return (account.children?.count ?? 0) >= 1
+  }
+
+  var statistics: [(String, Double, String)] {
+    guard let children = account.children else {
+      return []
     }
+
+    return children.map { ($0.name, $0.amount, $0.emoji ?? "") }
   }
 }
