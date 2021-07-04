@@ -142,7 +142,7 @@ struct Home: View {
     WithViewStore(store) { vs in
       List {
         Section(header: Spacer()) {
-          MainMenu(store: store)
+          QuickMenu(store: store)
             .listRowBackground(Color(UIColor.systemGroupedBackground))
             .buttonStyle(.plain)
             .onTapGesture {}
@@ -206,7 +206,7 @@ private struct AccountRow: View {
   }
 }
 
-struct MainMenu: View {
+struct QuickMenu: View {
   let store: Store<AppState, AppAction>
   @State private var selection: Int? = nil
 
@@ -349,7 +349,7 @@ struct Home_Previews: PreviewProvider {
   static var previews: some View {
     List {
       Section(header: EmptyView()) {
-        MainMenu(store: AppStore(initialState: AppState(), reducer: AppReducers.appReducer, environment: AppEnvironment.default)).listRowBackground(Color.clear)
+        QuickMenu(store: AppStore(initialState: AppState(), reducer: AppReducers.appReducer, environment: AppEnvironment.default)).listRowBackground(Color.clear)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
