@@ -52,14 +52,10 @@ extension Alne {
     case hkd
     case jpy
     case usd
+    case eur
 
     var text: String {
-      switch self {
-      case .cny: return "CNY"
-      case .hkd: return "HKD"
-      case .jpy: return "JPY"
-      case .usd: return "USD"
-      }
+      code.uppercased()
     }
 
     var symbol: String {
@@ -68,6 +64,7 @@ extension Alne {
       case .hkd: return "$"
       case .jpy: return "¥"
       case .usd: return "$"
+      case .eur: return "€"
       }
     }
 
@@ -77,6 +74,7 @@ extension Alne {
       case .hkd: return "HKD"
       case .jpy: return "JPY"
       case .usd: return "USD"
+      case .eur: return "EUR"
       }
     }
   }
