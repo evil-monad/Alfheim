@@ -71,4 +71,8 @@ extension Date {
     formatter.dateFormat = "MMM dd HH:mm"
     return formatter.string(from: self)
   }
+
+  var alfheim: String {
+    return "\(formatted(.dateTime.day().month().hour().minute()))"
+  }
 }

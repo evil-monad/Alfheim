@@ -36,7 +36,7 @@ struct TransactionListViewState {
   }
 
   var displayAmountText: String {
-    "\(currency.symbol)\(String(format: "%.2f", displayAmount))"
+    displayAmount.formatted(.currency(code: currency.code))
   }
 
   init(transactions: [Alfheim.Transaction],

@@ -68,8 +68,8 @@ extension AppState {
     }
 
     var amountText: String {
-      let symbol = Alne.Currency(rawValue: Int(account.currency))?.symbol
-      return "\(symbol ?? "")\(String(format: "%.2f", amount))"
+      let code = Alne.Currency(rawValue: Int(account.currency))!.code
+      return amount.formatted(.currency(code: code))
     }
   }
 }

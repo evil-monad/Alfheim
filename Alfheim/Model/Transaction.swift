@@ -70,6 +70,15 @@ extension Alne {
       case .usd: return "$"
       }
     }
+
+    var code: String {
+      switch self {
+      case .cny: return "CNY"
+      case .hkd: return "HKD"
+      case .jpy: return "JPY"
+      case .usd: return "USD"
+      }
+    }
   }
 }
 

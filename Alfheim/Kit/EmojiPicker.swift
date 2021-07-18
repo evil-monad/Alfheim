@@ -32,7 +32,7 @@ struct EmojiPicker: View {
       Button(action: {
         self.onSelected(emoji)
       }) {
-        Text(emoji).font(.system(size: 28))
+        Text(emoji).font(.title)
       }
     }
     .gridStyle(columns: 6)
@@ -60,7 +60,7 @@ struct EmojiPicker: View {
           Button(action: {
             self.onSelected(emoji)
           }) {
-            Text(emoji).font(.system(size: 28))
+            Text(emoji).font(.title)
           }
         }
       }

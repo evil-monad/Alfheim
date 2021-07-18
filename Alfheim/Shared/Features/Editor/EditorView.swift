@@ -47,7 +47,7 @@ struct EditorView: View {
             )
             Spacer()
             if let amount = Double(viewStore.amount) {
-              Text("\(-amount, specifier: "%.2f")")
+              Text((-amount).formatted(.number.precision(.fractionLength(2))))
                 .foregroundColor(.gray)
                 .opacity(0.8)
                 .multilineTextAlignment(.trailing)

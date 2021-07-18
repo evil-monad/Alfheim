@@ -115,16 +115,16 @@ private struct StatisticsSection: View {
           HStack(spacing: 0) {
             HStack {
               Text(unit(at: index).label)
-                .font(.system(size: 20, weight: .medium))
+                .font(.title3)
               Spacer()
             }
             .frame(width: 30)
 
             VStack(alignment: .leading, spacing: 2) {
               HStack {
-                Text(unit(at: index).symbol).font(.system(size: 12))
-                Text("\(percent(at: index) * 100, specifier: "%.1f")%")
-                  .font(.system(size: 10))
+                Text(unit(at: index).symbol).font(.caption)
+                Text((percent(at: index) * 100).formatted(.percent.precision(.fractionLength(1))))
+                  .font(.caption2)
                   .foregroundColor(Color.secondary)
                 Spacer()
               }
@@ -143,8 +143,8 @@ private struct StatisticsSection: View {
               Spacer()
               HStack {
                 Spacer()
-                Text("\("")\(unit(at: index).value, specifier: "%.1f")")
-                  .font(.system(size: 14))
+                Text(unit(at: index).value.formatted(.number.precision(.fractionLength(1))))
+                  .font(.footnote)
               }
               .frame(width: 40)
             }
@@ -167,7 +167,7 @@ private struct StatisticsSection: View {
     }
 
     private func progressView(at index: Int, size: CGSize) -> some View {
-      let percent = self.percent(at: index)
+      let percent = percent(at: index)
       var width = CGFloat(percent) * size.width
       if percent > 0 {
         width = max(width, size.height - 4)
@@ -194,119 +194,7 @@ private struct Header: View {
   }
 }
 
-//struct OverviewView: View {
-//  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-//  /// App Store
-//  @EnvironmentObject var store: AppStore
-//  /// Ovewview state
-//  private var state: AppState.Overview {
-//    store.state.overview
-//  }
-//  /// Shared state
-////  private var shared: AppState.Shared {
-////    store.state.shared
-////  }
-//  /// Overview binding
-//  private var binding: Binding<AppState.Overview> {
-//    $store.state.overview
-//  }
-//
-//  var account: Alfheim.Account
-//
-//  var body: some View {
-////    NavigationView {
-//      GeometryReader { geometry in
-//        ScrollView(.vertical, showsIndicators: false) {
-//          VStack {
-//            self.accountCard(height: geometry.size.width*9/16)
-//            Spacer().frame(height: 36)
-//            //self.transactions()
-//          }
-//          .padding(18)
-//        }
-//      }
-//      .navigationBarTitle(account.name)
-//      .navigationBarItems(
-//        leading: Button(action: {
-//          self.store.dispatch(.overview(.toggleSettings(presenting: true)))
-//        }) {
-//          //Text("Settings").bold()
-//          Image(systemName: "gear").padding(.vertical).padding(.trailing)
-//        },
-//        trailing: Button(action: {
-//          self.store.dispatch(.overview(.toggleNewTransaction(presenting: true)))
-//        }) {
-//          //Text("New Transation").bold()
-//          //Image(systemName: "plus")
-//          Image(systemName: "plus.circle").padding(.vertical).font(Font.system(size: 18)).padding(.leading)
-//        }
-//        .sheet(
-//          isPresented: binding.isEditorPresented,
-//          onDismiss: {
-//            self.store.dispatch(.overview(.toggleNewTransaction(presenting: false)))
-//        }) {
-//          ComposerView(mode: .new)
-//            .environmentObject(self.store)
-//        }
-//      )
-//      .modal(isPresented: binding.isOnboardingPresented) {
-//        OnboardingView()
-//          .environmentObject(self.store)
-//      }
-////    }
-//  }
-//
-//  private func accountCard(height: CGFloat) -> some View {
-//    AccountCard()
-//      .frame(height: height)
-//      .background(
-//        Spacer()
-////          .sheet(
-////            isPresented: self.binding.isStatisticsPresented,
-////            onDismiss: {
-////              self.store.dispatch(.overview(.toggleStatistics(presenting: false)))
-////          }) {
-////            StatisticsView().environmentObject(self.store)
-////        }
-//      )
-//      .onTapGesture {
-//        self.store.dispatch(.overview(.toggleStatistics(presenting: true)))
-//    }
-//  }
-//
-////  private func transactions() -> some View {
-////    Section(header: NavigationLink(destination: TransactionList(), isActive: binding.isTransactionListActive) {
-////      HStack {
-////        Text("Transactions").font(.system(size: 24, weight: .bold))
-////        Spacer()
-////        Image(systemName: "chevron.right")
-////      }
-////      .foregroundColor(.primary)
-////    }) {
-////      ForEach(self.shared.displayTransactions) { viewModel in
-////        TransactionRow(model: viewModel)
-////          .onTapGesture {
-////            self.store.dispatch(.overview(.editTransaction(viewModel.transaction)))
-////        }
-////      }
-////    }
-////    .sheet(
-////      isPresented: self.binding.editingTransaction,
-////      onDismiss: {
-////        self.store.dispatch(.overview(.editTransactionDone))
-////    }) {
-////      ComposerView(mode: .edit).environmentObject(self.store)
-////    }
-////    /* don't use this
-////    .sheet(item: self.binding.selectedTransaction) { transaction in
-////      ComposerView(mode: .edit) {
-////        self.store.dispatch(.overview(.editTransactionDone))
-////      }
-////      .environmentObject(self.store)
-////    }*/
-////  }
-//}
-//
+
 ////#if DEBUG
 ////struct OverviewView_Previews: PreviewProvider {
 ////  static var previews: some View {
@@ -319,6 +207,12 @@ private struct Header: View {
 struct Header_Previews: PreviewProvider {
   static var previews: some View {
     Header("List Header").environment(\.colorScheme, .dark)
+  }
+}
+
+struct Legend_Preview: PreviewProvider {
+  static var previews: some View {
+    StatisticsSection.LegendView(histogram: Histogram(values: [("Sat", 0, "A"), ("Sun", 1, "A"), ("Mon", 18, "A"), ("Tue", 28, "A"), ("Wed", 36, "A"), ("Thu", 23, "A"), ("Fri", 100, "A")]))
   }
 }
 #endif

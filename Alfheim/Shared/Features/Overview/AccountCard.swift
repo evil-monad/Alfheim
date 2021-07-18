@@ -18,7 +18,7 @@ struct AccountCard: View {
   var body: some View {
     WithViewStore(store) { viewStore in
       FlipView(visibleSide: flipped ? .back : .front) {
-        Front(store: store, onFlip: { self.flip(true) })
+        Front(store: store, onFlip: { flip(true) })
           .background(
             RoundedRectangle(cornerRadius: cornerRadius)
             .fill(LinearGradient(
@@ -28,7 +28,7 @@ struct AccountCard: View {
             ))
           )
       } back: {
-        Back(store: store, onFlip: { self.flip(false) })
+        Back(store: store, onFlip: { flip(false) })
           .background(
             RoundedRectangle(cornerRadius: cornerRadius)
             .fill(LinearGradient(
@@ -63,12 +63,12 @@ struct AccountCard: View {
               }
 
               Text(viewStore.amountText)
+                .font(.largeTitle).fontWeight(.semibold)
                 .gradient(LinearGradient(
                   gradient: Gradient(colors: [.pink, .purple]),
                   startPoint: .leading,
                   endPoint: .trailing
                 ))
-                .font(.system(size: 36, weight: .semibold))
                 .padding(.top, 2.0)
             }
 
@@ -107,14 +107,14 @@ struct AccountCard: View {
             Image(systemName: "dollarsign.circle.fill")
               .foregroundColor(.primary)
           })
-          .onTapGesture { self.onFlip() }
+          .onTapGesture { onFlip() }
       }
     }
   }
 
   private func flip(_ flag: Bool) {
     withAnimation(.easeOut(duration: 0.35)) {
-      self.flipped = flag
+      flipped = flag
     }
   }
 

@@ -15,33 +15,33 @@ struct TransactionRow: View {
     HStack {
       VStack(alignment: .leading) {
         Text(transaction.title)
-          .font(.system(size: 20, weight: .medium))
+          .font(.title3).fontWeight(.medium)
           .lineLimit(1)
         Spacer()
         HStack {
           Text(transaction.from)
-            .font(.system(size: 14, weight: .medium))
+            .font(.footnote).fontWeight(.medium)
             .foregroundColor(.green)
 
           if transaction.forward {
-            Image(systemName: "arrow.forward").font(.system(size: 11))
+            Image(systemName: "arrow.forward").font(.caption)
           } else {
-            Image(systemName: "arrow.backward").font(.system(size: 11))
+            Image(systemName: "arrow.backward").font(.caption)
           }
 
           Text(transaction.to)
-            .font(.system(size: 14, weight: .medium))
+            .font(.footnote).fontWeight(.medium)
             .foregroundColor(.red)
         }
       }
       Spacer()
       VStack(alignment: .trailing) {
-        Text("\(transaction.forward ? "-" : "+")\(transaction.currency.symbol)\(String(format: "%.1f", abs(transaction.amount)))")
-          .font(.system(size: 28, weight: .semibold))
+        Text(transaction.displayAmount)
+          .font(.title2).fontWeight(.semibold)
           .foregroundColor(Color(tagit: transaction.tag))
         Spacer()
-        Text(transaction.date.string)
-          .font(.system(size: 14))
+        Text(transaction.date.alfheim)
+          .font(.footnote)
           .foregroundColor(.gray)
           .lineLimit(1)
       }

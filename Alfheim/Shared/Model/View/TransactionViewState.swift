@@ -64,6 +64,11 @@ extension TransactionViewState {
   var to: String {
     deposit ? source : target
   }
+
+  var displayAmount: String {
+    let style = FloatingPointFormatStyle.Currency(code: currency.code, locale: Locale.current)
+    return "\(forward ? "-" : "+")\(abs(transaction.amount).formatted(style.precision(.fractionLength(1))))"
+  }
 }
 
 extension TransactionViewState {

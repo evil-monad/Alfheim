@@ -143,14 +143,14 @@ struct Home: View {
       List {
         Section(header: Spacer()) {
           QuickMenu(store: store)
-            .listRowBackground(Color(UIColor.systemGroupedBackground))
+            .listRowBackground(Color(.systemGroupedBackground))
             .buttonStyle(.plain)
             .onTapGesture {}
             .onLongPressGesture {}
         }
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
-        .listRowBackground(Color(UIColor.systemGroupedBackground))
+        .listRowBackground(Color(.systemGroupedBackground))
         .buttonStyle(.plain)
 
         Section {
@@ -214,7 +214,7 @@ struct QuickMenu: View {
     VStack(alignment: .leading, spacing: 18) {
       HStack(alignment: .center, spacing: 18) {
         Button {
-          self.selection = Item.all.rawValue
+          selection = Item.all.rawValue
         } label: {
           MenuItem(item: Item.all.content)
         }
@@ -223,7 +223,7 @@ struct QuickMenu: View {
         )
 
         Button {
-          self.selection = Item.uncleared.rawValue
+          selection = Item.uncleared.rawValue
         } label: {
           MenuItem(item: Item.uncleared.content)
         }
@@ -233,7 +233,7 @@ struct QuickMenu: View {
       }
       HStack(alignment: .center, spacing: 18) {
         Button {
-          self.selection = Item.repeating.rawValue
+          selection = Item.repeating.rawValue
         } label: {
           MenuItem(item: Item.repeating.content)
         }
@@ -241,7 +241,7 @@ struct QuickMenu: View {
           NavigationLink(destination: Text("Repeating"), tag: Item.repeating.rawValue, selection: $selection, label: { EmptyView() })
         )
         Button {
-          self.selection = Item.flagged.rawValue
+          selection = Item.flagged.rawValue
         } label: {
           MenuItem(item: Item.flagged.content)
         }
@@ -291,15 +291,15 @@ struct QuickMenu: View {
     let item: Item.Content
 
     var body: some View {
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: 6) {
         HStack {
-          Image(systemName: item.symbol).font(.system(size: 20)).foregroundColor(item.color)
+          Image(systemName: item.symbol).font(.title2).foregroundColor(item.color)
           Spacer()
-          Text(item.value)
+          Text(item.value).font(.subheadline)
         }
-        Text(item.text)
+        Text(item.text).font(.callout).fontWeight(.medium)
       }
-      .padding(10)
+      .padding(12)
       .background(.background)
       .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
