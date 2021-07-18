@@ -67,7 +67,8 @@ extension TransactionViewState {
 
   var displayAmount: String {
     let style = FloatingPointFormatStyle.Currency(code: currency.code, locale: Locale.current)
-    return "\(forward ? "-" : "+")\(abs(transaction.amount).formatted(style.precision(.fractionLength(1))))"
+    let amount = forward ? -abs(transaction.amount) : abs(transaction.amount)
+    return amount.formatted(style.precision(.fractionLength(1)).sign(strategy: .always()))
   }
 }
 
