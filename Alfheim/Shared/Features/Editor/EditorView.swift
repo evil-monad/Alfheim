@@ -23,7 +23,7 @@ struct EditorView: View {
         Section(header: Spacer()) {
           HStack {
             AccountPicker(
-              viewStore.state.groupedAccounts,
+              viewStore.state.groupedRootAccounts,
               selection: viewStore.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) }),
               label: Text(viewStore.source?.name ?? "Select Account")
             )
@@ -41,7 +41,7 @@ struct EditorView: View {
           }
           HStack {
             AccountPicker(
-              viewStore.state.groupedAccounts,
+              viewStore.state.groupedRootAccounts,
               selection: viewStore.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) }),
               label: Text(viewStore.target?.name ?? "Select Account")
             )

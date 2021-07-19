@@ -115,8 +115,8 @@ extension AppState.Editor {
     return snapshot
   }
 
-  var groupedAccounts: [String: [Alfheim.Account]] {
-    return accounts.grouped(by: { $0.group })
+  var groupedRootAccounts: [String: [Alfheim.Account]] {
+    return rootAccounts.grouped(by: { $0.group })
   }
 
   var rootAccounts: [Alfheim.Account] {

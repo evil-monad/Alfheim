@@ -621,10 +621,10 @@
 		FAC2BC3625CED0B300169800 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				787D3C6425D90F1C00B52520 /* Redux */,
 				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
 				FAC2BC3825CED0B300169800 /* ComposerView.swift */,
 				FAC2BC3925CED0B300169800 /* EditorView.swift */,
-				787D3C6425D90F1C00B52520 /* Redux */,
 				787D3C5E25D8F58B00B52520 /* AccountPicker.swift */,
 			);
 			name = Editor;
