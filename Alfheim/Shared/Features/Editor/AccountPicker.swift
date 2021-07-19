@@ -71,7 +71,7 @@ private struct Hierarchy<RowContent>: View where RowContent: View {
     List {
       ForEach(Array(groupAccount.keys).sorted(), id: \.self) { group in
         Section {
-          let account: [Alfheim.Account] = groupAccount[group] ?? []
+          let account: [Alfheim.Account] = groupAccount[group] ?? [] // TODO: filter root
           RecursiveView(account, children: \.optinalChildren, rowContent: rowContent)
         } header: {
           Text(group.uppercased())
