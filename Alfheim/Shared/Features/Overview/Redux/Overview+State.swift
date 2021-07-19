@@ -36,7 +36,7 @@ extension AppState {
     }
 
     var transactions: [Alfheim.Transaction] {
-      account.transactions
+      account.transactions()
     }
 
     var periodTransactions: [Alfheim.Transaction] {
@@ -56,11 +56,11 @@ extension AppState {
     }
 
     var amount: Double {
-      let deposits = periodTransactions.filter { ($0.target == account && $0.amount < 0) || ($0.source == account && $0.amount >= 0) }
+      let deposits = periodTransactions.filter { (account.isAncestor(of: $0.target) && $0.amount < 0) || (account.isAncestor(of: $0.source) && $0.amount >= 0) }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
-      let withdrawal = periodTransactions.filter { ($0.target == account && $0.amount >= 0 ) || ($0.source == account && $0.amount < 0)  }
+      let withdrawal = periodTransactions.filter { (account.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.isAncestor(of: $0.source) && $0.amount < 0)  }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
@@ -82,14 +82,15 @@ extension AppState.Overview {
 
   // prefix 5
   var recentTransactions: [Alfheim.Transaction] {
-    Array(transactions.prefix(5))
+    Array(transactions.sorted(by: { $0.date > $1.date }).prefix(5))
   }
 }
 
 // Stat
 extension AppState.Overview {
   var showStatisticsSection: Bool {
-    return (account.children?.count ?? 0) >= 1
+    let validAccount = account.children?.filter { !$0.transactions().isEmpty } ?? []
+    return !validAccount.isEmpty
   }
 
   var statistics: [(String, Double, String)] {

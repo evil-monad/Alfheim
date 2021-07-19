@@ -29,11 +29,21 @@ final class Account: NSManagedObject, Identifiable {
 }
 
 extension Account {
-  var transactions: [Transaction] {
-    if let s = sources?.allObjects as? [Transaction], let t = targets?.allObjects as? [Transaction] {
-      return s + t
-    } else {
-      return []
+  enum TransactionStrategy {
+    case only
+    case with
+  }
+
+  func transactions(_ strategy: TransactionStrategy = .with) -> [Transaction] {
+    switch strategy {
+    case .only:
+      let sources = sources?.allObjects as? [Transaction] ?? []
+      let targets = targets?.allObjects as? [Transaction] ?? []
+      return sources + targets
+    case .with:
+      let with = children?.flatMap { $0.transactions(.with) } ?? []
+      let only = transactions(.only)
+      return with + only
     }
   }
 
@@ -52,11 +62,11 @@ extension Account {
 // deposit & withdrawal
 extension Account {
   var amount: Double {
-    let deposits = transactions.filter { $0.target == self }
+    let deposits = transactions().filter { isAncestor(of: $0.target) }
       .map { abs($0.amount) }
       .reduce(0.0, +)
 
-    let withdrawal = transactions.filter { $0.source == self }
+    let withdrawal = transactions().filter { isAncestor(of: $0.source) }
       .map { abs($0.amount) }
       .reduce(0.0, +)
 
@@ -68,6 +78,44 @@ extension Account {
 extension Account {
   var hasChildren: Bool {
     return !(children?.isEmpty ?? true)
+  }
+}
+
+extension Account {
+  func hasCommonDescent(with other: Account) -> Bool {
+    if self == other {
+      return true
+    }
+
+    guard let ancestor = parent else {
+      return false
+    }
+
+    return ancestor.hasCommonDescent(with: other)
+  }
+
+  func isDescendant(of other: Account) -> Bool {
+    if self == other {
+      return true
+    }
+
+    guard let parcent = parent else {
+      return false
+    }
+
+    return parcent.isDescendant(of: other)
+  }
+
+  func isAncestor(of other: Account?) -> Bool {
+    guard let other = other else {
+      return false
+    }
+
+    return other.isDescendant(of: self)
+  }
+
+  private func lca(p: Account, q: Account) -> Account? {
+    return nil
   }
 }
 

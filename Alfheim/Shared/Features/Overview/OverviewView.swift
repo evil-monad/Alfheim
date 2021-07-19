@@ -61,7 +61,7 @@ private struct TransactionSection: View {
     WithViewStore(store) { vs in
       Section {
         ForEach(vs.recentTransactions) { transaction in
-          TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, deposit: transaction.target == vs.account))
+          TransactionRow(transaction: TransactionViewState(transaction: transaction, tag: .alfheim, deposit: vs.account.isAncestor(of: transaction.target)))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
