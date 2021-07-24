@@ -9,7 +9,8 @@
 import Foundation
 
 enum AppAction {
-  case overview(index: Int, action: Overview)
+  //case overview(index: Int, action: Overview)
+  case overview(id: UUID, action: Overview)
   //case editor(Editor)
 //  case settings(Settings)
 //  case transactions(Transactions)

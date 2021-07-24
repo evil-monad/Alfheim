@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import IdentifiedCollections
 
 struct AppState: Equatable {
-  var overviews: [Overview] = []
+  var overviews: IdentifiedArrayOf<Overview> = []
   //var editor = Editor()
 
   var sidebar: [Alfheim.Account] = []

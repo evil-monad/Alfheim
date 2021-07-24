@@ -9,6 +9,7 @@
 import Foundation
 import CasePaths
 import ComposableArchitecture
+import IdentifiedCollections
 
 enum AppReducers {
   static let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
@@ -18,7 +19,7 @@ enum AppReducers {
         return AppEffects.Account.load(environment: environment)
       case .loaded(let accounts):
         state.sidebar = accounts
-        state.overviews = accounts.map { AppState.Overview(account: $0) }
+        state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
         return .none
       case .cleanup:
         return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
@@ -48,7 +49,7 @@ enum AppReducers {
     },
     AppReducers.Overview.reducer.forEach(
       state: \AppState.overviews,
-      action: /AppAction.overview(index:action:),
+      action: /AppAction.overview(id:action:),
       environment: { $0 }
     )
 //    AppReducers.Editor.reducer
