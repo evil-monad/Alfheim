@@ -81,6 +81,9 @@
 		FA83858B24A479EF0011E0D7 /* Filled60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */; };
 		FA83858C24A479EF0011E0D7 /* Filled20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */; };
 		FA83858E24A47A5A0011E0D7 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83858D24A47A5A0011E0D7 /* AppIcon.swift */; };
+		FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */; };
+		FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */; };
+		FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */; };
 		FABEBB7A245C0B4C00637226 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB79245C0B4C00637226 /* Grid.swift */; };
 		FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB7E245D4A6300637226 /* Emoji+CoreData.swift */; };
 		FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */; };
@@ -229,6 +232,9 @@
 		FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@3x.png"; sourceTree = "<group>"; };
 		FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@2x.png"; sourceTree = "<group>"; };
 		FA83858D24A47A5A0011E0D7 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Preview.swift"; sourceTree = "<group>"; };
+		FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Bootstrap.swift"; sourceTree = "<group>"; };
+		FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
 		FABEBB79245C0B4C00637226 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		FABEBB7E245D4A6300637226 /* Emoji+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emoji+CoreData.swift"; sourceTree = "<group>"; };
 		FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Emoji.swift"; sourceTree = "<group>"; };
@@ -555,6 +561,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		FABAA8ED26ABFB0500D7006C /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		FAC2BC0C25CE340700169800 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -734,6 +748,9 @@
 				FAF3803C24152EED00C592D4 /* Persistences+Transaction.swift */,
 				FAE1DF972441C77700741C86 /* Persistences+Attachment.swift */,
 				FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */,
+				FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */,
+				FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */,
+				FABAA8ED26ABFB0500D7006C /* Preview */,
 				FAE84B4125C676D30027E215 /* Cloud */,
 			);
 			path = Persistence;
@@ -882,6 +899,7 @@
 				789E8E7023EA96FC006D180B /* TransactionList.swift in Sources */,
 				787D3C5F25D8F58B00B52520 /* AccountPicker.swift in Sources */,
 				1F8AC495241210AF006D9551 /* EditorViewModel.swift in Sources */,
+				FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */,
 				1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */,
 				FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */,
 				FAEABD5B25CE3005003D866E /* AppAction.swift in Sources */,
@@ -911,10 +929,12 @@
 				FAC2BC3C25CED0B400169800 /* EditorView.swift in Sources */,
 				1F91CA06241A4CF900B552E7 /* AppEffect+Transaction.swift in Sources */,
 				FA014086240B8F7100F6FE92 /* AccountViewModel.swift in Sources */,
+				FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */,
 				FAEAA0412461278F003C6799 /* Emojis.swift in Sources */,
 				782403F823F83A6600478338 /* AccountDetail.swift in Sources */,
 				1F39995C23D7FCF500E6BBD9 /* Sector.swift in Sources */,
 				FAEABD5725CE2FFE003D866E /* AppEnvironment.swift in Sources */,
+				FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */,
 				1F5A47B3240D0D9300DEA96B /* Alne.swift in Sources */,
 				FAC2BC2325CE379100169800 /* OnboardingView.swift in Sources */,
 				FAF2AA42241DF8D200EE40AA /* Array+Alfheim.swift in Sources */,
