@@ -40,6 +40,7 @@ struct OverviewView: View {
           } label: {
             Image(systemName: "plus.circle")
           }
+          .disabled(vs.account.root)
         }
       }
       .sheet(isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })) {
