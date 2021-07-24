@@ -17,7 +17,7 @@ enum AppReducers {
       switch action {
       case .load:
         return AppEffects.Account.load(environment: environment)
-      case .loaded(let accounts):
+      case .didLoad(let accounts):
         state.sidebar = accounts
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
         return .none

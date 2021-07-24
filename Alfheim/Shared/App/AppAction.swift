@@ -22,7 +22,7 @@ enum AppAction {
 
   // Account
   case load
-  case loaded([Alfheim.Account])
+  case didLoad([Alfheim.Account])
   case cleanup
   case add
 

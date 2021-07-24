@@ -37,7 +37,7 @@ struct SidebarNavigation: View {
     NavigationView {
       WithViewStore(store) { viewStore in
         Sidebar(store: store)
-          .onAppear {
+          .task {
             viewStore.send(.load)
           }
       }
