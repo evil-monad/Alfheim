@@ -18,35 +18,35 @@ struct EditorView: View {
   }
 
   var body: some View {
-    WithViewStore(store) { viewStore in
+    WithViewStore(store) { vs in
       List {
         Section(header: Spacer()) {
           HStack {
             AccountPicker(
-              viewStore.state.groupedRootAccounts,
-              selection: viewStore.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) }),
-              label: Text(viewStore.source?.name ?? "Select Account")
-            )
+              vs.state.groupedRootAccounts,
+              selection: vs.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) })) {
+                selectedAccount(vs.source)
+            }
             TextField(
               "0.00",
-              text: viewStore.binding(get: { $0.amount }, send: { AppAction.Editor.changed(.amount($0)) }))
+              text: vs.binding(get: { $0.amount }, send: { AppAction.Editor.changed(.amount($0)) }))
               .keyboardType(.decimalPad)
               .multilineTextAlignment(.trailing)
               .padding(.trailing, -2.0)
               .frame(minWidth: 100)
-            Text("\(viewStore.currency.symbol)")
+            Text("\(vs.currency.symbol)")
               .foregroundColor(.gray)
               .opacity(0.8)
               .padding(.trailing, -2.0)
           }
           HStack {
             AccountPicker(
-              viewStore.state.groupedRootAccounts,
-              selection: viewStore.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) }),
-              label: Text(viewStore.target?.name ?? "Select Account")
-            )
+              vs.state.groupedRootAccounts,
+              selection: vs.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) })) {
+                selectedAccount(vs.target)
+            }
             Spacer()
-            if let amount = Double(viewStore.amount) {
+            if let amount = Double(vs.amount) {
               Text((-amount).formatted(.number.precision(.fractionLength(2))))
                 .foregroundColor(.gray)
                 .opacity(0.8)
@@ -59,7 +59,7 @@ struct EditorView: View {
                 .multilineTextAlignment(.trailing)
                 .padding(.trailing, -2.0)
             }
-            Text("\(viewStore.currency.symbol)")
+            Text("\(vs.currency.symbol)")
               .foregroundColor(.gray)
               .opacity(0.8)
               .padding(.trailing, -2.0)
@@ -68,7 +68,7 @@ struct EditorView: View {
 
         Section {
           DatePicker(
-            selection: viewStore.binding(get: { $0.date }, send: { AppAction.Editor.changed(.date($0)) }),
+            selection: vs.binding(get: { $0.date }, send: { AppAction.Editor.changed(.date($0)) }),
             in: ...Date(),
             displayedComponents: [.date, .hourAndMinute]
           ) {
@@ -77,7 +77,7 @@ struct EditorView: View {
           Field("Notes") {
             InputTextField(
               "Notes",
-              text: viewStore.binding(get: { $0.notes }, send: { AppAction.Editor.changed(.notes($0)) }),
+              text: vs.binding(get: { $0.notes }, send: { AppAction.Editor.changed(.notes($0)) }),
               isFirstResponder: .constant(false)
             )
             .multilineTextAlignment(.trailing)
@@ -88,7 +88,7 @@ struct EditorView: View {
           Field("Payee") {
             InputTextField(
               "McDonalds",
-              text: viewStore.binding(get: { $0.payee ?? "" }, send: { AppAction.Editor.changed(.payee($0)) }),
+              text: vs.binding(get: { $0.payee ?? "" }, send: { AppAction.Editor.changed(.payee($0)) }),
               isFirstResponder: .constant(false)
             )
             .multilineTextAlignment(.trailing)
@@ -96,27 +96,40 @@ struct EditorView: View {
           Field("Number") {
             InputTextField(
               "20200202",
-              text: viewStore.binding(get: { $0.number ?? "" }, send: { AppAction.Editor.changed(.number($0)) }),
+              text: vs.binding(get: { $0.number ?? "" }, send: { AppAction.Editor.changed(.number($0)) }),
               isFirstResponder: .constant(false)
             )
             .multilineTextAlignment(.trailing)
           }
-          Picker(selection: viewStore.binding(get: { $0.repeated }, send: { AppAction.Editor.changed(.repeated($0)) }), label: Text("Repeat")) {
+          Picker(selection: vs.binding(get: { $0.repeated }, send: { AppAction.Editor.changed(.repeated($0)) }), label: Text("Repeat")) {
             ForEach(Repeat.allCases, id: \.self) {
               Text($0.name).tag($0)
             }
           }
           Field("Cleared") {
-            Toggle(isOn: viewStore.binding(get: { $0.cleared }, send: { AppAction.Editor.changed(.cleared($0)) })) {
+            Toggle(isOn: vs.binding(get: { $0.cleared }, send: { AppAction.Editor.changed(.cleared($0)) })) {
             }
           }
         }
       }
       .listStyle(.insetGrouped)
       .task {
-        viewStore.send(.loadAccounts)
+        vs.send(.loadAccounts)
       }
     }
+  }
+
+  private func selectedAccount(_ account: Account?) -> some View {
+    let padding = account != nil ? 8.0 : 0
+    return Text(account?.fullName ?? "Select Account")
+      .font(account != nil ? .callout : .body)
+      .frame(minWidth: 60)
+      .foregroundColor(account?.tag.flatMap { Color(hex: $0) })
+      .padding(EdgeInsets(top: 3, leading: padding, bottom: 3, trailing: padding))
+      .overlay(
+        RoundedRectangle(cornerRadius: 20)
+          .stroke(account?.tag.flatMap { Color(hex: $0) } ?? Color.clear, lineWidth: 1)
+      )
   }
 
   struct Field<Content: View>: View {

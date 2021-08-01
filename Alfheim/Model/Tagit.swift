@@ -78,7 +78,7 @@ extension Tagit {
     case .orange:
       return "#FD7E14"
     case .alfheim:
-      return "#d6336c"
+      return "#D6336C"
     }
   }
 
@@ -109,7 +109,7 @@ extension Tagit {
     case .orange:
       return "#FFA94D"
     case .alfheim:
-      return "#d6336c"
+      return "#D6336C"
     }
   }
 }

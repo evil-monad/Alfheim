@@ -48,7 +48,11 @@ extension Account {
   }
 
   var root: Bool {
-    return parent == nil
+    parent == nil
+  }
+
+  var subroot: Bool {
+    parent?.root ?? false
   }
 
   var optinalChildren: [Account]? {
@@ -78,6 +82,10 @@ extension Account {
 extension Account {
   var hasChildren: Bool {
     return !(children?.isEmpty ?? true)
+  }
+
+  var fullName: String {
+    "\(emoji ?? "")\(name)"
   }
 }
 

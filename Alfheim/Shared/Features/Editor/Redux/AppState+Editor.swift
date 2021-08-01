@@ -120,7 +120,7 @@ extension AppState.Editor {
   }
 
   var rootAccounts: [Alfheim.Account] {
-    accounts.filter { $0.root }
+    accounts.filter { $0.subroot }
   }
 }
 

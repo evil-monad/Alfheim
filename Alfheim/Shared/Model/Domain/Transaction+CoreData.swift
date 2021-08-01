@@ -38,6 +38,11 @@ extension Transaction {
   }
 }
 
+// for ui
+extension Transaction {
+
+}
+
 extension Transaction: Duplicatable {
   /// Just like Equatable `==` method
   static func duplicated(lhs: Transaction, rhs: Transaction) -> Bool {

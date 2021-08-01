@@ -39,8 +39,8 @@ extension TransactionViewState {
     self.tag = tag
 
     self.title = transaction.payee.map { "@\($0)" } ?? transaction.notes
-    self.source = "\(transaction.source?.emoji ?? "")\(transaction.source?.name ?? "")"
-    self.target = "\(transaction.target?.emoji ?? "")\(transaction.target?.name ?? "")"
+    self.source = transaction.source?.fullName ?? ""
+    self.target = transaction.target?.fullName ?? ""
     self.deposit = deposit
 
     self.amount = transaction.amount

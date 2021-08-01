@@ -11,12 +11,12 @@ import SwiftUI
 struct AccountPicker<Label>: View where Label: View {
   @State private var isContentActive: Bool = false
   private let selection: Binding<Alfheim.Account?>
-  private let label: Label
+  private let label: () -> Label
   private let accounts: [String: [Alfheim.Account]]
 
   init(_ accounts: [String: [Alfheim.Account]],
        selection: Binding<Alfheim.Account?>,
-       label: Label) {
+       @ViewBuilder label: @escaping () -> Label) {
     self.accounts = accounts
     self.selection = selection
     self.label = label
@@ -24,7 +24,8 @@ struct AccountPicker<Label>: View where Label: View {
 
   var body: some View {
     ZStack {
-      label
+      label()
+
       NavigationLink(destination: content, isActive: $isContentActive) {
         EmptyView()
       }

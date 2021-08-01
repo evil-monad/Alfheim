@@ -22,9 +22,10 @@ struct Piece: View {
     Capsule()
       .fill(LinearGradient(gradient: Gradient(colors: [.ah02, .ah03]), startPoint: .bottom, endPoint: .top))
       .scaleEffect(x: 1, y: self.fill ? 1 : 0, anchor: .bottom)
-      .animation(Animation.spring().delay(Double(self.index) * 0.05))
       .onAppear() {
-        self.fill = true
+        withAnimation(Animation.spring().delay(Double(self.index) * 0.05)) {
+          self.fill = true
+        }
     }
   }
 }

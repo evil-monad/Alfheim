@@ -124,7 +124,7 @@ private struct StatisticsSection: View {
             VStack(alignment: .leading, spacing: 2) {
               HStack {
                 Text(unit(at: index).symbol).font(.caption)
-                Text((percent(at: index) * 100).formatted(.percent.precision(.fractionLength(1))))
+                Text((percent(at: index)).formatted(.percent.precision(.fractionLength(1))))
                   .font(.caption2)
                   .foregroundColor(Color.secondary)
                 Spacer()

@@ -68,6 +68,7 @@
 		FA014088240C01B800F6FE92 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA014087240C01B800F6FE92 /* EmojiPicker.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
 		FA32138B2498A593006BC855 /* Color+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32138A2498A593006BC855 /* Color+Category.swift */; };
+		FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */; };
 		FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA527AC824095C9800CEC549 /* Date+Alfheim.swift */; };
 		FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F768524261F7D00277B6E /* InputTextField.swift */; };
 		FA66C7D92427B40000462C46 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA66C7D82427B40000462C46 /* SearchBar.swift */; };
@@ -84,6 +85,7 @@
 		FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */; };
 		FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */; };
 		FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */; };
+		FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8F026AC137200D7006C /* Account+Tagit.swift */; };
 		FABEBB7A245C0B4C00637226 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB79245C0B4C00637226 /* Grid.swift */; };
 		FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB7E245D4A6300637226 /* Emoji+CoreData.swift */; };
 		FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */; };
@@ -219,6 +221,7 @@
 		FA014087240C01B800F6FE92 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
 		FA32138A2498A593006BC855 /* Color+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Category.swift"; sourceTree = "<group>"; };
+		FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Empty.swift"; sourceTree = "<group>"; };
 		FA527AC824095C9800CEC549 /* Date+Alfheim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Alfheim.swift"; sourceTree = "<group>"; };
 		FA5F768524261F7D00277B6E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		FA66C7D82427B40000462C46 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -235,6 +238,7 @@
 		FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Preview.swift"; sourceTree = "<group>"; };
 		FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Bootstrap.swift"; sourceTree = "<group>"; };
 		FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
+		FABAA8F026AC137200D7006C /* Account+Tagit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Tagit.swift"; sourceTree = "<group>"; };
 		FABEBB79245C0B4C00637226 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		FABEBB7E245D4A6300637226 /* Emoji+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emoji+CoreData.swift"; sourceTree = "<group>"; };
 		FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Emoji.swift"; sourceTree = "<group>"; };
@@ -442,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				FA03680F241CD5C50038A26E /* TransactionViewState.swift */,
+				FABAA8F026AC137200D7006C /* Account+Tagit.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -525,6 +530,7 @@
 				78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */,
 				FAEAA0402461278F003C6799 /* Emojis.swift */,
 				FA7368E52687441200BCF659 /* Hierarchy.swift */,
+				FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */,
 			);
 			path = Kit;
 			sourceTree = "<group>";
@@ -886,10 +892,12 @@
 				FAE84B3825B3F8730027E215 /* FlipView.swift in Sources */,
 				1F8AC4932411FE6D006D9551 /* Transaction+CoreData.swift in Sources */,
 				FAEABD6B25CE302C003D866E /* AppEffect.swift in Sources */,
+				FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */,
 				FAC2BC3A25CED0B400169800 /* CatemojiPicker.swift in Sources */,
 				FAE84B3C25B401AE0027E215 /* AppView.swift in Sources */,
 				783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */,
 				FAEABD3B25C67ED5003D866E /* Scheme.swift in Sources */,
+				FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */,
 				783793D325D128F000ECD0D4 /* AppReducer+Editor.swift in Sources */,
 				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
 				1F8AC4872411EF95006D9551 /* Account+CoreData.swift in Sources */,
