@@ -98,6 +98,7 @@ extension AppState.Overview {
       return []
     }
 
-    return children.map { ($0.name, $0.amount, $0.emoji ?? "") }
+    return children.sorted(by: { $0.amount > $1.amount })
+      .map { ($0.name, $0.amount, $0.emoji ?? "") }
   }
 }
