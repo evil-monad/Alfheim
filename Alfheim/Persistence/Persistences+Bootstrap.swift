@@ -91,6 +91,16 @@ extension Persistences {
         assets.emoji = "💵"
         assets.tag = Tagit.cyan.hex
 
+        let checking = Alfheim.Account(context: context)
+        checking.id = UUID()
+        checking.name = "Checking"
+        checking.introduction = "Checking represent the money you have."
+        checking.group = group
+        checking.currency = Int16(0)
+        checking.emoji = "💳"
+        checking.tag = Tagit.alfheim.hex
+        checking.parent = assets
+
         let cash = Alfheim.Account(context: context)
         cash.id = UUID()
         cash.name = "Cash"
@@ -145,7 +155,7 @@ extension Persistences {
         opening.tag = Tagit.orange.hex
         opening.parent = equity
       }
-      
+
       expenses()
       income()
       assets()

@@ -17,6 +17,7 @@ extension Alne {
     var group: Group
     var emoji: String
 
+    // (Income + Liabilities) + (Assets + Expenses) + Equity = 0
     enum Group: String {
       case assets
       case income
@@ -40,13 +41,13 @@ extension Alne {
       var negative: Bool {
         switch self {
         case .assets:
-          return true
+          return false
         case .income:
           return true
         case .expenses:
           return false
         case .liabilities:
-          return false
+          return true
         case .equity:
           return false
         }
