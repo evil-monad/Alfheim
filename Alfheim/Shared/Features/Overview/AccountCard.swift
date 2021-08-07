@@ -62,7 +62,7 @@ struct AccountCard: View {
                 Spacer()
               }
 
-              Text(viewStore.amountText)
+              Text(viewStore.balanceText)
                 .font(.largeTitle).fontWeight(.semibold)
                 .gradient(LinearGradient(
                   gradient: Gradient(colors: [.pink, .purple]),

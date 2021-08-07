@@ -55,7 +55,7 @@ extension AppState {
         .filter { $0.date >= startDate }
     }
 
-    var amount: Double {
+    var balance: Double {
       let deposits = periodTransactions.filter { (account.isAncestor(of: $0.target) && $0.amount < 0) || (account.isAncestor(of: $0.source) && $0.amount >= 0) }
         .map { abs($0.amount) }
         .reduce(0.0, +)
@@ -67,9 +67,9 @@ extension AppState {
       return deposits - withdrawal
     }
 
-    var amountText: String {
+    var balanceText: String {
       let code = Alne.Currency(rawValue: Int(account.currency))!.code
-      return amount.formatted(.currency(code: code))
+      return balance.formatted(.currency(code: code))
     }
   }
 }
@@ -93,12 +93,23 @@ extension AppState.Overview {
     return !validAccount.isEmpty
   }
 
-  var statistics: [(String, Double, String)] {
+  var statistics: [HistogramLabeledUnit] {
+    return composition(transfer: .all)
+  }
+
+  func composition(transfer: Account.Transfer) -> [HistogramLabeledUnit] {
     guard let children = account.children else {
       return []
     }
 
-    return children.sorted(by: { $0.amount > $1.amount })
-      .map { ($0.name, $0.amount, $0.emoji ?? "") }
+    let ret = children.sorted(by: { $0.amount(transfer: .withdrawal) > $1.amount(transfer: .withdrawal) })
+      .map { ($0.name, abs($0.balance), $0.emoji ?? "") }
+
+    let otherAmount = account.amount(.only)
+    guard otherAmount > 0 else {
+      return ret
+    }
+    let other = ("others", otherAmount, account.emoji.orEmpty)
+    return ret + [other]
   }
 }

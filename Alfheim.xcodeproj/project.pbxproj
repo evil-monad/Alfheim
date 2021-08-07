@@ -66,6 +66,8 @@
 		78CB4D5A24713D3500FF9A54 /* OverlaySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */; };
 		FA014086240B8F7100F6FE92 /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA014085240B8F7100F6FE92 /* AccountViewModel.swift */; };
 		FA014088240C01B800F6FE92 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA014087240C01B800F6FE92 /* EmojiPicker.swift */; };
+		FA020B1D26B6D1E700369350 /* Transaction+Alne.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B1C26B6D1E700369350 /* Transaction+Alne.swift */; };
+		FA020B1F26B6D3DC00369350 /* Account+Alne.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B1E26B6D3DC00369350 /* Account+Alne.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
 		FA32138B2498A593006BC855 /* Color+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32138A2498A593006BC855 /* Color+Category.swift */; };
 		FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */; };
@@ -219,6 +221,8 @@
 		78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySheet.swift; sourceTree = "<group>"; };
 		FA014085240B8F7100F6FE92 /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		FA014087240C01B800F6FE92 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
+		FA020B1C26B6D1E700369350 /* Transaction+Alne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Alne.swift"; sourceTree = "<group>"; };
+		FA020B1E26B6D3DC00369350 /* Account+Alne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Alne.swift"; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
 		FA32138A2498A593006BC855 /* Color+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Category.swift"; sourceTree = "<group>"; };
 		FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Empty.swift"; sourceTree = "<group>"; };
@@ -447,6 +451,8 @@
 			children = (
 				FA03680F241CD5C50038A26E /* TransactionViewState.swift */,
 				FABAA8F026AC137200D7006C /* Account+Tagit.swift */,
+				FA020B1C26B6D1E700369350 /* Transaction+Alne.swift */,
+				FA020B1E26B6D3DC00369350 /* Account+Alne.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -895,6 +901,7 @@
 				FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */,
 				FAC2BC3A25CED0B400169800 /* CatemojiPicker.swift in Sources */,
 				FAE84B3C25B401AE0027E215 /* AppView.swift in Sources */,
+				FA020B1F26B6D3DC00369350 /* Account+Alne.swift in Sources */,
 				783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */,
 				FAEABD3B25C67ED5003D866E /* Scheme.swift in Sources */,
 				FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */,
@@ -971,6 +978,7 @@
 				1F91CA04241A4CEE00B552E7 /* AppAction+Transaction.swift in Sources */,
 				FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */,
 				1F39992723D695EE00E6BBD9 /* Path+QuadCurve.swift in Sources */,
+				FA020B1D26B6D1E700369350 /* Transaction+Alne.swift in Sources */,
 				FA66C7D92427B40000462C46 /* SearchBar.swift in Sources */,
 				FAEC0379240AB126003BFE2C /* Tagit.swift in Sources */,
 				FA014088240C01B800F6FE92 /* EmojiPicker.swift in Sources */,

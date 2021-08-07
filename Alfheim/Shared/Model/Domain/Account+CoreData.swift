@@ -22,26 +22,26 @@ final class Account: NSManagedObject, Identifiable {
   @NSManaged var tag: String?
   @NSManaged var emoji: String?
   // relationship
-  @NSManaged var targets: NSSet?
-  @NSManaged var sources: NSSet?
+  @NSManaged var targets: Set<Transaction>?
+  @NSManaged var sources: Set<Transaction>?
   @NSManaged var children: Set<Account>?
   @NSManaged var parent: Account?
 }
 
 extension Account {
-  enum TransactionStrategy {
+  enum Strategy {
     case only
     case with
   }
 
-  func transactions(_ strategy: TransactionStrategy = .with) -> [Transaction] {
+  func transactions(_ strategy: Strategy = .with) -> [Transaction] {
     switch strategy {
     case .only:
-      let sources = sources?.allObjects as? [Transaction] ?? []
-      let targets = targets?.allObjects as? [Transaction] ?? []
+      let sources = alne.sources
+      let targets = alne.targets
       return sources + targets
     case .with:
-      let with = children?.flatMap { $0.transactions(.with) } ?? []
+      let with = alne.children.flatMap { $0.transactions(.with) }
       let only = transactions(.only)
       return with + only
     }
@@ -65,16 +65,35 @@ extension Account {
 
 // deposit & withdrawal
 extension Account {
-  var amount: Double {
-    let deposits = transactions().filter { isAncestor(of: $0.target) }
+  enum Transfer {
+    case all // all
+    case deposit // increase
+    case withdrawal // reduced
+  }
+
+  var balance: Double {
+    return amount()
+  }
+
+  func amount(_ strategy: Strategy = .with, transfer: Transfer = .all) -> Double {
+    let deposits = transactions(strategy)
+      .filter { (isAncestor(of: $0.target) && $0.amount < 0) || (isAncestor(of: $0.source) && $0.amount >= 0) }
       .map { abs($0.amount) }
       .reduce(0.0, +)
 
-    let withdrawal = transactions().filter { isAncestor(of: $0.source) }
+    let withdrawals = transactions(strategy)
+      .filter { (isAncestor(of: $0.target) && $0.amount >= 0 ) || (isAncestor(of: $0.source) && $0.amount < 0)  }
       .map { abs($0.amount) }
       .reduce(0.0, +)
 
-    return deposits - withdrawal
+    switch transfer {
+    case .all:
+      return deposits - withdrawals
+    case .deposit:
+      return deposits
+    case .withdrawal:
+      return -withdrawals
+    }
   }
 }
 
@@ -159,5 +178,15 @@ extension Optional where Wrapped == NSSet {
       return Array(set)
     }
     return [T]()
+  }
+}
+
+extension Array {
+  var optional: Self? {
+    if self.isEmpty {
+      return nil
+    } else {
+      return self
+    }
   }
 }

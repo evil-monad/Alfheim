@@ -42,21 +42,21 @@ extension Optional where Wrapped: Emptiable {
 }
 
 
-public final class NonEmpty<Base> {
-    public let base: Base
-    public init(_ base: Base) {
+final class NonEmpty<Base> {
+    let base: Base
+    init(_ base: Base) {
         self.base = base
     }
 }
 
-public protocol EmptyCompatible {
+protocol EmptyCompatible {
     associatedtype BaseType
 
     var em: NonEmpty<BaseType> { get }
     static var em: NonEmpty<BaseType>.Type { get }
 }
 
-public extension EmptyCompatible {
+extension EmptyCompatible {
     var em: NonEmpty<Self> {
         return NonEmpty(self)
     }

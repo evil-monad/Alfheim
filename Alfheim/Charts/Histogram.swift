@@ -112,6 +112,8 @@ extension Histogram where UnitType == Dimension {
   }
 }
 
+typealias HistogramLabeledUnit = (String, Double, String)
+
 extension Histogram where UnitType == LabeledUnit {
   convenience init(values: [(String, Double, String)]) {
     self.init(units: values.map { LabeledUnit($0) })

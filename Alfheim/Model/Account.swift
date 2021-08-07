@@ -27,6 +27,34 @@ extension Alne {
       var name: String {
         rawValue
       }
+
+      var balance: Bool {
+        switch self {
+        case .income, .expenses:
+          return false
+        default:
+          return true
+        }
+      }
+
+      var negative: Bool {
+        switch self {
+        case .assets:
+          return true
+        case .income:
+          return true
+        case .expenses:
+          return false
+        case .liabilities:
+          return false
+        case .equity:
+          return false
+        }
+      }
+
+      var positive: Bool {
+        return !negative
+      }
     }
   }
 }
