@@ -22,9 +22,8 @@ extension AppState {
     var isTransactionListActive = false
 
     var account: Alfheim.Account
+    var editor: Editor
     var timeInterval: DateInterval?
-
-    var editor = Editor()
 
     var id: UUID
 

@@ -66,7 +66,7 @@ extension AppState.Editor {
       repeated = .never
       cleared = true
       source = nil
-      target = nil
+      // target = nil
       attachments = []
     case .edit(let transaction):
       amount = "\(transaction.amount)"

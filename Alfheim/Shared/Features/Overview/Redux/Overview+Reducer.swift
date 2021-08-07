@@ -15,6 +15,7 @@ extension AppReducers {
       Reducer { state, action, environment in
         switch action {
         case .toggleNewTransaction(let presenting):
+          state.editor.reset(.new)
           state.isEditorPresented = presenting
         default:
           ()
