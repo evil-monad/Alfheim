@@ -94,16 +94,25 @@ extension AppState.Overview {
   }
 
   var statistics: [HistogramLabeledUnit] {
-    return composition(transfer: .all)
+    return composition()
   }
 
-  func composition(transfer: Account.Transfer) -> [HistogramLabeledUnit] {
+  func composition() -> [HistogramLabeledUnit] {
     guard let children = account.children else {
       return []
     }
 
-    let ret = children.sorted(by: { $0.amount(transfer: .withdrawal) > $1.amount(transfer: .withdrawal) })
-      .map { ($0.name, abs($0.balance), $0.emoji ?? "") }
+    let transfer: Account.Transfer
+    if account.alne.group == .expenses {
+      transfer = .deposit
+    } else if account.alne.group == .income {
+      transfer = .withdrawal
+    } else {
+      transfer = .all
+    }
+
+    let ret = children.sorted(by: { $0.amount(transfer: transfer) > $1.amount(transfer: transfer) })
+      .map { ($0.name, abs($0.amount(transfer: transfer)), $0.emoji ?? "") }
 
     let otherAmount = account.amount(.only)
     guard otherAmount > 0 else {
@@ -111,5 +120,10 @@ extension AppState.Overview {
     }
     let other = ("others", otherAmount, account.emoji.orEmpty)
     return ret + [other]
+  }
+
+  func trend() {
+    // 7 day
+    // 1 month
   }
 }
