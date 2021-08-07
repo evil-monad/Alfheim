@@ -62,13 +62,7 @@ struct AccountCard: View {
               }
             }
 
-            Text(viewStore.balanceText)
-              .font(.largeTitle).fontWeight(.semibold)
-              .gradient(LinearGradient(
-                gradient: Gradient(colors: [.pink, .purple]),
-                startPoint: .leading,
-                endPoint: .trailing
-              ))
+            BalanceText(viewStore.balanceText)
               .padding(.top, 2.0)
           }
         } image: {
@@ -130,6 +124,22 @@ struct AccountCard: View {
     withAnimation(.easeOut(duration: 0.35)) {
       flipped = flag
     }
+  }
+}
+
+struct BalanceText: View {
+  let balance: String
+  init(_ balance: String) {
+    self.balance = balance
+  }
+  var body: some View {
+    Text(balance)
+      .font(.largeTitle).fontWeight(.semibold)
+      .gradient(LinearGradient(
+        gradient: Gradient(colors: [.pink, .purple]),
+        startPoint: .leading,
+        endPoint: .trailing
+      ))
   }
 }
 

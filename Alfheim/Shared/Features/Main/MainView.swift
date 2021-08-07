@@ -141,7 +141,7 @@ struct Home: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        Section(header: Spacer()) {
+        Section {
           QuickMenu(store: store)
             .listRowBackground(Color(.systemGroupedBackground))
             .buttonStyle(.plain)
