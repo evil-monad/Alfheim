@@ -18,8 +18,6 @@ struct OverviewView: View {
         Section {
           AccountCard(store: store)
             .frame(height: 200)
-        } header: {
-          Header(vs.period.display)
         }
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)

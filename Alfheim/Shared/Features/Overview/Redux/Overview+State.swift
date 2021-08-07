@@ -22,7 +22,7 @@ extension AppState {
     var isTransactionListActive = false
 
     var account: Alfheim.Account
-    var period: Period = .yearly
+    var timeInterval: DateInterval?
 
     var editor = Editor()
 
@@ -33,26 +33,30 @@ extension AppState {
       self.account = account
       self.id = account.id
       self.editor = Editor(target: account)
+      let now = Date()
+      switch account.alne.group {
+      case .income, .expenses:
+        self.timeInterval = DateInterval(start: now.startOfMonth, end: now)
+      default:
+        self.timeInterval = nil
+      }
     }
 
-    var transactions: [Alfheim.Transaction] {
+    private var transactions: [Alfheim.Transaction] {
       account.transactions()
     }
 
-    var periodTransactions: [Alfheim.Transaction] {
-      let current = Date()
-      let startDate: Date
-      switch period {
-      case .weekly:
-        startDate = current.start(of: .week)
-      case .monthly:
-        startDate = current.start(of: .month)
-      case .yearly:
-        startDate = current.start(of: .year)
+    private var periodTransactions: [Alfheim.Transaction] {
+      if let timeInterval = timeInterval {
+        return transactions
+          .filter { $0.date >= timeInterval.start && $0.date <= timeInterval.end }
+      } else {
+        return transactions
       }
+    }
 
-      return transactions
-        .filter { $0.date >= startDate }
+    var periodText: String {
+      timeInterval?.end.formatted(.dateTime.month()) ?? ""
     }
 
     var balance: Double {
