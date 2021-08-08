@@ -16,8 +16,8 @@ struct Sector: Shape {
     Path { path in
       path.addArc(center: rect.mid,
                   radius: rect.radius,
-                  startAngle: Angle(degrees: self.startDegrees),
-                  endAngle: Angle(degrees: self.endDegrees),
+                  startAngle: Angle(degrees: startDegrees),
+                  endAngle: Angle(degrees: endDegrees),
                   clockwise: false)
       path.addLine(to: rect.mid)
       path.closeSubpath()

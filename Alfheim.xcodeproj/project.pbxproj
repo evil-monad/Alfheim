@@ -68,6 +68,9 @@
 		FA014088240C01B800F6FE92 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA014087240C01B800F6FE92 /* EmojiPicker.swift */; };
 		FA020B1D26B6D1E700369350 /* Transaction+Alne.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B1C26B6D1E700369350 /* Transaction+Alne.swift */; };
 		FA020B1F26B6D3DC00369350 /* Account+Alne.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B1E26B6D3DC00369350 /* Account+Alne.swift */; };
+		FA020B2326BFC64800369350 /* Pie+Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2226BFC64800369350 /* Pie+Histogram.swift */; };
+		FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2426BFD4A500369350 /* CompositionView.swift */; };
+		FA020B2726BFD50D00369350 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2626BFD50D00369350 /* TrendView.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
 		FA32138B2498A593006BC855 /* Color+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32138A2498A593006BC855 /* Color+Category.swift */; };
 		FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */; };
@@ -223,6 +226,9 @@
 		FA014087240C01B800F6FE92 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
 		FA020B1C26B6D1E700369350 /* Transaction+Alne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Alne.swift"; sourceTree = "<group>"; };
 		FA020B1E26B6D3DC00369350 /* Account+Alne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Alne.swift"; sourceTree = "<group>"; };
+		FA020B2226BFC64800369350 /* Pie+Histogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pie+Histogram.swift"; sourceTree = "<group>"; };
+		FA020B2426BFD4A500369350 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
+		FA020B2626BFD50D00369350 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
 		FA32138A2498A593006BC855 /* Color+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Category.swift"; sourceTree = "<group>"; };
 		FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Empty.swift"; sourceTree = "<group>"; };
@@ -422,6 +428,7 @@
 				1F39995623D7F34E00E6BBD9 /* Pie.swift */,
 				1F39995923D7F75500E6BBD9 /* Slice.swift */,
 				1F39995B23D7FCF500E6BBD9 /* Sector.swift */,
+				FA020B2226BFC64800369350 /* Pie+Histogram.swift */,
 			);
 			path = Pie;
 			sourceTree = "<group>";
@@ -609,6 +616,8 @@
 				FA7368E72688A5C900BCF659 /* Redux */,
 				1F39993023D6A0A400E6BBD9 /* OverviewView.swift */,
 				1F45EBDA2423605D0058AEDC /* AccountCard.swift */,
+				FA020B2426BFD4A500369350 /* CompositionView.swift */,
+				FA020B2626BFD50D00369350 /* TrendView.swift */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -969,6 +978,7 @@
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
 				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
 				FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */,
+				FA020B2726BFD50D00369350 /* TrendView.swift in Sources */,
 				FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */,
 				1F2379B323D83BD900B4E79E /* Bar.swift in Sources */,
 				FAC2BC3B25CED0B400169800 /* ComposerView.swift in Sources */,
@@ -978,6 +988,7 @@
 				1F91CA04241A4CEE00B552E7 /* AppAction+Transaction.swift in Sources */,
 				FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */,
 				1F39992723D695EE00E6BBD9 /* Path+QuadCurve.swift in Sources */,
+				FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */,
 				FA020B1D26B6D1E700369350 /* Transaction+Alne.swift in Sources */,
 				FA66C7D92427B40000462C46 /* SearchBar.swift in Sources */,
 				FAEC0379240AB126003BFE2C /* Tagit.swift in Sources */,
@@ -994,6 +1005,7 @@
 				1F8AC48D2411FCEC006D9551 /* DataModel.swift in Sources */,
 				FAEABD4725CE2B41003D866E /* Store.swift in Sources */,
 				78CB4D5A24713D3500FF9A54 /* OverlaySheet.swift in Sources */,
+				FA020B2326BFC64800369350 /* Pie+Histogram.swift in Sources */,
 				FAE1DF982441C77700741C86 /* Persistences+Attachment.swift in Sources */,
 				FABEBB7A245C0B4C00637226 /* Grid.swift in Sources */,
 			);

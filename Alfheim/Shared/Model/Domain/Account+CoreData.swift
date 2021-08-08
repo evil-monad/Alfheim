@@ -19,7 +19,7 @@ final class Account: NSManagedObject, Identifiable {
   @NSManaged var introduction: String
   @NSManaged var group: String
   @NSManaged var currency: Int16
-  @NSManaged var tag: String?
+  @NSManaged var tag: String? // Tagit string
   @NSManaged var emoji: String?
   // relationship
   @NSManaged var targets: Set<Transaction>?
@@ -189,4 +189,16 @@ extension Array {
       return self
     }
   }
+}
+
+func balances(account: Alfheim.Account, transactions: [Alfheim.Transaction]) -> Double {
+  let deposits = transactions.filter { (account.isAncestor(of: $0.target) && $0.amount < 0) || (account.isAncestor(of: $0.source) && $0.amount >= 0) }
+    .map { abs($0.amount) }
+    .reduce(0.0, +)
+
+  let withdrawal = transactions.filter { (account.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.isAncestor(of: $0.source) && $0.amount < 0)  }
+    .map { abs($0.amount) }
+    .reduce(0.0, +)
+
+  return deposits - withdrawal
 }

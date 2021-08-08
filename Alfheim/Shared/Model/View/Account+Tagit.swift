@@ -9,7 +9,7 @@
 import Foundation
 
 extension Alfheim.Account {
-  var tagit: Tagit? {
-    tag.flatMap { Tagit(stringLiteral: $0) }
+  var tagit: Tagit {
+    tag.flatMap { Tagit(stringLiteral: $0) } ?? .alfheim
   }
 }

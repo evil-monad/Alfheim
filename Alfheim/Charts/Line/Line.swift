@@ -14,17 +14,17 @@ struct Line: View {
   @Binding var touchLocation: CGPoint
   @Binding var showsIndicator: Bool
   @State private var fill: Bool = false
-  @State var showsBackground: Bool = true
-  @State var padding: CGFloat = 4
+  @State private var showsBackground: Bool = true
+  @State private var padding: CGFloat = 4
 
-  var stepWidth: CGFloat {
+  private var stepWidth: CGFloat {
     if histogram.units.count < 2 {
       return 0
     }
     return frame.size.width / CGFloat(histogram.units.count - 1)
   }
 
-  var stepHeight: CGFloat {
+  private var stepHeight: CGFloat {
     let points = histogram.points()
 
     guard let min = points.min(),
@@ -34,18 +34,18 @@ struct Line: View {
     return (frame.size.height - padding * 2) / CGFloat(max - min)
   }
 
-  var step: CGPoint {
+  private var step: CGPoint {
     CGPoint(x: stepWidth, y: stepHeight)
   }
 
-  var path: Path {
+  private var path: Path {
     let points = histogram.points()
     return Path.quadCurved(points: points,
                            step: step,
                            padding: padding)
   }
 
-  var closedPath: Path {
+  private var closedPath: Path {
     let points = histogram.points()
     return Path.quadCurved(points: points,
                            step: step,
@@ -61,15 +61,15 @@ struct Line: View {
           .rotationEffect(.degrees(180), anchor: .center)
           .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
           .transition(.opacity)
-          .animation(.easeIn(duration: 1.6))
+          .animation(.easeIn(duration: 1.6), value: fill)
       }
       path.trim(from: 0, to: fill ? 1 : 0)
         .stroke(LinearGradient(gradient: Gradient(colors: [.ah02, .ah03]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 3))
             .rotationEffect(.degrees(180), anchor: .center)
             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-        .animation(.easeOut(duration: 1.2))
+            .animation(.easeOut(duration: 1.2), value: fill)
         .onAppear() {
-          self.fill.toggle()
+          fill.toggle()
         }
         .drawingGroup()
       if showsIndicator {

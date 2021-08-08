@@ -9,36 +9,16 @@
 import SwiftUI
 
 struct PieChart: View {
-  @ObservedObject var histogram: Histogram<LabeledUnit>
-  var title: String
-  var legend: String?
-  var symbol: String?
+  @ObservedObject var histogram: Histogram<PieUnit>
+  private var title: String
+  private var legend: String?
+  private var symbol: String?
 
   private var sum: Double {
     histogram.points().reduce(0, +)
   }
 
-  init(data: [(String, Double, String)],
-       title: String,
-       legend: String? = nil,
-       symbol: String? = nil) {
-    self.init(histogram: Histogram(values: data),
-              title: title,
-              legend: legend,
-              symbol: symbol)
-  }
-
-  init(data: [(String, Int, String)],
-       title: String,
-       legend: String? = nil,
-       symbol: String? = nil) {
-    self.init(data: data.map { ($0, Double($1), $2) },
-              title: title,
-              legend: legend,
-              symbol: symbol)
-  }
-
-  init(histogram: Histogram<LabeledUnit>,
+  init(histogram: Histogram<PieUnit>,
        title: String,
        legend: String? = nil,
        symbol: String? = nil) {
@@ -52,10 +32,10 @@ struct PieChart: View {
     VStack(alignment: .leading) {
       HStack {
         VStack(alignment: .leading, spacing: 8) {
-          Text(self.title).font(.system(size: 24, weight: .semibold))
+          Text(title).font(.system(size: 24, weight: .semibold))
             .foregroundColor(.primary)
-          if self.legend != nil {
-            Text(self.legend!).font(.callout)
+          if legend != nil {
+            Text(legend!).font(.callout)
               .foregroundColor(.secondary)
               .padding(.leading, 2)
           }
@@ -65,23 +45,23 @@ struct PieChart: View {
       }
       .padding(.bottom, 24)
 
-      Pie(histogram: self.histogram)
+      Pie(histogram: histogram)
         .aspectRatio(1.0, contentMode: .fit)
 
-      if self.histogram.isNamed {
+      if histogram.isNamed {
         VStack(alignment: .leading, spacing: 8) {
-          ForEach(0..<self.histogram.units.count) { index in
+          ForEach(0..<histogram.units.count) { index in
             HStack {
               HStack {
-                Text(self.unit(at: index).label)
+                Text(unit(at: index).symbol)
                   .font(.system(size: 26, weight: .medium))
                 Spacer()
               }
               .frame(width: 40)
               VStack(alignment: .leading, spacing: 2) {
                 HStack {
-                  Text(self.unit(at: index).symbol).font(.system(size: 14))
-                  Text("\(self.percent(at: index) * 100, specifier: "%.1f")%")
+                  Text(unit(at: index).label).font(.system(size: 14))
+                  Text("\(percent(at: index) * 100, specifier: "%.1f")%")
                     .font(.system(size: 12))
                     .foregroundColor(Color.secondary)
                   Spacer()
@@ -90,7 +70,7 @@ struct PieChart: View {
                   GeometryReader { proxy in
                     Capsule().fill(Color(.secondarySystemBackground))
                       .padding(.vertical, 2)
-                    self.progress(at: index, size: proxy.size)
+                    progress(at: index, size: proxy.size)
                       .padding(.vertical, 2)
                   }
                 }
@@ -99,7 +79,7 @@ struct PieChart: View {
               Spacer()
               HStack {
                 Spacer()
-                Text("\(self.symbol ?? "")\(self.unit(at: index).value, specifier: "%.1f")")
+                Text("\(symbol ?? "")\(unit(at: index).value, specifier: "%.1f")")
                   .font(.system(size: 14))
               }
               .frame(width: 72)
@@ -122,17 +102,17 @@ struct PieChart: View {
     unit(at: index).value/sum
   }
 
-  private func unit(at index: Int) -> LabeledUnit {
+  private func unit(at index: Int) -> PieUnit {
     histogram.units[index]
   }
 
   private func progress(at index: Int, size: CGSize) -> some View {
-    let percent = self.percent(at: index)
+    let percent = percent(at: index)
     var width = CGFloat(percent) * size.width
     if percent > 0 {
       width = max(width, size.height - 4)
     }
-    return Capsule().fill(Color.with(symbol: unit(at: index).symbol, at: index))
+    return Capsule().fill(unit(at: index).color)
       .frame(width: width)
   }
 }
@@ -142,7 +122,7 @@ struct PieChart_Previews : PreviewProvider {
   static var previews: some View {
     ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
       ScrollView {
-        PieChart(data: [("Sat", 0, "A"), ("Sun", 1, "A"), ("Mon", 18, "A"), ("Tue", 28, "A"), ("Wed", 36, "A"), ("Thu", 23, "A"), ("Fri", 100, "A")], title: "Pie", legend: "accounts", symbol: "$")
+        PieChart(histogram:  Histogram(values: [("Mon", 8, "a", Color.red), ("Tue", 18, "b", Color.green), ("Wed", 28, "c", Color.blue), ("Thu", 12, "d", Color.brown), ("Fri", 16, "e", Color.pink), ("Sat", 22, "f", Color.cyan), ("Sun", 20, "g", Color.orange)]), title: "Pie", legend: "accounts", symbol: "$")
        }
       .environment(\.colorScheme, colorScheme)
       .previewDisplayName("\(colorScheme)")

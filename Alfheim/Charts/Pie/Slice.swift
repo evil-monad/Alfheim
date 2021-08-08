@@ -25,7 +25,7 @@ struct Slice: View {
   var index: Int
   var color: Color
 
-  var sector: Sector {
+  private var sector: Sector {
     Sector(startDegrees: startDegrees, endDegrees: endDegrees)
   }
 
@@ -34,10 +34,10 @@ struct Slice: View {
       .fill()
       .foregroundColor(color)
       .overlay(sector.stroke(Color.white, lineWidth: 2))
-      .scaleEffect(self.fill ? 1 : 0)
-      .animation(Animation.spring().delay(Double(self.index) * 0.05))
+      .scaleEffect(fill ? 1 : 0)
+      .animation(Animation.spring().delay(Double(index) * 0.05), value: fill)
       .onAppear() {
-        self.fill.toggle()
+        fill.toggle()
       }
   }
 }

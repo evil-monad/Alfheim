@@ -92,15 +92,15 @@ extension AppState.Overview {
 // Stat
 extension AppState.Overview {
   var showStatisticsSection: Bool {
+    return showTrendStatistics || showCompositonStatistics
+  }
+
+  var showCompositonStatistics: Bool {
     let validAccount = account.children?.filter { !$0.transactions().isEmpty } ?? []
     return !validAccount.isEmpty
   }
 
-  var statistics: [HistogramLabeledUnit] {
-    return composition()
-  }
-
-  func composition() -> [HistogramLabeledUnit] {
+  var compositonUnit: [(name: String, value: Double, symbol: String, tagit: Tagit)] {
     guard let children = account.children else {
       return []
     }
@@ -115,18 +115,35 @@ extension AppState.Overview {
     }
 
     let ret = children.sorted(by: { $0.amount(transfer: transfer) > $1.amount(transfer: transfer) })
-      .map { ($0.name, abs($0.amount(transfer: transfer)), $0.emoji ?? "") }
+      .map { (name: $0.name, value: abs($0.amount(transfer: transfer)), symbol: $0.emoji.orEmpty, tagit: $0.tagit) }
 
     let otherAmount = account.amount(.only)
     guard otherAmount > 0 else {
       return ret
     }
-    let other = ("others", otherAmount, account.emoji.orEmpty)
+    let other = (name: "others", value: otherAmount, symbol: account.emoji.orEmpty, tagit: account.tagit)
     return ret + [other]
   }
 
-  func trend() {
-    // 7 day
-    // 1 month
+  var showTrendStatistics: Bool {
+    return account.alne.group.balance
+  }
+
+  // recent 6 month
+  var trendUnit: [(name: String, value: Double)] {
+    let now = Date()
+    return (0..<6).reversed().compactMap { delta in
+      guard let month = Calendar.current.date(byAdding: .month, value: -delta, to: now) else {
+        return nil
+      }
+      let start = month.start(of: .month)
+      let end = month.end(of: .month)
+
+      let transactions = transactions
+        .filter { $0.date >= start && $0.date <= end }
+      let balances = balances(account: account, transactions: transactions)
+      let name = start.formatted(.dateTime.month())
+      return (name: name, value: balances)
+    }
   }
 }

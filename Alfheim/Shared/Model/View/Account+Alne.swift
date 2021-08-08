@@ -29,4 +29,3 @@ extension AlneWorld where Base: Alfheim.Account {
     return base.children.map { Array($0) } ?? []
   }
 }
-

@@ -24,7 +24,7 @@ extension Persistences {
         expenses.introduction = "Expenses account are where you spend money for (e.g. food)."
         expenses.group = group
         expenses.currency = Int16(0)
-        expenses.tag = Tagit.red.hex
+        expenses.tag = Tagit.red.rawValue
         expenses.emoji = "💸"
 
         let food = Alfheim.Account(context: context)
@@ -33,7 +33,7 @@ extension Persistences {
         food.introduction = "Food account are where you spend money for (e.g. apple)."
         food.group = group
         food.currency = Int16(0)
-        food.tag = Tagit.pink.hex
+        food.tag = Tagit.pink.rawValue
         food.emoji = "🍔"
         food.parent = expenses
 
@@ -43,7 +43,7 @@ extension Persistences {
         drink.introduction = "Drink account are where you spend money for (e.g. milk)."
         drink.group = group
         drink.currency = Int16(0)
-        drink.tag = Tagit.grape.hex
+        drink.tag = Tagit.grape.rawValue
         drink.emoji = "🍹"
         drink.parent = expenses
 
@@ -53,7 +53,7 @@ extension Persistences {
         entertainment.introduction = "Entertainment account are where you spend money for (e.g. Movie)."
         entertainment.group = group
         entertainment.currency = Int16(0)
-        entertainment.tag = Tagit.violet.hex
+        entertainment.tag = Tagit.violet.rawValue
         entertainment.emoji = "🕹"
         entertainment.parent = expenses
       }
@@ -67,7 +67,7 @@ extension Persistences {
         income.group = group
         income.currency = Int16(0)
         income.emoji = "💰"
-        income.tag = Tagit.indigo.hex
+        income.tag = Tagit.indigo.rawValue
 
         let salary = Alfheim.Account(context: context)
         salary.id = UUID()
@@ -76,7 +76,7 @@ extension Persistences {
         salary.group = group
         salary.currency = Int16(0)
         salary.emoji = "💰"
-        salary.tag = Tagit.blue.hex
+        salary.tag = Tagit.blue.rawValue
         salary.parent = income
       }
 
@@ -89,7 +89,7 @@ extension Persistences {
         assets.group = group
         assets.currency = Int16(0)
         assets.emoji = "💵"
-        assets.tag = Tagit.cyan.hex
+        assets.tag = Tagit.cyan.rawValue
 
         let checking = Alfheim.Account(context: context)
         checking.id = UUID()
@@ -98,7 +98,7 @@ extension Persistences {
         checking.group = group
         checking.currency = Int16(0)
         checking.emoji = "💳"
-        checking.tag = Tagit.alfheim.hex
+        checking.tag = Tagit.alfheim.rawValue
         checking.parent = assets
 
         let cash = Alfheim.Account(context: context)
@@ -121,7 +121,7 @@ extension Persistences {
         liabilities.group = group
         liabilities.currency = Int16(0)
         liabilities.emoji = "💳"
-        liabilities.tag = Tagit.green.hex
+        liabilities.tag = Tagit.green.rawValue
 
         let credit = Alfheim.Account(context: context)
         credit.id = UUID()
@@ -130,7 +130,7 @@ extension Persistences {
         credit.group = group
         credit.currency = Int16(0)
         credit.emoji = "💳"
-        credit.tag = Tagit.lime.hex
+        credit.tag = Tagit.lime.rawValue
         credit.parent = liabilities
       }
 
@@ -152,7 +152,7 @@ extension Persistences {
         opening.group = group
         opening.currency = Int16(0)
         opening.emoji = "📈"
-        opening.tag = Tagit.orange.hex
+        opening.tag = Tagit.orange.rawValue
         opening.parent = equity
       }
 
