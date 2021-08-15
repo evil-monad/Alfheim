@@ -117,9 +117,6 @@ struct EditorView: View {
         }
       }
       .listStyle(.insetGrouped)
-      .task {
-        vs.send(.loadAccounts)
-      }
     }
   }
 

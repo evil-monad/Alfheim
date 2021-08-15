@@ -16,20 +16,20 @@ struct ComposerView: View {
   let mode: EditorView.Mode
 
   var body: some View {
-    NavigationView {
-      WithViewStore(store) { viewStore in
+    WithViewStore(store) { vs in
+      NavigationView {
         EditorView(store: store)
-          .navigationTitle(viewStore.isNew ? " New Transaction" : "Edit Transaction")
+          .navigationTitle(vs.isNew ? " New Transaction" : "Edit Transaction")
           .toolbar {
             ToolbarItem(placement: .confirmationAction) {
               Button {
-                let action = AppAction.Editor.save(viewStore.transaction, mode: viewStore.isNew ? .new : .update)
-                viewStore.send(action)
+                let action = AppAction.Editor.save(vs.transaction, mode: vs.isNew ? .new : .update)
+                vs.send(action)
                 dismiss()
               } label: {
                 Text("Save").bold()
               }
-              .disabled(!viewStore.isValid)
+              .disabled(!vs.isValid)
             }
             ToolbarItem(placement: .cancellationAction) {
               Button {
@@ -40,8 +40,11 @@ struct ComposerView: View {
             }
           }
       }
+      .navigationViewStyle(.stack)
+      .task {
+        vs.send(.loadAccounts)
+      }
     }
-    .navigationViewStyle(.stack)
   }
 }
 
