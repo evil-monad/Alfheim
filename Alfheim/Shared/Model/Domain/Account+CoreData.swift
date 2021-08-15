@@ -165,29 +165,84 @@ extension Account {
   }
 }
 
-extension NSSet {
-  func array<T: Hashable>() -> [T] {
-    let array = self.compactMap { $0 as? T }
-    return array
+extension Account {
+  class Snapshot {
+    let account: Account?
+
+    var id: UUID
+    var name: String
+    var introduction: String
+    var group: String
+    var currency: Int16
+    var tag: String?
+    var emoji: String?
+
+    var targets: Set<Transaction>?
+    var sources: Set<Transaction>?
+    var children: Set<Account>?
+    var parent: Account?
+
+    init(_ account: Account) {
+      self.account = account
+
+      self.id = account.id
+      self.name = account.name
+      self.introduction = account.introduction
+      self.group = account.group
+      self.currency = account.currency
+      self.tag = account.tag
+      self.emoji = account.emoji
+
+      self.targets = account.targets
+      self.sources = account.sources
+      self.children = account.children
+      self.parent = account.parent
+    }
+
+    init(name: String,
+         introduction: String,
+         group: String,
+         currency: Int16,
+         tag: String?,
+         emoji: String?,
+         parent: Account?) {
+      self.id = UUID()
+      self.name = name
+      self.introduction = introduction
+      self.group = group
+      self.currency = currency
+      self.tag = tag
+      self.emoji = emoji
+      self.parent = parent
+
+      self.targets = nil
+      self.sources = nil
+      self.children = nil
+      self.account = nil
+    }
   }
 }
 
-extension Optional where Wrapped == NSSet {
-  func array<T: Hashable>(of: T.Type) -> [T] {
-    if let set = self as? Set<T> {
-      return Array(set)
-    }
-    return [T]()
+extension Alfheim.Account {
+  static func object(_ snapshot: Snapshot, context: NSManagedObjectContext) -> Account {
+    let object = snapshot.account ?? Account(context: context)
+    object.fill(snapshot)
+    return object
   }
-}
 
-extension Array {
-  var optional: Self? {
-    if self.isEmpty {
-      return nil
-    } else {
-      return self
-    }
+  func fill(_ snapshot: Snapshot) {
+    id = snapshot.id
+    name = snapshot.name
+    introduction = introduction
+    group = snapshot.group
+    currency = snapshot.currency
+    tag = snapshot.tag
+    emoji = snapshot.emoji
+
+    targets = snapshot.targets
+    sources = snapshot.sources
+    children = snapshot.children
+    parent = snapshot.parent
   }
 }
 

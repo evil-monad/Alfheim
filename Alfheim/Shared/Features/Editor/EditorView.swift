@@ -24,9 +24,11 @@ struct EditorView: View {
           HStack {
             AccountPicker(
               vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) })) {
-                selectedAccount(vs.source)
+              selection: vs.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) })
+            ) {
+              selectedAccount(vs.source)
             }
+            .accountPickerStyle(.compact)
             TextField(
               "0.00",
               text: vs.binding(get: { $0.amount }, send: { AppAction.Editor.changed(.amount($0)) }))
@@ -42,9 +44,11 @@ struct EditorView: View {
           HStack {
             AccountPicker(
               vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) })) {
-                selectedAccount(vs.target)
+              selection: vs.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) })
+            ) {
+              selectedAccount(vs.target)
             }
+            .accountPickerStyle(.compact)
             Spacer()
             if let amount = Double(vs.amount) {
               Text((-amount).formatted(.number.precision(.fractionLength(2))))

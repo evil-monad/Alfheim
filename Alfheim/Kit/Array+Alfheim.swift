@@ -66,3 +66,13 @@ public extension Array {
     return results
   }
 }
+
+extension Array {
+  var optional: Self? {
+    if self.isEmpty {
+      return nil
+    } else {
+      return self
+    }
+  }
+}

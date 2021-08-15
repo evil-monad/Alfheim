@@ -24,9 +24,10 @@ enum AppAction {
   case load
   case didLoad([Alfheim.Account])
   case cleanup
-  case add
+  case addAccount(presenting: Bool)
 
   case newTransaction
+  case accountEditor(AccountEditor)
 }
 
 extension AppAction {

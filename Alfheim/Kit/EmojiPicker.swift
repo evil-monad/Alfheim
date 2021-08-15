@@ -8,15 +8,30 @@
 
 import SwiftUI
 
-struct EmojiPicker: View {
+struct EmojiPicker<Label>: View where Label: View {
   typealias Emoji = String
-  let emojis: [Emoji]
-  let numbersPerRow = 6
-  let onSelected: (Emoji) -> Void
+  private var emojis: [Emoji]
+  private let numbersPerRow = 6
 
-  init(onSelected: @escaping (Emoji) -> Void) {
+  @State private var isContentActive: Bool = false
+  private let label: () -> Label
+  private let selection: Binding<Emoji?>
+
+  init(selection: Binding<Emoji?>,
+       @ViewBuilder label: @escaping () -> Label) {
     self.emojis = loadEmojis()
-    self.onSelected = onSelected
+    self.selection = selection
+    self.label = label
+  }
+
+  var body: some View {
+    NavigationLink(destination: content, isActive: $isContentActive) {
+      HStack {
+        label()
+        Spacer()
+        Text(selection.wrappedValue ?? "")
+      }
+    }
   }
 
   private var numberOfRows: Int {
@@ -27,54 +42,29 @@ struct EmojiPicker: View {
     }
   }
 
-  var body: some View {
+  private var content: some View {
     Grid(emojis, id: \.self) { emoji in
-      Button(action: {
-        self.onSelected(emoji)
-      }) {
+      Button {
+        selection.wrappedValue = emoji
+        isContentActive = false
+      } label: {
         Text(emoji).font(.title)
       }
     }
     .gridStyle(columns: 6)
-    .navigationBarTitle("Emoji")
+    .navigationTitle("Emoji")
     .padding()
-  }
-
-
-  /*
-  private var columns: [GridItem] {
-    [
-      GridItem(.flexible()),
-      GridItem(.flexible()),
-      GridItem(.flexible()),
-      GridItem(.flexible()),
-      GridItem(.flexible()),
-      GridItem(.flexible()),
-    ]
-  }
-
-  var body: some View {
-    ScrollView {
-      LazyVGrid(columns: columns) {
-        ForEach(emojis, id: \.self) { emoji in
-          Button(action: {
-            self.onSelected(emoji)
-          }) {
-            Text(emoji).font(.title)
-          }
-        }
-      }
+    .task {
+      // load emoji
     }
-    .navigationBarTitle("Emoji")
-    .padding()
   }
-   */
 }
 
 #if DEBUG
 struct CatemojisPicker_Previews: PreviewProvider {
   static var previews: some View {
-    EmojiPicker() { emoji in
+    EmojiPicker(selection: .constant("🍕")) {
+      Text("Emoji")
     }
     .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
   }

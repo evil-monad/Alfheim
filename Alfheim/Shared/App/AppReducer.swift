@@ -27,22 +27,10 @@ enum AppReducers {
           .ignoreOutput()
           .eraseToEffect()
           .fireAndForget()
-      case .add:
-        let expenses = Alfheim.Account(context: environment.context!)
-        expenses.id = UUID()
-        expenses.name = "Food"
-        expenses.introduction = "Expenses account are where you spend money for (e.g. food)."
-        expenses.group = Alne.Account.Group.expenses.name
-        expenses.currency = Int16(0)
-        expenses.tag = "#FF2601"
-        expenses.emoji = "🍔"
-        expenses.parent = state.accounts.filter { $0.name == "Expenses" }.first
-
-        return AppEffects.Account.create(account: expenses, environment: environment)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
+      case .addAccount(let presenting):
+        state.accountEditor.reset(.new)
+        state.isAccountEditorPresented = presenting
+        return .none
       default:
         return .none
       }
@@ -51,7 +39,13 @@ enum AppReducers {
       state: \AppState.overviews,
       action: /AppAction.overview(id:action:),
       environment: { $0 }
-    )
+    ),
+    AppReducers.AccountEditor.reducer
+      .pullback(
+        state: \AppState.accountEditor,
+        action: /AppAction.accountEditor,
+        environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
+      )
 //    AppReducers.Editor.reducer
 //      .pullback(
 //        state: \.editor,

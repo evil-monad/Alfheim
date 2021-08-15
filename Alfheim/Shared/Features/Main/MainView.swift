@@ -72,7 +72,7 @@ struct Sidebar: View {
               }
               Spacer()
               Button {
-                vs.send(.add)
+                vs.send(.addAccount(presenting: true))
               } label: {
                 Text("Add Account")
               }
@@ -124,12 +124,21 @@ struct ContentView: View {
               }
               Spacer()
               Button {
-                vs.send(.add)
+                vs.send(.addAccount(presenting: true))
               } label: {
                 Text("Add Account")
               }
             }
           }
+        }
+        .sheet(isPresented: vs.binding(get: \.isAccountEditorPresented,
+                                       send: { .addAccount(presenting: $0) })) {
+          AccountComposer(
+            store: store.scope(
+              state: \.accountEditor,
+              action: AppAction.accountEditor),
+            mode: .new
+          )
         }
     }
   }

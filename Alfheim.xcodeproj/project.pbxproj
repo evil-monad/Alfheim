@@ -71,6 +71,15 @@
 		FA020B2326BFC64800369350 /* Pie+Histogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2226BFC64800369350 /* Pie+Histogram.swift */; };
 		FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2426BFD4A500369350 /* CompositionView.swift */; };
 		FA020B2726BFD50D00369350 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2626BFD50D00369350 /* TrendView.swift */; };
+		FA020B2926C8D8E600369350 /* Persistences+Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2826C8D8E600369350 /* Persistences+Cloud.swift */; };
+		FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2B26C8DBA700369350 /* AccountEditor.swift */; };
+		FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */; };
+		FA020B3026C8E1AF00369350 /* Set+Alfheim.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */; };
+		FA020B3226C8E67C00369350 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3126C8E67C00369350 /* Snapshot.swift */; };
+		FA020B3426C8E82600369350 /* AccountEditor+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3326C8E82600369350 /* AccountEditor+Action.swift */; };
+		FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3726C8F0C800369350 /* AccountComposer.swift */; };
+		FA020B3A26C8F30300369350 /* AccountEditor+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */; };
+		FA020B3E26C90BAE00369350 /* Account+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3D26C90BAE00369350 /* Account+Environment.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
 		FA32138B2498A593006BC855 /* Color+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32138A2498A593006BC855 /* Color+Category.swift */; };
 		FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */; };
@@ -229,6 +238,15 @@
 		FA020B2226BFC64800369350 /* Pie+Histogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pie+Histogram.swift"; sourceTree = "<group>"; };
 		FA020B2426BFD4A500369350 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		FA020B2626BFD50D00369350 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
+		FA020B2826C8D8E600369350 /* Persistences+Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Cloud.swift"; sourceTree = "<group>"; };
+		FA020B2B26C8DBA700369350 /* AccountEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditor.swift; sourceTree = "<group>"; };
+		FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+State.swift"; sourceTree = "<group>"; };
+		FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Alfheim.swift"; sourceTree = "<group>"; };
+		FA020B3126C8E67C00369350 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		FA020B3326C8E82600369350 /* AccountEditor+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+Action.swift"; sourceTree = "<group>"; };
+		FA020B3726C8F0C800369350 /* AccountComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountComposer.swift; sourceTree = "<group>"; };
+		FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+Reducer.swift"; sourceTree = "<group>"; };
+		FA020B3D26C90BAE00369350 /* Account+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Environment.swift"; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
 		FA32138A2498A593006BC855 /* Color+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Category.swift"; sourceTree = "<group>"; };
 		FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Empty.swift"; sourceTree = "<group>"; };
@@ -448,6 +466,7 @@
 				1F8AC4922411FE6D006D9551 /* Transaction+CoreData.swift */,
 				FABEBB7E245D4A6300637226 /* Emoji+CoreData.swift */,
 				FAEABD3625C67CF7003D866E /* Attachment+CoreData.swift */,
+				FA020B3126C8E67C00369350 /* Snapshot.swift */,
 				1F8AC48C2411FCEC006D9551 /* DataModel.swift */,
 			);
 			path = Domain;
@@ -510,6 +529,18 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		FA020B2A26C8DB7B00369350 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				FA020B3726C8F0C800369350 /* AccountComposer.swift */,
+				FA020B2B26C8DBA700369350 /* AccountEditor.swift */,
+				FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */,
+				FA020B3326C8E82600369350 /* AccountEditor+Action.swift */,
+				FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
 		FA26F4052691A01B006BDBF0 /* Redux */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,6 +575,7 @@
 				FAEAA0402461278F003C6799 /* Emojis.swift */,
 				FA7368E52687441200BCF659 /* Hierarchy.swift */,
 				FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */,
+				FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */,
 			);
 			path = Kit;
 			sourceTree = "<group>";
@@ -625,9 +657,12 @@
 		FAC2BC0F25CE346E00169800 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				FA020B3D26C90BAE00369350 /* Account+Environment.swift */,
+				FA020B2A26C8DB7B00369350 /* Editor */,
 				FA26F4052691A01B006BDBF0 /* Redux */,
 				782403F723F83A6600478338 /* AccountDetail.swift */,
 				FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */,
+				787D3C5E25D8F58B00B52520 /* AccountPicker.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -660,7 +695,6 @@
 				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
 				FAC2BC3825CED0B300169800 /* ComposerView.swift */,
 				FAC2BC3925CED0B300169800 /* EditorView.swift */,
-				787D3C5E25D8F58B00B52520 /* AccountPicker.swift */,
 			);
 			name = Editor;
 			path = Alfheim/Shared/Features/Editor;
@@ -771,6 +805,7 @@
 				FABEBB81245D4C9500637226 /* Persistences+Emoji.swift */,
 				FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */,
 				FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */,
+				FA020B2826C8D8E600369350 /* Persistences+Cloud.swift */,
 				FABAA8ED26ABFB0500D7006C /* Preview */,
 				FAE84B4125C676D30027E215 /* Cloud */,
 			);
@@ -903,6 +938,7 @@
 				FAF380372414BA1700C592D4 /* Persistences+Account.swift in Sources */,
 				787444E62480E6EB006EA297 /* Serializer.swift in Sources */,
 				1F3998FB23D6958700E6BBD9 /* AppDelegate.swift in Sources */,
+				FA020B3A26C8F30300369350 /* AccountEditor+Reducer.swift in Sources */,
 				FAEABD4E25CE2D7C003D866E /* AppState.swift in Sources */,
 				FAE84B3825B3F8730027E215 /* FlipView.swift in Sources */,
 				1F8AC4932411FE6D006D9551 /* Transaction+CoreData.swift in Sources */,
@@ -916,6 +952,7 @@
 				FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */,
 				783793D325D128F000ECD0D4 /* AppReducer+Editor.swift in Sources */,
 				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
+				FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */,
 				1F8AC4872411EF95006D9551 /* Account+CoreData.swift in Sources */,
 				1F45EBD924235F130058AEDC /* MainView.swift in Sources */,
 				1F2379B723D84C0E00B4E79E /* Piece.swift in Sources */,
@@ -927,6 +964,7 @@
 				1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */,
 				FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */,
 				FAEABD5B25CE3005003D866E /* AppAction.swift in Sources */,
+				FA020B3426C8E82600369350 /* AccountEditor+Action.swift in Sources */,
 				789E8E6C23E810A6006D180B /* Account.swift in Sources */,
 				FAEABD6325CE3011003D866E /* AppStore.swift in Sources */,
 				1F3998FD23D6958700E6BBD9 /* SceneDelegate.swift in Sources */,
@@ -934,8 +972,10 @@
 				783793D425D128F000ECD0D4 /* AppState+Editor.swift in Sources */,
 				783793D525D128F000ECD0D4 /* AppAction+Editor.swift in Sources */,
 				FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */,
+				FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */,
 				FAEABD4525CE2B41003D866E /* Effect.swift in Sources */,
 				1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */,
+				FA020B3226C8E67C00369350 /* Snapshot.swift in Sources */,
 				1F39995E23D805C600E6BBD9 /* PieChart.swift in Sources */,
 				FAF380392414BA2400C592D4 /* Persistences.swift in Sources */,
 				1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */,
@@ -969,12 +1009,14 @@
 				FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */,
 				1F39990023D6958700E6BBD9 /* Alfheim.xcdatamodeld in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
+				FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */,
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
 				FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */,
 				FAEABD3725C67CF7003D866E /* Attachment+CoreData.swift in Sources */,
 				783793DA25D12CB200ECD0D4 /* AppEffect+Editor.swift in Sources */,
 				FABEBB8C245D826300637226 /* TextAlert.swift in Sources */,
 				FAF3803B2414C5D600C592D4 /* Publishers+CoreData.swift in Sources */,
+				FA020B3026C8E1AF00369350 /* Set+Alfheim.swift in Sources */,
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
 				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
 				FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */,
@@ -982,6 +1024,7 @@
 				FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */,
 				1F2379B323D83BD900B4E79E /* Bar.swift in Sources */,
 				FAC2BC3B25CED0B400169800 /* ComposerView.swift in Sources */,
+				FA020B2926C8D8E600369350 /* Persistences+Cloud.swift in Sources */,
 				FAF2AA37241DF75900EE40AA /* AppReducer+Transaction.swift in Sources */,
 				1F91CA02241A4CE000B552E7 /* AppState+Transaction.swift in Sources */,
 				1F39995723D7F34E00E6BBD9 /* Pie.swift in Sources */,
@@ -1002,6 +1045,7 @@
 				1F45EBDB2423605D0058AEDC /* AccountCard.swift in Sources */,
 				1F1CF967240622A500828426 /* Shape+Divided.swift in Sources */,
 				FAEC037B240AB840003BFE2C /* Color+Tagit.swift in Sources */,
+				FA020B3E26C90BAE00369350 /* Account+Environment.swift in Sources */,
 				1F8AC48D2411FCEC006D9551 /* DataModel.swift in Sources */,
 				FAEABD4725CE2B41003D866E /* Store.swift in Sources */,
 				78CB4D5A24713D3500FF9A54 /* OverlaySheet.swift in Sources */,
