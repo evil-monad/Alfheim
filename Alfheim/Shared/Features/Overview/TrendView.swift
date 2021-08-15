@@ -66,12 +66,14 @@ struct TrendView: View {
             .transition(.scale)
           Spacer()
         }
+        .frame(height: 40)
       } else {
         VStack(alignment: .leading, spacing: 4) {
           Text("Trend").font(.headline)
           Text("Balances").font(.footnote)
             .foregroundColor(.secondary)
         }
+        .frame(height: 40)
       }
       Spacer()
       Image(systemName: "waveform.path.ecg")
