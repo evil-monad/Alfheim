@@ -131,7 +131,7 @@ struct ContentView: View {
             }
           }
         }
-        .sheet(isPresented: vs.binding(get: \.isAccountEditorPresented,
+        .sheet(isPresented: vs.binding(get: \.isAddingAccount,
                                        send: { .addAccount(presenting: $0) })) {
           AccountComposer(
             store: store.scope(
@@ -167,7 +167,7 @@ struct HomeView: View {
             AccountRow(account: account)
               .contextMenu(account.root ? nil : ContextMenu {
                 Button {
-                  vs.send(.editAccount(account))
+                  vs.send(.editAccount(presenting: true, account))
                 } label: {
                   Label("Edit", systemImage: "pencil.circle")
                 }
@@ -184,6 +184,15 @@ struct HomeView: View {
           Text("Accounts").font(.headline).foregroundColor(.primary)
         }
         .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
+        .sheet(isPresented: vs.binding(get: \.isEditingAcount,
+                                       send: { .editAccount(presenting: $0, nil) })) {
+          AccountComposer(
+            store: store.scope(
+              state: \.accountEditor,
+              action: AppAction.accountEditor),
+            mode: .new
+          )
+        }
       }
       .buttonStyle(.plain)
     }

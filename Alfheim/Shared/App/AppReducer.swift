@@ -29,9 +29,15 @@ enum AppReducers {
           .fireAndForget()
       case .addAccount(let presenting):
         state.accountEditor.reset(.new)
-        state.isAccountEditorPresented = presenting
+        state.isAddingAccount = presenting
         return .none
-      case .editAccount(let account):
+      case let .editAccount(presenting, account):
+        if let account = account {
+          state.accountEditor.reset(.edit(account))
+        } else {
+          state.accountEditor.reset(.new)
+        }
+        state.isEditingAcount = presenting
         return .none
       case .deleteAccount(let account):
         if !account.canDelete {

@@ -15,8 +15,9 @@ struct AppState: Equatable {
 
   var sidebar: [Alfheim.Account] = []
 
-  var isAccountEditorPresented: Bool = false
+  var isAddingAccount: Bool = false
   var accountEditor = AccountEditor()
+  var isEditingAcount: Bool = false
 }
 
 extension AppState {
