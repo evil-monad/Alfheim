@@ -28,7 +28,8 @@ class AccountValidator {
     }
     let isGroupValid = !state.group.isEmpty
     let isIntroductionValid = !state.introduction.isEmpty
-    let isValid = isGroupValid && isIntroductionValid
+    let isTagValid = !state.tag.isEmpty
+    let isValid = isGroupValid && isIntroductionValid && isTagValid
     return isValid
   }
 }
