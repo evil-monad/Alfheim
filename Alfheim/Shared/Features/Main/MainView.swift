@@ -52,7 +52,7 @@ struct Sidebar: View {
 
   var body: some View {
     WithViewStore(store) { vs in
-      Home(store: store)
+      HomeView(store: store)
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
         .toolbar {
@@ -104,7 +104,7 @@ struct ContentView: View {
 
   var body: some View {
     WithViewStore(store) { vs in
-      Home(store: store)
+      HomeView(store: store)
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
         .toolbar {
@@ -144,7 +144,7 @@ struct ContentView: View {
   }
 }
 
-struct Home: View {
+struct HomeView: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
