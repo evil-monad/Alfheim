@@ -25,6 +25,8 @@ enum AppAction {
   case didLoad([Alfheim.Account])
   case cleanup
   case addAccount(presenting: Bool)
+  case editAccount(Alfheim.Account)
+  case deleteAccount(Alfheim.Account)
 
   case newTransaction
   case accountEditor(AccountEditor)

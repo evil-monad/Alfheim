@@ -31,6 +31,17 @@ enum AppReducers {
         state.accountEditor.reset(.new)
         state.isAccountEditorPresented = presenting
         return .none
+      case .editAccount(let account):
+        return .none
+      case .deleteAccount(let account):
+        if !account.canDelete {
+          return .none
+        }
+        return AppEffects.Account.delete(accounts: [account], environment: environment)
+          .replaceError(with: false)
+          .ignoreOutput()
+          .eraseToEffect()
+          .fireAndForget()
       default:
         return .none
       }

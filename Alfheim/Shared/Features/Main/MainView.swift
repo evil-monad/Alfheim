@@ -165,6 +165,20 @@ struct HomeView: View {
         Section {
           OutlineGroup(vs.rootAccounts, children: \.optinalChildren) { account in
             AccountRow(account: account)
+              .contextMenu(account.root ? nil : ContextMenu {
+                Button {
+                  vs.send(.editAccount(account))
+                } label: {
+                  Label("Edit", systemImage: "pencil.circle")
+                }
+
+                Button {
+                  vs.send(.deleteAccount(account))
+                } label: {
+                  Label("Delete", systemImage: "trash.circle")
+                    .foregroundColor(.red)
+                }
+              })
           }
         } header: {
           Text("Accounts").font(.headline).foregroundColor(.primary)

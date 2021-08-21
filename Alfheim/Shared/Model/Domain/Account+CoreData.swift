@@ -106,6 +106,10 @@ extension Account {
   var fullName: String {
     "\(emoji ?? "")\(name)"
   }
+
+  var canDelete: Bool {
+    children.nilOrEmtpy && transactions(.only).isEmpty
+  }
 }
 
 extension Account {
