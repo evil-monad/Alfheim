@@ -22,7 +22,7 @@ extension AppAction {
       case introduction(String)
       case currency(Currency)
       case parent(Alfheim.Account?)
-      case tag(String?)
+      case tag(String)
       case emoji(String?)
     }
   }

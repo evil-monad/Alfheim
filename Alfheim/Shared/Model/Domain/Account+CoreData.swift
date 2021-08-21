@@ -19,7 +19,7 @@ final class Account: NSManagedObject, Identifiable {
   @NSManaged var introduction: String
   @NSManaged var group: String
   @NSManaged var currency: Int16
-  @NSManaged var tag: String? // Tagit string
+  @NSManaged var tag: String // Tagit string
   @NSManaged var emoji: String?
   // relationship
   @NSManaged var targets: Set<Transaction>?
@@ -174,7 +174,7 @@ extension Account {
     var introduction: String
     var group: String
     var currency: Int16
-    var tag: String?
+    var tag: String
     var emoji: String?
 
     var targets: Set<Transaction>?
@@ -203,7 +203,7 @@ extension Account {
          introduction: String,
          group: String,
          currency: Int16,
-         tag: String?,
+         tag: String,
          emoji: String?,
          parent: Account?) {
       self.id = UUID()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19178.1" systemVersion="20G80" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName=".Account" syncable="YES">
         <attribute name="currency" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="emoji" optional="YES" attributeType="String"/>
@@ -7,7 +7,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="introduction" attributeType="String" defaultValueString=""/>
         <attribute name="name" attributeType="String" defaultValueString="Undefined"/>
-        <attribute name="tag" optional="YES" attributeType="String"/>
+        <attribute name="tag" attributeType="String" defaultValueString=""/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="parent" inverseEntity="Account"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="children" inverseEntity="Account"/>
         <relationship name="sources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Transaction" inverseName="source" inverseEntity="Transaction"/>
@@ -38,7 +38,7 @@
         <relationship name="target" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="targets" inverseEntity="Account"/>
     </entity>
     <elements>
-        <element name="Account" positionX="45.05267333984375" positionY="-15.37484741210938" width="128" height="208"/>
+        <element name="Account" positionX="45.05267333984375" positionY="-15.37484741210938" width="128" height="194"/>
         <element name="Attachment" positionX="166.4041137695312" positionY="22.6102294921875" width="128" height="89"/>
         <element name="Emoji" positionX="134.3572387695312" positionY="258.7683410644531" width="128" height="73"/>
         <element name="Transaction" positionX="449.241943359375" positionY="-31.40805053710938" width="128" height="209"/>

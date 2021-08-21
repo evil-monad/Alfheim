@@ -37,7 +37,7 @@ extension AppState {
     var introduction: String = ""
     var group: String = ""
     var currency: Currency = .cny
-    var tag: String?
+    var tag: String = ""
     var emoji: String?
     var parent: Alfheim.Account?
   }
@@ -51,7 +51,7 @@ extension AppState.AccountEditor {
       introduction = ""
       group = ""
       currency = .cny
-      tag = nil
+      tag = ""
       emoji = nil
       parent = nil
     case .edit(let account):

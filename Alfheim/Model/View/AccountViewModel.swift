@@ -22,7 +22,7 @@ extension Alne.Account {
     self.id = object.id.uuidString
     self.name = object.name
     self.description = object.introduction
-    self.tag = Tagit(stringLiteral: object.tag!)
+    self.tag = Tagit(stringLiteral: object.tag)
     self.group = .expenses
     self.emoji = object.emoji ?? ""
     //self.currency = Currency(rawValue: Int(object.currency))!

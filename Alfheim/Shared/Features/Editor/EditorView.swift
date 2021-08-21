@@ -125,11 +125,11 @@ struct EditorView: View {
     return Text(account?.fullName ?? "Select Account")
       .font(account != nil ? .callout : .body)
       .frame(minWidth: 60)
-      .foregroundColor(account?.tag.flatMap { Color(hex: $0) })
+      .foregroundColor(account?.tagit.color)
       .padding(EdgeInsets(top: 3, leading: padding, bottom: 3, trailing: padding))
       .overlay(
         RoundedRectangle(cornerRadius: 20)
-          .stroke(account?.tag.flatMap { Color(hex: $0) } ?? Color.clear, lineWidth: 1)
+          .stroke(account?.tagit.color ?? Color.clear, lineWidth: 1)
       )
   }
 
