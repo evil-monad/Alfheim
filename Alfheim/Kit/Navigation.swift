@@ -21,7 +21,7 @@ struct NavigationRow<Label, Destination> : View where Label : View, Destination 
 
   var body: some View {
     ZStack {
-      label.allowsHitTesting(false)
+      label
 
       link
         .buttonStyle(.plain)

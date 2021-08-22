@@ -288,6 +288,9 @@ struct GridMenu: View {
             Text(item.text)
           } label: {
             MenuRow(item: item)
+              .onTapGesture {
+                selection = item.id
+              }
           }
         }
       }
