@@ -151,7 +151,7 @@ struct HomeView: View {
     WithViewStore(store) { vs in
       List {
         Section {
-          QuickMenu(store: store)
+          GridMenu(store: store)
             .listRowBackground(Color(.systemGroupedBackground))
             .buttonStyle(.plain)
             .onTapGesture {}
@@ -241,129 +241,92 @@ private struct AccountRow: View {
 struct QuickMenu: View {
   let store: Store<AppState, AppAction>
   @State private var selection: Int? = nil
+  private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
+
+  init(store: Store<AppState, AppAction>) {
+    self.store = store
+    self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
+  }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 18) {
-      HStack(alignment: .center, spacing: 18) {
-        Button {
-          selection = Item.all.rawValue
-        } label: {
-          MenuItem(item: Item.all.content)
+    WithViewStore(store) { vs in
+      LazyVGrid(columns: columns, spacing: 18) {
+        ForEach(vs.sidebar.menuItems, id: \.id) { item in
+          Button {
+            selection = item.type.rawValue
+          } label: {
+            MenuRow(item: item)
+          }
+          .background(
+            NavigationLink(tag: item.type.rawValue, selection: $selection, destination: {
+              Text(item.text)
+            }, label: {
+              EmptyView()
+            })
+          )
         }
-        .background(
-          NavigationLink(destination: Text("All"), tag: Item.all.rawValue, selection: $selection, label: { EmptyView() })
-        )
-
-        Button {
-          selection = Item.uncleared.rawValue
-        } label: {
-          MenuItem(item: Item.uncleared.content)
-        }
-        .background(
-          NavigationLink(destination: Text("Uncleared"), tag: Item.uncleared.rawValue, selection: $selection, label: { EmptyView() })
-        )
       }
-      HStack(alignment: .center, spacing: 18) {
-        Button {
-          selection = Item.repeating.rawValue
-        } label: {
-          MenuItem(item: Item.repeating.content)
-        }
-        .background(
-          NavigationLink(destination: Text("Repeating"), tag: Item.repeating.rawValue, selection: $selection, label: { EmptyView() })
-        )
-        Button {
-          selection = Item.flagged.rawValue
-        } label: {
-          MenuItem(item: Item.flagged.content)
-        }
-        .background(
-          NavigationLink(destination: Text("Flagged"), tag: Item.flagged.rawValue, selection: $selection, label: { EmptyView() })
-        )
-      }
-    }
-    .onLongPressGesture {}
-  }
-
-  enum Item: Int, Identifiable {
-    var id: Int { rawValue }
-
-    case all
-    case uncleared
-    case repeating
-    case flagged
-
-    struct Content {
-      let text: String
-      let value: String
-      let symbol: String
-      let color: Color
-
-      static let all = Content(text: "All", value: "233", symbol: "tray.circle.fill", color: .red)
-      static let uncleared = Content(text: "Uncleared", value: "0", symbol: "archivebox.circle.fill", color: .gray)
-      static let repeating = Content(text: "Repeating", value: "20", symbol: "repeat.circle.fill", color: .yellow)
-      static let flagged = Content(text: "Flagged", value: "66", symbol: "flag.circle.fill", color: .blue)
-    }
-
-    var content: Content {
-      switch self {
-      case .all:
-        return Content.all
-      case .uncleared:
-        return Content.uncleared
-      case .repeating:
-        return Content.repeating
-      case .flagged:
-        return Content.flagged
-      }
-    }
-  }
-
-  struct MenuItem: View {
-    let item: Item.Content
-
-    var body: some View {
-      VStack(alignment: .leading, spacing: 6) {
-        HStack {
-          Image(systemName: item.symbol).font(.title2).foregroundColor(item.color)
-          Spacer()
-          Text(item.value).font(.subheadline)
-        }
-        Text(item.text).font(.callout).fontWeight(.medium)
-      }
-      .padding(12)
-      .background(.background)
-      .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+      .onLongPressGesture {}
     }
   }
 }
 
-struct NavigationRow<Label, Destination> : View where Label : View, Destination : View {
-  private let destination: Destination
-  private let isActive: Binding<Bool>
-  private let label: Label
-
-  init(@ViewBuilder destination: () -> Destination, isActive: Binding<Bool>, @ViewBuilder label: () -> Label) {
-    self.destination = destination()
-    self.isActive = isActive
-    self.label = label()
+struct GridMenu: View {
+  let store: Store<AppState, AppAction>
+  @State private var selection: Int? = nil
+  private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
+  init(store: Store<AppState, AppAction>) {
+    self.store = store
+    self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
   }
 
   var body: some View {
-    ZStack {
-      label
-
-      NavigationLink(destination: destination, isActive: isActive) {
-        EmptyView()
+    WithViewStore(store) { vs in
+      LazyVGrid(columns: columns, spacing: 18) {
+        ForEach(vs.sidebar.menuItems, id: \.id) { item in
+          NavigationRow(tag: item.id, selection: $selection) {
+            Text(item.text)
+          } label: {
+            MenuRow(item: item)
+          }
+        }
       }
-      .buttonStyle(.plain)
-      .opacity(0)
+      .onLongPressGesture {}
     }
+  }
+}
+
+struct MenuRow: View {
+  let item: AppState.Sidebar.MenuItem
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      HStack {
+        Image(systemName: item.symbol).font(.title2).foregroundColor(item.color)
+        Spacer()
+        Text(item.value).font(.subheadline)
+      }
+      Text(item.text).font(.callout).fontWeight(.medium)
+    }
+    .padding(12)
+    .background(.background)
+    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
   }
 }
 
 extension EdgeInsets {
   static let `default` = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16)
+}
+
+extension AppState.Sidebar.MenuItem {
+  var color: Color {
+    switch type {
+    case .all: return Color.red
+    case .uncleared: return Color.gray
+    case .repeating: return Color.yellow
+    case .flagged: return Color.blue
+    }
+  }
 }
 
 #if DEBUG

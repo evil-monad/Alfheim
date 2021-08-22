@@ -80,6 +80,7 @@
 		FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3726C8F0C800369350 /* AccountComposer.swift */; };
 		FA020B3A26C8F30300369350 /* AccountEditor+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */; };
 		FA020B3E26C90BAE00369350 /* Account+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3D26C90BAE00369350 /* Account+Environment.swift */; };
+		FA020B4026D1F4B500369350 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3F26D1F4B300369350 /* Navigation.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
 		FA32138B2498A593006BC855 /* Color+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA32138A2498A593006BC855 /* Color+Category.swift */; };
 		FA42CB3D26AD0B1D0080C9C3 /* Optional+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */; };
@@ -247,6 +248,7 @@
 		FA020B3726C8F0C800369350 /* AccountComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountComposer.swift; sourceTree = "<group>"; };
 		FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+Reducer.swift"; sourceTree = "<group>"; };
 		FA020B3D26C90BAE00369350 /* Account+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Environment.swift"; sourceTree = "<group>"; };
+		FA020B3F26D1F4B300369350 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
 		FA32138A2498A593006BC855 /* Color+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Category.swift"; sourceTree = "<group>"; };
 		FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Empty.swift"; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 				FAF3803A2414C5D600C592D4 /* Publishers+CoreData.swift */,
 				FABEBB8F245DB2CE00637226 /* View+Modal.swift */,
 				FABEBB79245C0B4C00637226 /* Grid.swift */,
+				FA020B3F26D1F4B300369350 /* Navigation.swift */,
 				FA5F768524261F7D00277B6E /* InputTextField.swift */,
 				FA66C7D82427B40000462C46 /* SearchBar.swift */,
 				FA014087240C01B800F6FE92 /* EmojiPicker.swift */,
@@ -1018,6 +1021,7 @@
 				FAF3803B2414C5D600C592D4 /* Publishers+CoreData.swift in Sources */,
 				FA020B3026C8E1AF00369350 /* Set+Alfheim.swift in Sources */,
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
+				FA020B4026D1F4B500369350 /* Navigation.swift in Sources */,
 				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
 				FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */,
 				FA020B2726BFD50D00369350 /* TrendView.swift in Sources */,

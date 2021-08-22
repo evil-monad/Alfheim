@@ -152,6 +152,26 @@ struct EditorView: View {
   }
 }
 
+struct AccountStyle: ViewModifier {
+  var tagit: Tagit?
+  var padding: CGFloat
+  func body(content: Content) -> some View {
+    content
+      .frame(minWidth: 60)
+      .padding(EdgeInsets(top: 3, leading: padding, bottom: 3, trailing: padding))
+      .overlay(
+        RoundedRectangle(cornerRadius: 20)
+          .stroke(tagit?.color ?? Color.clear, lineWidth: 1)
+      )
+  }
+}
+
+extension Text {
+  func textStyle<Style: ViewModifier>(_ style: Style) -> some View {
+    ModifiedContent(content: self, modifier: style)
+  }
+}
+
 
 //#if DEBUG
 //struct EditorView_Previews: PreviewProvider {
