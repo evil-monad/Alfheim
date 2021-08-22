@@ -172,7 +172,7 @@ struct HomeView: View {
                   Label("Edit", systemImage: "pencil.circle")
                 }
 
-                Button {
+                Button(role: .destructive) {
                   vs.send(.deleteAccount(account))
                 } label: {
                   Label("Delete", systemImage: "trash.circle")
