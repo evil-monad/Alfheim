@@ -253,12 +253,12 @@ struct QuickMenu: View {
       LazyVGrid(columns: columns, spacing: 18) {
         ForEach(vs.sidebar.menuItems, id: \.id) { item in
           Button {
-            selection = item.type.rawValue
+            selection = item.id
           } label: {
-            MenuRow(item: item)
+            MenuRow(item: item, isSelected: selection == item.id)
           }
           .background(
-            NavigationLink(tag: item.type.rawValue, selection: $selection, destination: {
+            NavigationLink(tag: item.id, selection: $selection, destination: {
               Text(item.text)
             }, label: {
               EmptyView()
@@ -287,7 +287,7 @@ struct GridMenu: View {
           NavigationRow(tag: item.id, selection: $selection) {
             Text(item.text)
           } label: {
-            MenuRow(item: item)
+            MenuRow(item: item, isSelected: selection == item.id)
               .onTapGesture {
                 selection = item.id
               }
@@ -295,12 +295,18 @@ struct GridMenu: View {
         }
       }
       .onLongPressGesture {}
+      .onAppear {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) {
+          selection = nil
+        }
+      }
     }
   }
 }
 
 struct MenuRow: View {
   let item: AppState.Sidebar.MenuItem
+  let isSelected: Bool
 
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {
@@ -312,6 +318,7 @@ struct MenuRow: View {
       Text(item.text).font(.callout).fontWeight(.medium)
     }
     .padding(12)
+    .background(Color(UIColor.systemGray4).opacity(isSelected ? 1.0 : 0.0))
     .background(.background)
     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
   }
