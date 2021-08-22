@@ -259,7 +259,7 @@ struct QuickMenu: View {
           }
           .background(
             NavigationLink(tag: item.id, selection: $selection, destination: {
-              Text(item.text)
+              Text(item.name)
             }, label: {
               EmptyView()
             })
@@ -285,7 +285,7 @@ struct GridMenu: View {
       LazyVGrid(columns: columns, spacing: 18) {
         ForEach(vs.sidebar.menuItems, id: \.id) { item in
           NavigationRow(tag: item.id, selection: $selection) {
-            Text(item.text)
+            Text(item.name)
           } label: {
             MenuRow(item: item, isSelected: selection == item.id)
               .onTapGesture {
@@ -315,7 +315,7 @@ struct MenuRow: View {
         Spacer()
         Text(item.value).font(.subheadline)
       }
-      Text(item.text).font(.callout).fontWeight(.medium)
+      Text(item.name).font(.callout).fontWeight(.medium)
     }
     .padding(12)
     .background(Color(UIColor.systemGray4).opacity(isSelected ? 1.0 : 0.0))
@@ -330,7 +330,7 @@ extension EdgeInsets {
 
 extension AppState.Sidebar.MenuItem {
   var color: Color {
-    switch type {
+    switch filter {
     case .all: return Color.red
     case .uncleared: return Color.gray
     case .repeating: return Color.yellow

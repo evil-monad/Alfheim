@@ -95,6 +95,10 @@ extension AppState.Editor {
         currency: Int16(currency.rawValue),
         date: date,
         notes: notes,
+        payee: payee,
+        number: number,
+        repeated: Int16(repeated.rawValue),
+        cleared: cleared,
         target: target!,
         source: source!
       )

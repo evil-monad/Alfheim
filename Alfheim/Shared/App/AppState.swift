@@ -31,20 +31,42 @@ extension AppState {
 }
 
 extension AppState {
+  enum QuickFilter: Int, Hashable, Identifiable {
+    case all, uncleared, repeating, flagged
+    var id: Int { rawValue }
+    var name: String {
+      switch self {
+      case .all: return "All"
+      case .uncleared: return "Uncleared"
+      case .repeating: return "Repeating"
+      case .flagged: return "Flagged"
+      }
+    }
+    var symbol: String {
+      switch self {
+      case .all: return "tray.circle.fill"
+      case .uncleared: return "archivebox.circle.fill"
+      case .repeating: return "repeat.circle.fill"
+      case .flagged: return "flag.circle.fill"
+      }
+    }
+  }
+
   struct Sidebar: Equatable {
     struct MenuItem: Equatable, Identifiable {
-      let type: ItemType
-      let text: String
+      let filter: QuickFilter
       let value: String
-      let symbol: String
 
       var id: Int {
-        type.id
+        filter.id
       }
 
-      enum ItemType: Int, Identifiable {
-        case all, uncleared, repeating, flagged
-        var id: Int { rawValue }
+      var name: String {
+        filter.name
+      }
+
+      var symbol: String {
+        filter.symbol
       }
     }
 
@@ -66,10 +88,10 @@ extension AppState {
       }
 
       self.menuItems = [
-        MenuItem(type: .all, text: "All", value: "\(uniqueTransactions.count)", symbol: "tray.circle.fill"),
-        MenuItem(type: .uncleared, text: "Uncleared", value: "\(uniqueTransactions.filter(\.alne.uncleared).count)", symbol: "archivebox.circle.fill"),
-        MenuItem(type: .repeating, text: "Repeating", value: "\(uniqueTransactions.filter(\.alne.repeating).count)", symbol: "repeat.circle.fill"),
-        MenuItem(type: .flagged, text: "Flagged", value: "66", symbol: "flag.circle.fill"),
+        MenuItem(filter: .all, value: "\(uniqueTransactions.count)"),
+        MenuItem(filter: .uncleared, value: "\(uniqueTransactions.filter(\.alne.uncleared).count)"),
+        MenuItem(filter: .repeating, value: "\(uniqueTransactions.filter(\.alne.repeating).count)"),
+        MenuItem(filter: .flagged, value: "66"),
       ]
     }
   }
