@@ -12,4 +12,12 @@ extension AlneWorld where Base: Alfheim.Transaction {
   var attachments: [Attachment] {
     return base.attachments?.array() ?? []
   }
+
+  var uncleared: Bool {
+    !base.cleared
+  }
+
+  var repeating: Bool {
+    base.repeated > 0
+  }
 }

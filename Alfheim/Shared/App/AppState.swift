@@ -57,17 +57,18 @@ extension AppState {
         $0.transactions(.only)
       }
       var uniqueTransactions: [Alfheim.Transaction] = []
-      let filter = Set<UUID>()
+      var filter = Set<UUID>()
       for transaction in allTransactions {
-        if filter.contains(transaction.id) {
+        if !filter.contains(transaction.id) {
           uniqueTransactions.append(transaction)
+          filter.insert(transaction.id)
         }
       }
 
       self.menuItems = [
         MenuItem(type: .all, text: "All", value: "\(uniqueTransactions.count)", symbol: "tray.circle.fill"),
-        MenuItem(type: .uncleared, text: "Uncleared", value: "\(uniqueTransactions.filter(\.cleared).count)", symbol: "archivebox.circle.fill"),
-        MenuItem(type: .repeating, text: "Repeating", value: "\(uniqueTransactions.filter { $0.repeated > 0 }.count)", symbol: "repeat.circle.fill"),
+        MenuItem(type: .uncleared, text: "Uncleared", value: "\(uniqueTransactions.filter(\.alne.uncleared).count)", symbol: "archivebox.circle.fill"),
+        MenuItem(type: .repeating, text: "Repeating", value: "\(uniqueTransactions.filter(\.alne.repeating).count)", symbol: "repeat.circle.fill"),
         MenuItem(type: .flagged, text: "Flagged", value: "66", symbol: "flag.circle.fill"),
       ]
     }
