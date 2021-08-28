@@ -83,10 +83,107 @@ struct CatemojiPicker<Label>: View where Label: View {
   }
 }
 
+struct EmojiTabView: View {
+  let sections: [String: [String]]
+  let selection: Binding<String>
+
+  @State private var tab: String
+
+  init(sections: [String: [String]], selection: Binding<String>) {
+    self.sections = sections
+    self.selection = selection
+    self._tab = State(initialValue: sections.keys.first ?? "")
+  }
+
+  var body: some View {
+    ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
+      TabView(selection: $tab) {
+        ForEach(Array(sections.keys), id: \.self) { section in
+          ScrollView {
+            EmojiGrid(emojis: sections[section] ?? [], selection: selection)
+          }
+          .tag(section)
+        }
+      }
+      .tabViewStyle(.page)
+      .ignoresSafeArea(.all, edges: .bottom)
+
+      HStack(alignment: .center, spacing: 10) {
+        ForEach(Array(sections.keys), id: \.self) { section in
+          TabButton(text: section, selection: $tab)
+        }
+      }
+      .padding(.horizontal, 10)
+      .padding(.vertical, 6)
+      .background(.thinMaterial)
+      .clipShape(Capsule())
+    }
+    .ignoresSafeArea(.keyboard, edges: .bottom)
+  }
+}
+
+struct EmojiGrid: View {
+  let emojis: [String]
+  let selection: Binding<String>
+
+  var body: some View {
+    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 18), count: 6), spacing: 18) {
+      ForEach(emojis, id: \.self) { emoji in
+        Button {
+          selection.wrappedValue = emoji
+        } label: {
+          Text(emoji)
+            .padding(.all, 4)
+            .background(
+              Color.white.clipShape(Circle())
+                .opacity(selection.wrappedValue == emoji ? 1.0 : 0.0)
+            )
+        }
+      }
+    }
+    .padding()
+  }
+}
+
+struct TabButton: View {
+  let text: String
+  @Binding var selection: String
+
+  var body: some View {
+    Button {
+      selection = text
+    } label: {
+      Text(text)
+        .padding(.all, 4)
+        .background(
+          Color.white.clipShape(Circle())
+            .opacity(selection == text ? 1.0 : 0.0)
+        )
+    }
+  }
+}
+
 #if DEBUG
 struct CatemojiPicker_Previews: PreviewProvider {
   static var previews: some View {
-    CatemojiPicker([.transportation: Alne.Transportation.catemojis], selection: .constant(Alne.Catemoji(category: .food, emoji: "")), label: Text(""))
+    CatemojiPicker([.transportation: Alne.Transportation.catemojis], selection: .constant(Alne.Catemoji(category: .food, emoji: "")), label: Text("Emoji"))
+  }
+}
+
+struct EmojiSection_Previews: PreviewProvider {
+  static var previews: some View {
+    NavigationView {
+      EmojiTabView(
+        sections: ["🍔": loadFood(),
+                   "🥤": loadDrink(),
+                   "🐱": loadAnimal(),
+                   "🚗": loadTransportation(),
+                   "🏠": loadHouse(),
+                   "📱": loadObject()],
+        selection: .constant("🐱")
+      )
+      .navigationTitle("Emojis")
+    }
   }
 }
 #endif

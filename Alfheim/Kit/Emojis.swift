@@ -26,3 +26,61 @@ func loadEmojis() -> [String] {
 
   return emojis
 }
+
+func loadFood() -> [String] {
+  let contents = """
+  🍇🍈🍉🍊🍋🍌🍍🥭🍎🍏🍐🍑🍒🍓🥝🍅🥥🥑🍆🥔🥕🌽🌶🥒🥬🥦🍄🥜🌰🍞🥐🥖🥨🥯🥞🧀🍖🍗🥩🥓🍔🍟🍕🌭🥪🌮🌯🥙🍳🥘🍲🥣🥗🍿🧂🥫🍱🍘🍙🍚🍛🍜🍝🍠🍢🍣🍤🍥🥮🍡🥟🥠🥡🍦🍧🍨🍩🍪🍰🧁🥧🍫🍬🍭🍮🥢🍽🍴🥄
+  """
+
+  return split(string: contents)
+}
+
+func loadDrink() -> [String] {
+  let contents = """
+  🍯🍼🥛☕🍵🍶🍾🍷🍸🍹🍺🍻🥂🥃🥤
+  """
+
+  return split(string: contents)
+}
+
+func loadTransportation() -> [String] {
+  let contents = """
+  🚅🚆🚇🚈🚉🚑🚒🚓🚔🚕🚖🚗🚘🏍🛵🚲🚥🚦🚧⚓⛵🚤🛳⛴🛥🚢️✈️🚀🛸
+  """
+
+  return split(string: contents)
+}
+
+func loadAnimal() -> [String] {
+  let contents = """
+  👫👥👶💇💆💃🐱🐶🦊
+  """
+
+  return split(string: contents)
+}
+
+func loadObject() -> [String] {
+  let contents = """
+  🎲🧩♟🎭🎼🎷🎸🎹🎺🎻🥁🎬🏹💌🕳🛀🛌🔪🗺🧭🧱💈🛢🛎🧳⏳⌚⏰🌡⛱🧨🎈🎉🎊🎎🎏🎐🧧🎀🎁🔮🕹🧸🖼🧵🧶🛍📿💎📯🎙🎚📞💻📖📘📚💰✂🗃🗄🗑🔒🔑🔨⛏🛠🗡🔫🛡🔗⛓🧰🧲🧪🧫🧬🔬🔭📡💉💊🚪🛏🛋🚽🚿🛁🧴🧷🧹🧺🧻🧼🧽🧯🚬💪🎤🎧🎮🎨⚽🥎🏀🚴🏐🏈🎾🥏🎳🏏🏑🏒🥍🏓🏸🥊🥋⛳⛸🎣🎽🎿🛷🥌🎯🎱🎠🎡🎢🚂🚃
+  """
+
+  return split(string: contents)
+}
+
+func loadHouse() -> [String] {
+  let contents = """
+  🏡👙👗👘👛👜👝🎒👞👟🥾🥿👠👡👢👑👒🎩🎓🧢⛑💄💍💅🤳🎰
+  """
+  return split(string: contents)
+}
+
+func split(string: String) -> [String] {
+  let contents = string.trimmingCharacters(in: .whitespacesAndNewlines)
+  var result: [String] = []
+  for index in 0..<contents.count - 1 {
+    let item = contents[contents.index(contents.startIndex, offsetBy: index)]
+    result.append(String(item))
+  }
+
+  return result
+}
