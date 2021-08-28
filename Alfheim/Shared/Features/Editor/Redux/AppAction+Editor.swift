@@ -16,6 +16,7 @@ extension AppAction {
     case changed(Field)
     case loadAccounts
     case didLoadAccounts([Alfheim.Account])
+    case focused(AppState.Editor.FocusField?)
 
     enum Field {
       case amount(String)

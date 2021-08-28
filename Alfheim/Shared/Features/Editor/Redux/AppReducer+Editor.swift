@@ -71,6 +71,8 @@ extension AppReducers {
           state.attachments = []
         }
         state.isValid = environment.validator.validate(state: state)
+      case .focused(let field):
+        state.focusField = field
       }
       return .none
     }

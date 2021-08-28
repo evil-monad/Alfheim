@@ -27,6 +27,13 @@ extension AppState {
       }
     }
 
+    enum FocusField: Hashable {
+      case amount
+      case notes
+      case payee
+      case number
+    }
+
     var mode: Mode = .new
     var amount: String = ""
     var currency: Currency = .cny
@@ -46,6 +53,7 @@ extension AppState {
     var accounts: [Alfheim.Account] = []
 
     var isValid: Bool = false
+    var focusField: FocusField? = nil
 
     var isNew: Bool {
       return mode.isNew

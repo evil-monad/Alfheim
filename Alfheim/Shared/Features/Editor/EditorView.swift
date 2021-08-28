@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct EditorView: View {
   let store: Store<AppState.Editor, AppAction.Editor>
+  @FocusState private var focus: AppState.Editor.FocusField?
 
   enum Mode {
     case new
@@ -24,18 +25,22 @@ struct EditorView: View {
           HStack {
             AccountPicker(
               vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.source }, send: { AppAction.Editor.changed(.source($0)) })
+              selection: vs.binding(get: { $0.source }, send: { .changed(.source($0)) })
             ) {
               selectedAccount(vs.source)
             }
             .accountPickerStyle(.compact)
+
             TextField(
               "0.00",
-              text: vs.binding(get: { $0.amount }, send: { AppAction.Editor.changed(.amount($0)) }))
-              .keyboardType(.decimalPad)
-              .multilineTextAlignment(.trailing)
-              .padding(.trailing, -2.0)
-              .frame(minWidth: 100)
+              text: vs.binding(get: { $0.amount }, send: { .changed(.amount($0)) })
+            )
+            .focused($focus, equals: .amount)
+            .keyboardType(.decimalPad)
+            .multilineTextAlignment(.trailing)
+            .padding(.trailing, -2.0)
+            .frame(minWidth: 100)
+
             Text("\(vs.currency.symbol)")
               .foregroundColor(.gray)
               .opacity(0.8)
@@ -44,7 +49,7 @@ struct EditorView: View {
           HStack {
             AccountPicker(
               vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.target }, send: { AppAction.Editor.changed(.target($0)) })
+              selection: vs.binding(get: { $0.target }, send: { .changed(.target($0)) })
             ) {
               selectedAccount(vs.target)
             }
@@ -72,51 +77,60 @@ struct EditorView: View {
 
         Section {
           DatePicker(
-            selection: vs.binding(get: { $0.date }, send: { AppAction.Editor.changed(.date($0)) }),
+            selection: vs.binding(get: \.date, send: { .changed(.date($0)) }),
             in: ...Date(),
             displayedComponents: [.date, .hourAndMinute]
           ) {
             Text("Date")
           }
+          
           Field("Notes") {
-            InputTextField(
+            TextField(
               "Notes",
-              text: vs.binding(get: { $0.notes }, send: { AppAction.Editor.changed(.notes($0)) }),
-              isFirstResponder: .constant(false)
+              text: vs.binding(get: \.notes, send: { .changed(.notes($0)) })
             )
             .multilineTextAlignment(.trailing)
+            .focused($focus, equals: .notes)
           }
         }
 
         Section {
           Field("Payee") {
-            InputTextField(
+            TextField(
               "McDonalds",
-              text: vs.binding(get: { $0.payee ?? "" }, send: { AppAction.Editor.changed(.payee($0)) }),
-              isFirstResponder: .constant(false)
+              text: vs.binding(get: { $0.payee ?? "" }, send: { .changed(.payee($0)) })
             )
             .multilineTextAlignment(.trailing)
+            .focused($focus, equals: .payee)
           }
           Field("Number") {
-            InputTextField(
+            TextField(
               "20200202",
-              text: vs.binding(get: { $0.number ?? "" }, send: { AppAction.Editor.changed(.number($0)) }),
-              isFirstResponder: .constant(false)
+              text: vs.binding(get: { $0.number ?? "" }, send: { .changed(.number($0)) })
             )
             .multilineTextAlignment(.trailing)
+            .focused($focus, equals: .number)
           }
-          Picker(selection: vs.binding(get: { $0.repeated }, send: { AppAction.Editor.changed(.repeated($0)) }), label: Text("Repeat")) {
+          Picker(selection: vs.binding(get: \.repeated, send: { .changed(.repeated($0)) }), label: Text("Repeat")) {
             ForEach(Repeat.allCases, id: \.self) {
               Text($0.name).tag($0)
             }
           }
           Field("Cleared") {
-            Toggle(isOn: vs.binding(get: { $0.cleared }, send: { AppAction.Editor.changed(.cleared($0)) })) {
+            Toggle(isOn: vs.binding(get: \.cleared, send: { .changed(.cleared($0)) })) {
             }
           }
         }
       }
       .listStyle(.insetGrouped)
+      .onChange(of: focus) { field in
+        vs.send(.focused(field))
+      }
+      .onAppear {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+          self.focus = .amount
+        }
+      }
     }
   }
 

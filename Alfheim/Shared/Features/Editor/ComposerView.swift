@@ -43,6 +43,9 @@ struct ComposerView: View {
       .navigationViewStyle(.stack)
       .task {
         vs.send(.loadAccounts)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+          vs.send(.focused(.amount))
+        }
       }
     }
   }
