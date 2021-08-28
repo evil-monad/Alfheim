@@ -572,6 +572,7 @@
 				FA020B3F26D1F4B300369350 /* Navigation.swift */,
 				FA5F768524261F7D00277B6E /* InputTextField.swift */,
 				FA66C7D82427B40000462C46 /* SearchBar.swift */,
+				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
 				FA014087240C01B800F6FE92 /* EmojiPicker.swift */,
 				FABEBB8B245D826300637226 /* TextAlert.swift */,
 				78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */,
@@ -695,7 +696,6 @@
 			isa = PBXGroup;
 			children = (
 				787D3C6425D90F1C00B52520 /* Redux */,
-				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
 				FAC2BC3825CED0B300169800 /* ComposerView.swift */,
 				FAC2BC3925CED0B300169800 /* EditorView.swift */,
 			);
