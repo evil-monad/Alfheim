@@ -53,11 +53,11 @@
 		782403F823F83A6600478338 /* AccountDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F723F83A6600478338 /* AccountDetail.swift */; };
 		783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793C425D0DA2C00ECD0D4 /* macOS.swift */; };
 		783793CA25D1111E00ECD0D4 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 783793C925D1111E00ECD0D4 /* ComposableArchitecture */; };
-		783793D325D128F000ECD0D4 /* AppReducer+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793CF25D128EF00ECD0D4 /* AppReducer+Editor.swift */; };
-		783793D425D128F000ECD0D4 /* AppState+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D025D128EF00ECD0D4 /* AppState+Editor.swift */; };
-		783793D525D128F000ECD0D4 /* AppAction+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D125D128F000ECD0D4 /* AppAction+Editor.swift */; };
-		783793DA25D12CB200ECD0D4 /* AppEffect+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D925D12CB200ECD0D4 /* AppEffect+Editor.swift */; };
-		783793DE25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793DD25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift */; };
+		783793D325D128F000ECD0D4 /* Editor+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793CF25D128EF00ECD0D4 /* Editor+Reducer.swift */; };
+		783793D425D128F000ECD0D4 /* Editor+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D025D128EF00ECD0D4 /* Editor+State.swift */; };
+		783793D525D128F000ECD0D4 /* Editor+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D125D128F000ECD0D4 /* Editor+Action.swift */; };
+		783793DA25D12CB200ECD0D4 /* Editor+Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793D925D12CB200ECD0D4 /* Editor+Effect.swift */; };
+		783793DE25D12D9D00ECD0D4 /* Editor+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793DD25D12D9D00ECD0D4 /* Editor+Environment.swift */; };
 		787444E62480E6EB006EA297 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787444E52480E6EB006EA297 /* Serializer.swift */; };
 		787D3C5F25D8F58B00B52520 /* AccountPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D3C5E25D8F58B00B52520 /* AccountPicker.swift */; };
 		789E8E6923E80FFC006D180B /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789E8E6823E80FFC006D180B /* Transaction.swift */; };
@@ -221,11 +221,11 @@
 		782403F523F6DBAF00478338 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
 		782403F723F83A6600478338 /* AccountDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetail.swift; sourceTree = "<group>"; };
 		783793C425D0DA2C00ECD0D4 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
-		783793CF25D128EF00ECD0D4 /* AppReducer+Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppReducer+Editor.swift"; sourceTree = "<group>"; };
-		783793D025D128EF00ECD0D4 /* AppState+Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppState+Editor.swift"; sourceTree = "<group>"; };
-		783793D125D128F000ECD0D4 /* AppAction+Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppAction+Editor.swift"; sourceTree = "<group>"; };
-		783793D925D12CB200ECD0D4 /* AppEffect+Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEffect+Editor.swift"; sourceTree = "<group>"; };
-		783793DD25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppEnvironment+Editor.swift"; sourceTree = "<group>"; };
+		783793CF25D128EF00ECD0D4 /* Editor+Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Editor+Reducer.swift"; sourceTree = "<group>"; };
+		783793D025D128EF00ECD0D4 /* Editor+State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Editor+State.swift"; sourceTree = "<group>"; };
+		783793D125D128F000ECD0D4 /* Editor+Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Editor+Action.swift"; sourceTree = "<group>"; };
+		783793D925D12CB200ECD0D4 /* Editor+Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editor+Effect.swift"; sourceTree = "<group>"; };
+		783793DD25D12D9D00ECD0D4 /* Editor+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editor+Environment.swift"; sourceTree = "<group>"; };
 		787444E52480E6EB006EA297 /* Serializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
 		787D3C5E25D8F58B00B52520 /* AccountPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPicker.swift; sourceTree = "<group>"; };
 		789E8E6823E80FFC006D180B /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
@@ -496,11 +496,11 @@
 		787D3C6425D90F1C00B52520 /* Redux */ = {
 			isa = PBXGroup;
 			children = (
-				783793D025D128EF00ECD0D4 /* AppState+Editor.swift */,
-				783793D125D128F000ECD0D4 /* AppAction+Editor.swift */,
-				783793CF25D128EF00ECD0D4 /* AppReducer+Editor.swift */,
-				783793D925D12CB200ECD0D4 /* AppEffect+Editor.swift */,
-				783793DD25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift */,
+				783793D025D128EF00ECD0D4 /* Editor+State.swift */,
+				783793D125D128F000ECD0D4 /* Editor+Action.swift */,
+				783793CF25D128EF00ECD0D4 /* Editor+Reducer.swift */,
+				783793D925D12CB200ECD0D4 /* Editor+Effect.swift */,
+				783793DD25D12D9D00ECD0D4 /* Editor+Environment.swift */,
 			);
 			path = Redux;
 			sourceTree = "<group>";
@@ -953,7 +953,7 @@
 				783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */,
 				FAEABD3B25C67ED5003D866E /* Scheme.swift in Sources */,
 				FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */,
-				783793D325D128F000ECD0D4 /* AppReducer+Editor.swift in Sources */,
+				783793D325D128F000ECD0D4 /* Editor+Reducer.swift in Sources */,
 				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
 				FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */,
 				1F8AC4872411EF95006D9551 /* Account+CoreData.swift in Sources */,
@@ -972,8 +972,8 @@
 				FAEABD6325CE3011003D866E /* AppStore.swift in Sources */,
 				1F3998FD23D6958700E6BBD9 /* SceneDelegate.swift in Sources */,
 				FA7368E62687441200BCF659 /* Hierarchy.swift in Sources */,
-				783793D425D128F000ECD0D4 /* AppState+Editor.swift in Sources */,
-				783793D525D128F000ECD0D4 /* AppAction+Editor.swift in Sources */,
+				783793D425D128F000ECD0D4 /* Editor+State.swift in Sources */,
+				783793D525D128F000ECD0D4 /* Editor+Action.swift in Sources */,
 				FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */,
 				FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */,
 				FAEABD4525CE2B41003D866E /* Effect.swift in Sources */,
@@ -1006,7 +1006,7 @@
 				FAC2BC2325CE379100169800 /* OnboardingView.swift in Sources */,
 				FAF2AA42241DF8D200EE40AA /* Array+Alfheim.swift in Sources */,
 				FA83858E24A47A5A0011E0D7 /* AppIcon.swift in Sources */,
-				783793DE25D12D9D00ECD0D4 /* AppEnvironment+Editor.swift in Sources */,
+				783793DE25D12D9D00ECD0D4 /* Editor+Environment.swift in Sources */,
 				FAF3803D24152EED00C592D4 /* Persistences+Transaction.swift in Sources */,
 				789E8E6923E80FFC006D180B /* Transaction.swift in Sources */,
 				FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */,
@@ -1016,7 +1016,7 @@
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
 				FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */,
 				FAEABD3725C67CF7003D866E /* Attachment+CoreData.swift in Sources */,
-				783793DA25D12CB200ECD0D4 /* AppEffect+Editor.swift in Sources */,
+				783793DA25D12CB200ECD0D4 /* Editor+Effect.swift in Sources */,
 				FABEBB8C245D826300637226 /* TextAlert.swift in Sources */,
 				FAF3803B2414C5D600C592D4 /* Publishers+CoreData.swift in Sources */,
 				FA020B3026C8E1AF00369350 /* Set+Alfheim.swift in Sources */,
