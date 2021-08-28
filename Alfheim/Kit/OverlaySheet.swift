@@ -30,12 +30,12 @@ struct OverlaySheet<Content: View>: View {
         makeContent()
       }
       .offset(y: (isPresented.wrappedValue ? 0 : UIScreen.main.bounds.height) + max(0, translation.y))
-      .animation(.default)
+      .animation(.default, value: isPresented.wrappedValue)
       .onTapGesture {
       }
     }
     .background(isPresented.wrappedValue ? Color.gray.opacity(0.5) : Color.clear)
-    .animation(.default)
+    .animation(.default, value: isPresented.wrappedValue)
     .edgesIgnoringSafeArea(.all)
     .onTapGesture {
       self.onDismiss?()

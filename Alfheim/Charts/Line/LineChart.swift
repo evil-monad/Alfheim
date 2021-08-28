@@ -56,12 +56,12 @@ struct LineChart: View {
           .fill(Color(.systemBackground))
           .shadow(color: Color.shadow, radius: 8)
         VStack(alignment: .leading) {
-          if !self.showsIndicator {
+          if !showsIndicator {
             VStack(alignment: .leading, spacing: 8) {
-              Text(self.title).font(.system(size: 24, weight: .semibold))
+              Text(title).font(.system(size: 24, weight: .semibold))
                 .foregroundColor(.primary)
-              if self.legend != nil {
-                Text(self.legend!).font(.callout)
+              if legend != nil {
+                Text(legend!).font(.callout)
                   .foregroundColor(.secondary)
               }
               HStack {
@@ -71,19 +71,18 @@ struct LineChart: View {
                 } else {
                   Image(systemName: "arrow.down")
                 }*/
-                Text("\(self.symbol ?? "")\(self.value.rate, specifier: self.value.specifier)")
+                Text("\(symbol ?? "")\(value.rate, specifier: value.specifier)")
                   .foregroundColor(.primary)
               }
             }
-            .transition(.opacity)
-            .animation(.easeIn(duration: 0.1))
+            .transition(.opacity.animation(.easeIn(duration: 0.1)))
             .padding(.leading, 20)
             .frame(width: nil, height: 80, alignment: .center)
             .padding(.bottom, 24)
           } else {
             HStack {
               Spacer()
-              Text("\(self.currentValue, specifier: self.value.specifier)")
+              Text("\(currentValue, specifier: value.specifier)")
                 .font(.system(size: 41, weight: .bold))
                 .foregroundColor(.primary)
               Spacer()
@@ -94,17 +93,17 @@ struct LineChart: View {
           }
           Spacer()
           GeometryReader { geometry in
-            Line(histogram: self.histogram, frame: .constant(geometry.frame(in: .local)), touchLocation: self.$touchLocation, showsIndicator: self.$showsIndicator)
+            Line(histogram: histogram, frame: .constant(geometry.frame(in: .local)), touchLocation: $touchLocation, showsIndicator: $showsIndicator)
           }
           .offset(x: 0, y: 0)
           .gesture(DragGesture()
             .onChanged { value in
-              self.touchLocation = value.location
-              self.showsIndicator = true
-              self.handleTouch(to: value.location, in: geometry.frame(in: .local).size)
+              touchLocation = value.location
+              showsIndicator = true
+              handleTouch(to: value.location, in: geometry.frame(in: .local).size)
             }
             .onEnded { value in
-              self.showsIndicator = false
+              showsIndicator = false
             }
           )
         }
@@ -117,7 +116,7 @@ struct LineChart: View {
 extension LineChart {
   @discardableResult
   func handleTouch(to point: CGPoint, in frame: CGSize) -> CGPoint {
-    let points = self.histogram.points()
+    let points = histogram.points()
 
     let stepWidth: CGFloat = frame.width / CGFloat(points.count - 1)
     let stepHeight: CGFloat = (frame.height - 60) / CGFloat(points.max()! - points.min()!)
@@ -125,7 +124,7 @@ extension LineChart {
     let index = Int(round((point.x) / stepWidth))
 
     if (index >= 0 && index < points.count){
-        self.currentValue = points[index]
+        currentValue = points[index]
         return CGPoint(x: CGFloat(index) * stepWidth, y: CGFloat(points[index]) * stepHeight)
     }
     return .zero

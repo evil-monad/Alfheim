@@ -20,23 +20,29 @@ struct QuadCurved: View {
     return path.trimmedPath(from: 0, to: p)
   }
 
+  @State private var percentage: CGFloat = .zero
+
   var body: some View {
     ZStack {
-      path.trim(from: 0, to: 1)
+      path.trim(from: 0, to: percentage)
         .stroke(LinearGradient(gradient: Gradient(colors: [.ah02, .ah03]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 3))
         .rotationEffect(.degrees(180), anchor: .center)
         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-        .animation(.easeOut(duration: 1.2))
         .onAppear() {
+          withAnimation(.easeOut(duration: 1.2)) {
+            percentage = 1.0
+          }
         }
         .drawingGroup()
 
-      subpath.trim(from: 0, to: 1)
+      subpath.trim(from: 0, to: percentage)
         .stroke(LinearGradient(gradient: Gradient(colors: [.red, .red]), startPoint: .leading, endPoint: .trailing), style: StrokeStyle(lineWidth: 3))
         .rotationEffect(.degrees(180), anchor: .center)
         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-        .animation(.easeOut(duration: 1.2))
         .onAppear() {
+            withAnimation(.easeOut(duration: 1.2)) {
+              percentage = 1.0
+            }
         }
         .drawingGroup()
     }

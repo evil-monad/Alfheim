@@ -58,17 +58,17 @@ struct BarChart: View {
         VStack(alignment: .leading, spacing: 2) {
           HStack {
             VStack(alignment: .leading, spacing: 8) {
-              if !self.showsValue {
-                Text(self.title)
+              if !showsValue {
+                Text(title)
                   .font(.system(size: 24, weight: .semibold))
                   .foregroundColor(.primary)
 
-                if self.legend != nil {
-                  Text(self.legend!).font(.callout)
+                if legend != nil {
+                  Text(legend!).font(.callout)
                     .foregroundColor(.secondary)
                 }
               } else {
-                Text("\(self.currentValue, specifier: self.specifier)")
+                Text("\(currentValue, specifier: specifier)")
                   .font(.system(size: 41, weight: .bold))
                   .foregroundColor(.primary)
               }
@@ -76,29 +76,28 @@ struct BarChart: View {
             Spacer()
             Image(systemName: "waveform.path.ecg")
           }
-          .transition(.opacity)
-          .animation(.easeIn(duration: 0.1))
+          .transition(.opacity.animation(.easeIn(duration: 0.1)))
           .frame(height: 54, alignment: .center)
           .padding(.bottom, 24)
 
           GeometryReader { geometry in
-            Bar(histogram: self.histogram)
+            Bar(histogram: histogram)
           }
           .gesture(DragGesture()
             .onChanged { value in
-              self.touchLocation = value.location
-              self.showsValue = true
-              self.handleTouch(to: value.location, in: geometry.frame(in: .local).size)
+              touchLocation = value.location
+              showsValue = true
+              handleTouch(to: value.location, in: geometry.frame(in: .local).size)
             }
             .onEnded { value in
-              self.showsValue = false
+              showsValue = false
             }
           )
 
-          if self.histogram.isNamed {
+          if histogram.isNamed {
             GeometryReader { geometry in
-              HStack(alignment: .bottom, spacing: CGFloat(geometry.size.width) / CGFloat(3 * (self.histogram.units.count - 1))) {
-                ForEach(self.histogram.units, id: \.symbol) { unit in
+              HStack(alignment: .bottom, spacing: CGFloat(geometry.size.width) / CGFloat(3 * (histogram.units.count - 1))) {
+                ForEach(histogram.units, id: \.symbol) { unit in
                   Text(unit.symbol)
                     .font(.system(size: 12))
                     .frame(maxWidth: .infinity)
@@ -121,7 +120,7 @@ extension BarChart {
     let points = histogram.points()
     let step = frame.width / CGFloat(points.count)
     let idx = max(0, min(histogram.points().count - 1, Int(location.x / step)))
-    self.currentValue = points[idx]
+    currentValue = points[idx]
     return idx
   }
 }

@@ -26,12 +26,12 @@ struct Bar: View {
 
   var body: some View {
     GeometryReader { geometry in
-      HStack(alignment: .bottom, spacing: CGFloat(geometry.size.width) / CGFloat(3 * (self.pieces.count - 1))) {
-        ForEach(0..<self.pieces.count) { index in
+      HStack(alignment: .bottom, spacing: CGFloat(geometry.size.width) / CGFloat(3 * (pieces.count - 1))) {
+        ForEach(0..<pieces.count) { index in
           VStack(spacing: 4) {
             ZStack(alignment: .bottom) {
               Capsule().fill(Color(.secondarySystemBackground))
-              self.piece(at: index, size: geometry.size)
+              piece(at: index, size: geometry.size)
             }
           }
         }
@@ -43,7 +43,7 @@ struct Bar: View {
     let piece = pieces[index]
     var height = CGFloat(piece.amount) * size.height
     if piece.amount > 0.0 {
-      let gap = CGFloat(size.width) / CGFloat(3 * (self.pieces.count - 1))
+      let gap = CGFloat(size.width) / CGFloat(3 * (pieces.count - 1))
       let width = (size.width - CGFloat((histogram.points().count - 1)) * gap) / CGFloat(histogram.points().count)
       height = max(height, width)
     }
