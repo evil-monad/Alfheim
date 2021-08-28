@@ -39,7 +39,7 @@ struct EditorView: View {
             .keyboardType(.decimalPad)
             .multilineTextAlignment(.trailing)
             .padding(.trailing, -2.0)
-            .frame(minWidth: 100)
+            .frame(minWidth: 150)
 
             Text("\(vs.currency.symbol)")
               .foregroundColor(.gray)
