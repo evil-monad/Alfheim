@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension AppState {
   /// Composer, editor state
@@ -25,6 +26,11 @@ extension AppState {
       }
     }
 
+    enum FocusField: String, Hashable {
+      case name
+      case introduction
+    }
+
     var accounts: [Alfheim.Account] = []
 
     var mode: Mode = .new
@@ -32,6 +38,7 @@ extension AppState {
     var isNew: Bool {
       return mode.isNew
     }
+    var focusField: FocusField? = nil
 
     var name: String = ""
     var introduction: String = ""

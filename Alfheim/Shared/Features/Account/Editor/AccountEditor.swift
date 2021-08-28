@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct AccountEditor: View {
   let store: Store<AppState.AccountEditor, AppAction.AccountEditor>
+  @FocusState private var focus: AppState.AccountEditor.FocusField?
 
   enum Mode {
     case new
@@ -21,10 +22,17 @@ struct AccountEditor: View {
     WithViewStore(store) { vs in
       List {
         Section(header: Spacer()) {
-          TextField("Name", text: vs.binding(get: \.name,
-                                             send: { .changed(.name($0)) }))
-          TextField("Description", text: vs.binding(get: \.introduction,
-                                                    send: { .changed(.introduction($0)) }))
+          TextField(
+            "Name",
+            text: vs.binding(get: \.name, send: { .changed(.name($0)) })
+          )
+          .focused($focus, equals: .name)
+
+          TextField(
+            "Description",
+            text: vs.binding(get: \.introduction, send: { .changed(.introduction($0)) })
+          )
+          .focused($focus, equals: .introduction)
         }
 
         Section {
