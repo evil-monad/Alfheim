@@ -48,6 +48,19 @@ enum AppReducers {
           .ignoreOutput()
           .eraseToEffect()
           .fireAndForget()
+      case .selectMenu(selection: let item):
+        if let id = item, let filter = AppState.QuickFilter(rawValue: id) {
+          let allTransactions = state.sidebar.accounts.flatMap {
+            $0.transactions(.only)
+          }
+          let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
+          state.transaction = AppState.Transaction(filter: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+          state.sidebar.selection = Identified(nil, id: id)
+        } else {
+          state.transaction = AppState.Transaction(filter: .none)
+          state.sidebar.selection = nil
+        }
+        return .none
       default:
         return .none
       }
@@ -57,12 +70,16 @@ enum AppReducers {
       action: /AppAction.overview(id:action:),
       environment: { $0 }
     ),
-    AppReducers.AccountEditor.reducer
-      .pullback(
-        state: \AppState.accountEditor,
-        action: /AppAction.accountEditor,
-        environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
-      )
+    AppReducers.AccountEditor.reducer.pullback(
+      state: \AppState.accountEditor,
+      action: /AppAction.accountEditor,
+      environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
+    ),
+    AppReducers.Transaction.reducer.pullback(
+      state: \AppState.transaction,
+      action: /AppAction.transaction,
+      environment: { $0 }
+    )
 //    AppReducers.Editor.reducer
 //      .pullback(
 //        state: \.editor,

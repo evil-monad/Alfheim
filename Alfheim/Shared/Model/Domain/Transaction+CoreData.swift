@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+// typealias Database.Transaction = Alfheim.Transaction
+
 final class Transaction: NSManagedObject, Identifiable {
   class func fetchRequest() -> NSFetchRequest<Transaction> {
       return NSFetchRequest<Transaction>(entityName: "Transaction")
@@ -170,3 +172,16 @@ extension Alfheim.Transaction {
   }
 }
 
+extension Alfheim.Transaction {
+  static func uniqued(_ transactions: [Transaction]) -> [Transaction] {
+    var uniqueTransactions: [Transaction] = []
+    var filter = Set<UUID>()
+    for transaction in transactions {
+      if !filter.contains(transaction.id) {
+        uniqueTransactions.append(transaction)
+        filter.insert(transaction.id)
+      }
+    }
+    return uniqueTransactions
+  }
+}

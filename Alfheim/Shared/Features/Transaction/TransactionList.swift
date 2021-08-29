@@ -7,6 +7,32 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct TransactionList: View {
+  let store: Store<AppState.Transaction, AppAction.Transaction>
+
+  var body: some View {
+    WithViewStore(store) { vs in
+      List {
+        ForEach(Array(vs.sectionedTransactions.keys).sorted(by: { $0 > $1 }), id: \.self) { date in
+          Section {
+            ForEach(vs.sectionedTransactions[date] ?? []) { transaction in
+              TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: Tagit.alfheim, deposit: true))
+            }
+          } header: {
+            Text("\(date.formatted(.dateTime.year().day().month()))")
+              .font(.subheadline).foregroundColor(.primary)
+              .fontWeight(.medium)
+              .listRowInsets(EdgeInsets())
+          }
+        }
+      }
+      .listStyle(.insetGrouped)
+      .navigationTitle(vs.title)
+    }
+  }
+}
 
 //struct TransactionList: View {
 //  @EnvironmentObject var store: AppStore

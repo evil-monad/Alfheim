@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct TransactionRow: View {
-  var transaction: TransactionViewState
+  var transaction: Transactions.ViewState
 
   var body: some View {
     HStack {
@@ -55,8 +55,9 @@ struct TransactionRow: View {
 struct TransactionRow_Previews: PreviewProvider {
   static var previews: some View {
     ScrollView {
-      TransactionRow(transaction: TransactionViewState.mock(cxt: viewContext))
-    }.padding()
+      TransactionRow(transaction: Transactions.ViewState.mock(cxt: viewContext))
+    }
+    .padding()
   }
 }
 #endif

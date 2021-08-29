@@ -9,7 +9,7 @@
 import Foundation
 
 struct TransactionListViewState {
-  let transactions: [TransactionViewState]
+  let transactions: [Transactions.ViewState]
   let filterDate: Date
   let tag: Alne.Tagit
   let currency: Currency
@@ -46,7 +46,7 @@ struct TransactionListViewState {
     self.filterDate = filterDate
     self.tag = tag
     self.currency = currency
-    self.transactions = transactions.map { TransactionViewState(transaction: $0, tag: tag) }
+    self.transactions = transactions.map { Transactions.ViewState(transaction: $0, tag: tag) }
     self.displayAmount = transactions.map { $0.amount }.reduce(0.0, +)
   }
 }

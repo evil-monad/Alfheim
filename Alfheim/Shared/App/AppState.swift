@@ -8,12 +8,14 @@
 
 import Foundation
 import IdentifiedCollections
+import ComposableArchitecture
 
 struct AppState: Equatable {
   var overviews: IdentifiedArrayOf<Overview> = []
   //var editor = Editor()
 
   var sidebar: Sidebar = Sidebar()
+  var transaction = Transaction(filter: .none)
 
   var isAddingAccount: Bool = false
   var accountEditor = AccountEditor()
@@ -34,22 +36,6 @@ extension AppState {
   enum QuickFilter: Int, Hashable, Identifiable {
     case all, uncleared, repeating, flagged
     var id: Int { rawValue }
-    var name: String {
-      switch self {
-      case .all: return "All"
-      case .uncleared: return "Uncleared"
-      case .repeating: return "Repeating"
-      case .flagged: return "Flagged"
-      }
-    }
-    var symbol: String {
-      switch self {
-      case .all: return "tray.circle.fill"
-      case .uncleared: return "archivebox.circle.fill"
-      case .repeating: return "repeat.circle.fill"
-      case .flagged: return "flag.circle.fill"
-      }
-    }
   }
 
   struct Sidebar: Equatable {
@@ -71,7 +57,9 @@ extension AppState {
     }
 
     var accounts: [Alfheim.Account]
-    var menuItems: [MenuItem]
+    var menus: IdentifiedArrayOf<MenuItem>
+    var selection: Identified<MenuItem.ID, MenuItem?>?
+
     init(accounts: [Alfheim.Account] = []) {
       self.accounts = accounts
 
@@ -87,12 +75,45 @@ extension AppState {
         }
       }
 
-      self.menuItems = [
+      self.menus = [
         MenuItem(filter: .all, value: "\(uniqueTransactions.count)"),
         MenuItem(filter: .uncleared, value: "\(uniqueTransactions.filter(\.alne.uncleared).count)"),
         MenuItem(filter: .repeating, value: "\(uniqueTransactions.filter(\.alne.repeating).count)"),
-        MenuItem(filter: .flagged, value: "66"),
+        MenuItem(filter: .flagged, value: "\(uniqueTransactions.filter(\.alne.flagged).count)"),
       ]
+    }
+  }
+}
+
+extension AppState.QuickFilter {
+  var symbol: String {
+    switch self {
+    case .all: return "tray.circle.fill"
+    case .uncleared: return "archivebox.circle.fill"
+    case .repeating: return "repeat.circle.fill"
+    case .flagged: return "flag.circle.fill"
+    }
+  }
+
+  var name: String {
+    switch self {
+    case .all: return "All"
+    case .uncleared: return "Uncleared"
+    case .repeating: return "Repeating"
+    case .flagged: return "Flagged"
+    }
+  }
+
+  func filteredTransactions(_ transations: [Alfheim.Transaction]) -> [Alfheim.Transaction] {
+    switch self {
+    case .all:
+      return transations
+    case .uncleared:
+      return transations.filter(\.alne.uncleared)
+    case .repeating:
+      return transations.filter(\.alne.repeating)
+    case .flagged:
+      return transations.filter(\.alne.flagged)
     }
   }
 }

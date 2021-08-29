@@ -15,7 +15,7 @@ extension AppState {
   struct Editor: Equatable {
     enum Mode: Equatable {
       case new
-      case edit(Transaction)
+      case edit(Alfheim.Transaction)
 
       var isNew: Bool {
         switch self {

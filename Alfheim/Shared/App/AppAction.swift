@@ -30,6 +30,9 @@ enum AppAction {
 
   case newTransaction
   case accountEditor(AccountEditor)
+
+  case selectMenu(selection: Int?)
+  case transaction(Transaction)
 }
 
 extension AppAction {

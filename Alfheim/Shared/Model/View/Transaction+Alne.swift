@@ -20,4 +20,8 @@ extension AlneWorld where Base: Alfheim.Transaction {
   var repeating: Bool {
     base.repeated > 0
   }
+
+  var flagged: Bool {
+    return true
+  }
 }

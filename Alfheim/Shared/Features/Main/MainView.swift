@@ -251,7 +251,7 @@ struct QuickMenu: View {
   var body: some View {
     WithViewStore(store) { vs in
       LazyVGrid(columns: columns, spacing: 18) {
-        ForEach(vs.sidebar.menuItems, id: \.id) { item in
+        ForEach(vs.sidebar.menus) { item in
           Button {
             selection = item.id
           } label: {
@@ -272,24 +272,29 @@ struct QuickMenu: View {
 }
 
 struct GridMenu: View {
+  @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
   let store: Store<AppState, AppAction>
-  @State private var selection: Int? = nil
   private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
+
   init(store: Store<AppState, AppAction>) {
     self.store = store
     self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
   }
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.sidebar)) { vs in
       LazyVGrid(columns: columns, spacing: 18) {
-        ForEach(vs.sidebar.menuItems, id: \.id) { item in
-          NavigationRow(tag: item.id, selection: $selection) {
-            Text(item.name)
+        ForEach(vs.menus) { item in
+          NavigationRow(
+            tag: item.id,
+            selection: vs.binding(get: \.selection?.id, send: { AppAction.selectMenu(selection: $0) })) {
+              TransactionList(
+                store: store.scope(state: \.transaction, action: AppAction.transaction)
+              )
           } label: {
-            MenuRow(item: item, isSelected: selection == item.id)
+            MenuRow(item: item, isSelected: vs.selection?.id == item.id)
               .onTapGesture {
-                selection = item.id
+                vs.send(.selectMenu(selection: item.id))
               }
           }
         }
@@ -297,7 +302,8 @@ struct GridMenu: View {
       .onLongPressGesture {}
       .onAppear {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) {
-          selection = nil
+          // selection = nil
+          vs.send(.selectMenu(selection: nil))
         }
       }
     }

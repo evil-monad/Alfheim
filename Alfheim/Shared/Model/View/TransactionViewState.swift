@@ -14,25 +14,27 @@ enum Transfer {
   case out
 }
 
-struct TransactionViewState: Identifiable {
-  let transaction: Alfheim.Transaction
+extension Transactions {
+  struct ViewState: Identifiable {
+    let transaction: Alfheim.Transaction
 
-  let tag: Alne.Tagit
+    let tag: Alne.Tagit
 
-  let id: String
+    let id: String
 
-  let title: String
-  let source: String
-  let target: String
-  let deposit: Bool
+    let title: String
+    let source: String
+    let target: String
+    let deposit: Bool
 
-  let amount: Double
-  let currency: Currency
+    let amount: Double
+    let currency: Currency
 
-  let date: Date
+    let date: Date
+  }
 }
 
-extension TransactionViewState {
+extension Transactions.ViewState {
   init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true) {
     self.transaction = transaction
     self.id = transaction.id.uuidString
@@ -72,8 +74,8 @@ extension TransactionViewState {
   }
 }
 
-extension TransactionViewState {
-  static func mock(cxt: NSManagedObjectContext) -> TransactionViewState {
+extension Transactions.ViewState {
+  static func mock(cxt: NSManagedObjectContext) -> Transactions.ViewState {
     let transaction = Alfheim.Transaction(context: cxt)
     transaction.id = UUID()
     transaction.amount = 23.0
@@ -105,6 +107,6 @@ extension TransactionViewState {
     transaction.source = source
     transaction.target = target
 
-    return TransactionViewState(transaction: transaction, tag: .alfheim)
+    return Transactions.ViewState(transaction: transaction, tag: .alfheim)
   }
 }

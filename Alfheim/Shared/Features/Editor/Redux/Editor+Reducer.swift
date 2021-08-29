@@ -12,7 +12,6 @@ import ComposableArchitecture
 extension AppReducers {
   enum Editor {
     static let reducer = Reducer<AppState.Editor, AppAction.Editor, AppEnvironment.Editor> { state, action, environment in
-
       struct ValidationId: Hashable {}
 
       switch action {
