@@ -68,9 +68,9 @@ extension Transactions.ViewState {
   }
 
   var displayAmount: String {
-    let style = FloatingPointFormatStyle.Currency(code: currency.code, locale: Locale.current)
+    // let style = FloatingPointFormatStyle.Currency(code: currency.code, locale: Locale.current) Locale.autoupdatingCurrent
     let amount = forward ? -abs(transaction.amount) : abs(transaction.amount)
-    return amount.formatted(style.precision(.fractionLength(1)).sign(strategy: .always()))
+    return amount.formatted(.currency(code: currency.code).precision(.fractionLength(1)).sign(strategy: .always()))
   }
 }
 

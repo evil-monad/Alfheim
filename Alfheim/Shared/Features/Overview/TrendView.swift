@@ -60,7 +60,7 @@ struct TrendView: View {
     HStack(alignment: .top) {
       if showsIndicator {
         VStack {
-          Text(currentValue.formatted(FloatingPointFormatStyle.Currency(code: currency.code, locale: Locale.current).precision(.fractionLength(1))))
+          Text(currentValue.formatted(.currency(code: currency.code).precision(.fractionLength(1))))
             .font(.title).fontWeight(.bold)
             .foregroundColor(.primary)
             .transition(.scale)
