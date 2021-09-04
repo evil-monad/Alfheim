@@ -35,7 +35,7 @@ extension AppState {
       let now = Date()
       switch account.alne.group {
       case .income, .expenses:
-        self.timeInterval = DateInterval(start: now.startOfMonth, end: now)
+        self.timeInterval = DateInterval(start: now.start(of: .month), end: now.end(of: .month))
       default:
         self.timeInterval = nil
       }
