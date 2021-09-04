@@ -61,6 +61,7 @@ enum AppReducers {
           state.sidebar.selection = nil
         }
         return .none
+
       default:
         return .none
       }
@@ -78,6 +79,11 @@ enum AppReducers {
     AppReducers.Transaction.reducer.pullback(
       state: \AppState.transaction,
       action: /AppAction.transaction,
+      environment: { $0 }
+    ),
+    AppReducers.Settings.reducer.pullback(
+      state: \AppState.settings,
+      action: /AppAction.settings,
       environment: { $0 }
     )
 //    AppReducers.Editor.reducer

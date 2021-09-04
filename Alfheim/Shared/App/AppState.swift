@@ -17,6 +17,8 @@ struct AppState: Equatable {
   var sidebar: Sidebar = Sidebar()
   var transaction = Transaction(filter: .none)
 
+  var settings = Settings()
+
   var isAddingAccount: Bool = false
   var accountEditor = AccountEditor()
   var isEditingAcount: Bool = false

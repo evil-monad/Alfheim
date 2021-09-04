@@ -118,7 +118,7 @@ struct ContentView: View {
           ToolbarItemGroup(placement: .bottomBar) {
             HStack {
               Button {
-                vs.send(.cleanup)
+                vs.send(.settings(.sheet(isPresented: true)))
               } label: {
                 Image(systemName: "gear")
               }
@@ -131,14 +131,16 @@ struct ContentView: View {
             }
           }
         }
-        .sheet(isPresented: vs.binding(get: \.isAddingAccount,
-                                       send: { .addAccount(presenting: $0) })) {
+        .sheet(isPresented: vs.binding(get: \.isAddingAccount, send: AppAction.addAccount)) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,
               action: AppAction.accountEditor),
             mode: .new
           )
+        }
+        .sheet(isPresented: vs.binding(get: \.settings.isPresented, send: { .settings(.sheet(isPresented: $0)) })) {
+          SettingsView()
         }
     }
   }
@@ -184,8 +186,7 @@ struct HomeView: View {
           Text("Accounts").font(.headline).foregroundColor(.primary)
         }
         .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
-        .sheet(isPresented: vs.binding(get: \.isEditingAcount,
-                                       send: { .editAccount(presenting: $0, nil) })) {
+        .sheet(isPresented: vs.binding(get: \.isEditingAcount, send: { AppAction.editAccount(presenting: $0, nil) })) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,

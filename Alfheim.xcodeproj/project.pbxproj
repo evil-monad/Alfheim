@@ -97,6 +97,10 @@
 		FA83858B24A479EF0011E0D7 /* Filled60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */; };
 		FA83858C24A479EF0011E0D7 /* Filled20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */; };
 		FA83858E24A47A5A0011E0D7 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83858D24A47A5A0011E0D7 /* AppIcon.swift */; };
+		FAA2331C26E3492A009C9925 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331B26E3492A009C9925 /* SettingsView.swift */; };
+		FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331D26E349CF009C9925 /* Settings+State.swift */; };
+		FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331F26E34BB7009C9925 /* Settings+Action.swift */; };
+		FAA2332226E34C14009C9925 /* Settings+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2332126E34C14009C9925 /* Settings+Reducer.swift */; };
 		FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */; };
 		FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */; };
 		FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */; };
@@ -266,6 +270,10 @@
 		FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@3x.png"; sourceTree = "<group>"; };
 		FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@2x.png"; sourceTree = "<group>"; };
 		FA83858D24A47A5A0011E0D7 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		FAA2331B26E3492A009C9925 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FAA2331D26E349CF009C9925 /* Settings+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+State.swift"; sourceTree = "<group>"; };
+		FAA2331F26E34BB7009C9925 /* Settings+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Action.swift"; sourceTree = "<group>"; };
+		FAA2332126E34C14009C9925 /* Settings+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Reducer.swift"; sourceTree = "<group>"; };
 		FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Preview.swift"; sourceTree = "<group>"; };
 		FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Bootstrap.swift"; sourceTree = "<group>"; };
 		FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
@@ -618,6 +626,17 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		FAA2331A26E3491A009C9925 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FAA2331B26E3492A009C9925 /* SettingsView.swift */,
+				FAA2331D26E349CF009C9925 /* Settings+State.swift */,
+				FAA2331F26E34BB7009C9925 /* Settings+Action.swift */,
+				FAA2332126E34C14009C9925 /* Settings+Reducer.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		FABAA8ED26ABFB0500D7006C /* Preview */ = {
 			isa = PBXGroup;
 			children = (
@@ -629,6 +648,7 @@
 		FAC2BC0C25CE340700169800 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2331A26E3491A009C9925 /* Settings */,
 				FA7368E82688A9A000BCF659 /* Statistics */,
 				FAC2BC3625CED0B300169800 /* Editor */,
 				FAC2BC1225CE34B300169800 /* Transaction */,
@@ -954,11 +974,13 @@
 				FAE84B3C25B401AE0027E215 /* AppView.swift in Sources */,
 				FA020B1F26B6D3DC00369350 /* Account+Alne.swift in Sources */,
 				783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */,
+				FAA2332226E34C14009C9925 /* Settings+Reducer.swift in Sources */,
 				FAEABD3B25C67ED5003D866E /* Scheme.swift in Sources */,
 				FABAA8F126AC137200D7006C /* Account+Tagit.swift in Sources */,
 				783793D325D128F000ECD0D4 /* Editor+Reducer.swift in Sources */,
 				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
 				FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */,
+				FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */,
 				1F8AC4872411EF95006D9551 /* Account+CoreData.swift in Sources */,
 				1F45EBD924235F130058AEDC /* MainView.swift in Sources */,
 				1F2379B723D84C0E00B4E79E /* Piece.swift in Sources */,
@@ -966,6 +988,7 @@
 				789E8E7023EA96FC006D180B /* TransactionList.swift in Sources */,
 				787D3C5F25D8F58B00B52520 /* AccountPicker.swift in Sources */,
 				1F8AC495241210AF006D9551 /* EditorViewModel.swift in Sources */,
+				FAA2331C26E3492A009C9925 /* SettingsView.swift in Sources */,
 				FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */,
 				1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */,
 				FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */,
@@ -1017,6 +1040,7 @@
 				1F39990023D6958700E6BBD9 /* Alfheim.xcdatamodeld in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
 				FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */,
+				FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */,
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
 				FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */,
 				FAEABD3725C67CF7003D866E /* Attachment+CoreData.swift in Sources */,

@@ -24,6 +24,7 @@ enum AppAction {
   case load
   case didLoad([Alfheim.Account])
   case cleanup
+
   case addAccount(presenting: Bool)
   case editAccount(presenting: Bool, Alfheim.Account?)
   case deleteAccount(Alfheim.Account)
@@ -33,6 +34,9 @@ enum AppAction {
 
   case selectMenu(selection: Int?)
   case transaction(Transaction)
+
+  // settings
+  case settings(Settings)
 }
 
 extension AppAction {
