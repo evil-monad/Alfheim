@@ -130,6 +130,7 @@ extension AppState.Overview {
   }
 
   // recent 6 month
+  // TODO: shoule use total balance, not month amount
   var trendUnit: [(name: String, value: Double)] {
     let now = Date()
     return (0..<6).reversed().compactMap { delta in
