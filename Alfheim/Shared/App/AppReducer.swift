@@ -51,9 +51,6 @@ enum AppReducers {
           .eraseToEffect()
           .fireAndForget()
       case .selectMenu(selection: let item):
-        guard state.sidebar.selection?.id != item else {
-          return .none
-        }
         if let id = item, let filter = AppState.QuickFilter(rawValue: id) {
           let allTransactions = state.sidebar.accounts.flatMap {
             $0.transactions(.only)
@@ -64,6 +61,12 @@ enum AppReducers {
         } else {
           state.transaction = AppState.Transaction(filter: .none)
           state.sidebar.selection = nil
+        }
+        return .none
+
+      case .transaction(.didChange(let transactions)):
+        if let selection = state.sidebar.selection {
+          return Effect(value: .selectMenu(selection: selection.id))
         }
         return .none
 

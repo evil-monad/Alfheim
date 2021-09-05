@@ -21,12 +21,17 @@ extension AppReducers {
         guard !transactions.isEmpty else {
           return .none
         }
-        guard !Set(state.filteredTransactions.map(\.id)).intersection(Set(transactions.map(\.id))).isEmpty else {
-          return .none
-        }
+        // don't access filteredTransactions, delete transaction will cause EXC_BAD_INSTRUCTION
+        return .none
       case .flag(let transaction):
         transaction.flagged = !transaction.flagged
         return AppEffects.Transaction.save(in: environment.context)
+          .replaceError(with: false)
+          .ignoreOutput()
+          .fireAndForget()
+
+      case .delete(let transaction):
+        return AppEffects.Transaction.delete(transactions: [transaction], in: environment.context)
           .replaceError(with: false)
           .ignoreOutput()
           .fireAndForget()
