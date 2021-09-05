@@ -22,12 +22,28 @@ enum Transactions {
 extension AppState {
   /// Transaction list view state
   struct Transaction: Equatable {
-    var filter: Transactions.Filter
-
+    private var filter: Transactions.Filter
+    var filteredTransactions: [Alfheim.Transaction]
+    var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction>
 
     init(filter: Transactions.Filter) {
-      print("Transaction init")
       self.filter = filter
+
+      switch filter {
+      case .none:
+        self.filteredTransactions = []
+      case let .list(_, transactions):
+        self.filteredTransactions = transactions
+      case let .accounted(account, interval):
+        self.filteredTransactions = account.transactions(.with)
+          .filter { interval.contains($0.date) }
+      }
+
+      self.sectionedTransactions = IdentifiedArrayOf(uniqueElements: Dictionary(grouping: self.filteredTransactions) { transaction in
+          return transaction.date.start(of: .day)
+        }
+        .map { SectionedTransaction(date: $0, transactions: $1) }
+        .sorted(by: { $0.date > $1.date }))
     }
 
     var title: String {
@@ -40,35 +56,18 @@ extension AppState {
       }
     }
 
-    var filteredTransactions: [Alfheim.Transaction] {
-      switch filter {
-      case .none:
-        return []
-      case let .list(_, transactions):
-        return transactions
-      case let .accounted(account, interval):
-        return account.transactions(.with)
-          .filter { interval.contains($0.date) }
-      }
-    }
-
-    var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction> {
-      IdentifiedArrayOf(uniqueElements: Dictionary(grouping: filteredTransactions) { transaction in
-        return transaction.date.start(of: .day)
-      }
-      .map { SectionedTransaction(date: $0, transactions: $1) }
-      .sorted(by: { $0.date > $1.date }))
-    }
-
     struct SectionedTransaction: Equatable, Identifiable {
       var id: Date {
         return date
       }
       let date: Date
-      let transactions: [Alfheim.Transaction]
+      private let transactions: [Alfheim.Transaction]
+      let viewStates: IdentifiedArrayOf<Transactions.ViewState>
 
-      var viewStates: IdentifiedArrayOf<Transactions.ViewState> {
-        IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false) })
+      init(date: Date, transactions: [Alfheim.Transaction]) {
+        self.date = date
+        self.transactions = transactions
+        self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false) })
       }
     }
   }

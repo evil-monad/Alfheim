@@ -18,9 +18,8 @@ extension AppAction {
     case editTransaction(Alfheim.Transaction)
     case didEditTransaction
 
-    // case delete(in: [Alfheim.Transaction], at: IndexSet)
-    case delete(Alfheim.Transaction)
-    case flag(Alfheim.Transaction)
+    case delete(id: UUID)
+    case flag(id: UUID)
     case showStatistics([Alfheim.Transaction], interval: DateInterval)
     case dimissStatistics
   }

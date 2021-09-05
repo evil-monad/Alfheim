@@ -23,14 +23,20 @@ extension AppReducers {
         }
         // don't access filteredTransactions, delete transaction will cause EXC_BAD_INSTRUCTION
         return .none
-      case .flag(let transaction):
+      case .flag(let id):
+        guard let transaction = state.filteredTransactions.first(where: { $0.id == id }) else {
+          return .none
+        }
         transaction.flagged = !transaction.flagged
         return AppEffects.Transaction.save(in: environment.context)
           .replaceError(with: false)
           .ignoreOutput()
           .fireAndForget()
 
-      case .delete(let transaction):
+      case .delete(let id):
+        guard let transaction = state.filteredTransactions.first(where: { $0.id == id }) else {
+          return .none
+        }
         return AppEffects.Transaction.delete(transactions: [transaction], in: environment.context)
           .replaceError(with: false)
           .ignoreOutput()

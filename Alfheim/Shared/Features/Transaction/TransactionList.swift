@@ -17,22 +17,22 @@ struct TransactionList: View {
       List {
         ForEach(vs.sectionedTransactions) { section in
           Section {
-            ForEach(section.transactions) { transaction in
-              TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: Tagit.alfheim, deposit: false))
+            ForEach(section.viewStates) { transaction in
+              TransactionRow(transaction: transaction)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                   Button(role: .destructive) {
-                    vs.send(.delete(transaction))
+                    vs.send(.delete(id: transaction.id))
                   } label: {
                     Label("Delete", systemImage: "trash")
                   }
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                   Button {
-                    vs.send(.flag(transaction))
+                    vs.send(.flag(id: transaction.id))
                   } label: {
-                    Label(transaction.alne.flagged ? "Unflag" : "Flag", systemImage: transaction.alne.flagged ? "flag.slash" : "flag.fill")
+                    Label(transaction.flagged ? "Unflag" : "Flag", systemImage: transaction.flagged ? "flag.slash" : "flag.fill")
                   }
-                  .tint(transaction.alne.flagged ? .indigo : .blue)
+                  .tint(transaction.flagged ? .indigo : .blue)
                 }
             }
           } header: {
