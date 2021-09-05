@@ -15,13 +15,28 @@ struct TransactionList: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        ForEach(Array(vs.sectionedTransactions.keys).sorted(by: { $0 > $1 }), id: \.self) { date in
+        ForEach(vs.sectionedTransactions) { section in
           Section {
-            ForEach(vs.sectionedTransactions[date] ?? []) { transaction in
-              TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: Tagit.alfheim, deposit: true))
+            ForEach(section.transactions) { transaction in
+              TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: Tagit.alfheim, deposit: false))
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                  Button(role: .destructive) {
+                    vs.send(.delete(transaction))
+                  } label: {
+                    Label("Delete", systemImage: "trash")
+                  }
+                }
+                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                  Button {
+                    vs.send(.flag(transaction))
+                  } label: {
+                    Label(transaction.alne.flagged ? "Unflag" : "Flag", systemImage: transaction.alne.flagged ? "flag.slash" : "flag.fill")
+                  }
+                  .tint(transaction.alne.flagged ? .indigo : .blue)
+                }
             }
           } header: {
-            Text("\(date.formatted(.dateTime.year().day().month()))")
+            Text("\(section.date.formatted(.dateTime.year().day().month()))")
               .font(.subheadline).foregroundColor(.primary)
               .fontWeight(.medium)
               .listRowInsets(EdgeInsets())
@@ -30,6 +45,9 @@ struct TransactionList: View {
       }
       .listStyle(.insetGrouped)
       .navigationTitle(vs.title)
+      .task {
+        vs.send(.fetch)
+      }
     }
   }
 }

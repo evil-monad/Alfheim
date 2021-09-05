@@ -18,7 +18,9 @@ enum AppReducers {
       case .load:
         return AppEffects.Account.load(environment: environment)
       case .didLoad(let accounts):
+        let selection = state.sidebar.selection
         state.sidebar = AppState.Sidebar(accounts: accounts)
+        state.sidebar.selection = selection
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
         return .none
       case .cleanup:
@@ -49,6 +51,9 @@ enum AppReducers {
           .eraseToEffect()
           .fireAndForget()
       case .selectMenu(selection: let item):
+        guard state.sidebar.selection?.id != item else {
+          return .none
+        }
         if let id = item, let filter = AppState.QuickFilter(rawValue: id) {
           let allTransactions = state.sidebar.accounts.flatMap {
             $0.transactions(.only)

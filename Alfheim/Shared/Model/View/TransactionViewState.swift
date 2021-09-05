@@ -15,12 +15,12 @@ enum Transfer {
 }
 
 extension Transactions {
-  struct ViewState: Identifiable {
+  struct ViewState: Equatable, Identifiable {
     let transaction: Alfheim.Transaction
 
     let tag: Alne.Tagit
 
-    let id: String
+    let id: UUID
 
     let title: String
     let source: String
@@ -31,13 +31,14 @@ extension Transactions {
     let currency: Currency
 
     let date: Date
+    let flagged: Bool
   }
 }
 
 extension Transactions.ViewState {
   init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true) {
     self.transaction = transaction
-    self.id = transaction.id.uuidString
+    self.id = transaction.id
     self.tag = tag
 
     self.title = transaction.payee.map { "@\($0)" } ?? transaction.notes
@@ -49,6 +50,7 @@ extension Transactions.ViewState {
     self.currency = Currency(rawValue: Int(transaction.currency)) ?? .cny
 
     self.date = transaction.date
+    self.flagged = transaction.flagged
   }
 
   var forward: Bool {

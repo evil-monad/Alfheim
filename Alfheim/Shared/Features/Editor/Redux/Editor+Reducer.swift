@@ -28,7 +28,7 @@ extension AppReducers {
             .eraseToEffect()
             .fireAndForget()
         case .update:
-          return AppEffects.Transaction.update(transaction: snapshot, context: environment.context)
+          return AppEffects.Transaction.update(snapshot: snapshot, context: environment.context)
             .replaceError(with: false)
             .ignoreOutput()
             .eraseToEffect()

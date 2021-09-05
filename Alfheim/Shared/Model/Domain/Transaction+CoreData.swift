@@ -27,6 +27,7 @@ final class Transaction: NSManagedObject, Identifiable {
 
   @NSManaged var repeated: Int16
   @NSManaged var cleared: Bool
+  @NSManaged var flagged: Bool
 
   // relationship
   @NSManaged var target: Account?
@@ -96,6 +97,7 @@ extension Transaction {
 
     var repeated: Int16
     var cleared: Bool
+    var flagged: Bool
 
     var target: Account?
     var source: Account?
@@ -115,6 +117,7 @@ extension Transaction {
 
       self.repeated = transaction.repeated
       self.cleared = transaction.cleared
+      self.flagged = transaction.flagged
 
       self.target = transaction.target
       self.source = transaction.source
@@ -129,6 +132,7 @@ extension Transaction {
          number: String? = nil,
          repeated: Int16 = 0,
          cleared: Bool = true,
+         flagged: Bool = false,
          target: Account,
          source: Account,
          attachments: [Attachment] = []) {
@@ -142,6 +146,7 @@ extension Transaction {
       self.number = number
       self.repeated = repeated
       self.cleared = cleared
+      self.flagged = flagged
       self.target = target
       self.source = source
       self.attachments = NSSet(object: attachments)
@@ -166,6 +171,7 @@ extension Alfheim.Transaction {
     number = snapshot.number
     repeated = snapshot.repeated
     cleared = snapshot.cleared
+    flagged = snapshot.flagged
     target = snapshot.target
     source = snapshot.source
     //attachments  = snapshot.attachments

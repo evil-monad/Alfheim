@@ -22,6 +22,6 @@ extension AlneWorld where Base: Alfheim.Transaction {
   }
 
   var flagged: Bool {
-    return true
+    base.flagged
   }
 }

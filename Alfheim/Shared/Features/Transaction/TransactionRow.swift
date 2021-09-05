@@ -40,10 +40,19 @@ struct TransactionRow: View {
           .font(.title2).fontWeight(.semibold)
           .foregroundColor(Color(tagit: transaction.tag))
         Spacer()
-        Text(transaction.date.alfheim)
-          .font(.footnote)
-          .foregroundColor(.gray)
-          .lineLimit(1)
+        HStack {
+          Text(transaction.date.alfheim)
+            .font(.footnote)
+            .foregroundColor(.gray)
+            .lineLimit(1)
+
+          if transaction.flagged {
+            Image(systemName: "flag.fill")
+              .resizable()
+              .foregroundColor(.blue)
+              .frame(width: 10, height: 10)
+          }
+        }
       }
     }
     .padding(.vertical, 16)

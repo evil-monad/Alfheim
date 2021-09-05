@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import Combine
+import IdentifiedCollections
 
 enum Transactions {
   enum Filter: Equatable {
@@ -22,6 +23,12 @@ extension AppState {
   /// Transaction list view state
   struct Transaction: Equatable {
     var filter: Transactions.Filter
+
+
+    init(filter: Transactions.Filter) {
+      print("Transaction init")
+      self.filter = filter
+    }
 
     var title: String {
       switch filter {
@@ -45,9 +52,23 @@ extension AppState {
       }
     }
 
-    var sectionedTransactions: [Date: [Alfheim.Transaction]] {
-      return Dictionary(grouping: filteredTransactions) { transaction in
+    var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction> {
+      IdentifiedArrayOf(uniqueElements: Dictionary(grouping: filteredTransactions) { transaction in
         return transaction.date.start(of: .day)
+      }
+      .map { SectionedTransaction(date: $0, transactions: $1) }
+      .sorted(by: { $0.date > $1.date }))
+    }
+
+    struct SectionedTransaction: Equatable, Identifiable {
+      var id: Date {
+        return date
+      }
+      let date: Date
+      let transactions: [Alfheim.Transaction]
+
+      var viewStates: IdentifiedArrayOf<Transactions.ViewState> {
+        IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false) })
       }
     }
   }
