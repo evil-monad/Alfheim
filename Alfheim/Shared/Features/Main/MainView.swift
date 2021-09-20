@@ -166,7 +166,7 @@ struct HomeView: View {
 
         Section {
           OutlineGroup(vs.rootAccounts, children: \.optinalChildren) { account in
-            AccountRow(account: account)
+            AccountRow(store: store, account: account)
               .contextMenu(account.root ? nil : ContextMenu {
                 Button {
                   vs.send(.editAccount(presenting: true, account))
@@ -203,17 +203,19 @@ struct HomeView: View {
 /// Don't use AccountList in Home
 /// children 更新时，不会刷新！
 struct AccountList: View {
+  let store: Store<AppState, AppAction>
   let accounts: [Account]
 
   var body: some View {
     List(accounts, children: \.optinalChildren) { account in
-      AccountRow(account: account)
+      AccountRow(store: store, account: account)
     }
   }
 }
 
 private struct AccountRow: View {
   @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
+  let store: Store<AppState, AppAction>
   let account: Account
 
   var body: some View {
@@ -222,19 +224,26 @@ private struct AccountRow: View {
         Text("\(account.emoji ?? "") \(account.name)")
         Spacer()
       }
-
-      NavigationLink {
-        OverviewView(store: Store(
-            initialState: AppState.Overview(account: account),
-            reducer: AppReducers.Overview.reducer,
-            environment: AppEnvironment(context: viewContext)
-          )
-        )
-      } label: {
-        EmptyView()
+      WithViewStore(store) { vs in
+        NavigationLink(
+          tag: account.id,
+          selection: vs.binding(
+            get: \.selection?.id,
+            send: AppAction.selectAccount(id:)
+          )) {
+            IfLetStore(
+             store.scope(
+               state: \.selection?.value,
+               action: AppAction.overview
+             ),
+             then: OverviewView.init(store:)
+            )
+          } label: {
+            EmptyView()
+          }
+          .buttonStyle(.plain)
+          .opacity(account.hasChildren ? 0: 1)
       }
-      .buttonStyle(.plain)
-      .opacity(account.hasChildren ? 0: 1)
     }
   }
 }
@@ -289,8 +298,12 @@ struct GridMenu: View {
           NavigationRow(
             tag: item.id,
             selection: vs.binding(get: \.selection?.id, send: { AppAction.selectMenu(selection: $0) })) {
-              TransactionList(
-                store: store.scope(state: \.transaction, action: AppAction.transaction)
+              IfLetStore(
+               store.scope(
+                state: \.sidebar.selection?.value,
+                action: AppAction.transaction
+               ),
+               then: TransactionList.init(store:)
               )
           } label: {
             MenuRow(item: item, isSelected: vs.selection?.id == item.id)

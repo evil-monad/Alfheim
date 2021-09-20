@@ -12,10 +12,10 @@ import ComposableArchitecture
 
 struct AppState: Equatable {
   var overviews: IdentifiedArrayOf<Overview> = []
+  var selection: Identified<Overview.ID, Overview?>?
   //var editor = Editor()
 
   var sidebar: Sidebar = Sidebar()
-  var transaction = Transaction(filter: .none)
 
   var settings = Settings()
 
@@ -60,14 +60,23 @@ extension AppState {
 
     var accounts: [Alfheim.Account]
     var menus: IdentifiedArrayOf<MenuItem>
-    var selection: Identified<MenuItem.ID, MenuItem?>?
+    var selection: Identified<MenuItem.ID, Transaction?>?
 
-    init(accounts: [Alfheim.Account] = []) {
+    init(accounts: [Alfheim.Account] = [], selectionMenu: MenuItem.ID? = nil) {
       self.accounts = accounts
 
       let allTransactions = accounts.flatMap {
         $0.transactions(.only)
       }
+
+      if let id = selectionMenu, let filter = AppState.QuickFilter(rawValue: id) {
+        let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
+        let transaction = AppState.Transaction(filter: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+        self.selection = Identified(transaction, id: id)
+      } else {
+        self.selection = nil
+      }
+
       var uniqueTransactions: [Alfheim.Transaction] = []
       var filter = Set<UUID>()
       for transaction in allTransactions {

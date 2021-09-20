@@ -14,21 +14,11 @@ extension AppReducers {
     static let reducer = Reducer<AppState.Transaction, AppAction.Transaction, AppEnvironment> { state, action, environment in
       struct FetchRequestId: Hashable {}
       switch action {
-      case .fetch:
-        return AppEffects.Transaction.fetch(environment: environment)
-          .cancellable(id: FetchRequestId())
-      case .didChange(let transactions):
-        guard !transactions.isEmpty else {
-          return .none
-        }
-        // don't access filteredTransactions, delete transaction will cause EXC_BAD_INSTRUCTION
-        return .none
       case let .toggleFlag(flag, id):
         return AppEffects.Transaction.updateFlag(flag, with: id, context: environment.context)
           .replaceError(with: false)
           .ignoreOutput()
           .fireAndForget()
-
       case .delete(let id):
         return AppEffects.Transaction.delete(with: [id], in: environment.context)
           .replaceError(with: false)

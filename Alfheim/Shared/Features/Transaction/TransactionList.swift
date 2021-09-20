@@ -47,9 +47,6 @@ struct TransactionList: View {
       }
       .listStyle(.insetGrouped)
       .navigationTitle(vs.title)
-      .task {
-        vs.send(.fetch)
-      }
     }
   }
 }

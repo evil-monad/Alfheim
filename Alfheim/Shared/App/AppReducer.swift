@@ -14,14 +14,19 @@ import IdentifiedCollections
 enum AppReducers {
   static let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
+      struct CancelId: Hashable {}
       switch action {
       case .load:
-        return AppEffects.Account.load(environment: environment)
-      case .didLoad(let accounts):
-        let selection = state.sidebar.selection
-        state.sidebar = AppState.Sidebar(accounts: accounts)
-        state.sidebar.selection = selection
+        return Effect.merge(
+          AppEffects.Account.load(environment: environment),
+          AppEffects.Transaction.fetch(environment: environment)
+        )
+      case .accountDidChange(let accounts):
+        state.sidebar = AppState.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
+        if let id = state.selection?.id, let overview = state.overviews[id: id] {
+          state.selection = Identified(overview, id: id)
+        }
         return .none
       case .cleanup:
         return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
@@ -56,15 +61,22 @@ enum AppReducers {
             $0.transactions(.only)
           }
           let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
-          state.transaction = AppState.Transaction(filter: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
-          state.sidebar.selection = Identified(nil, id: id)
+          let transaction = AppState.Transaction(filter: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+          state.sidebar.selection = Identified(transaction, id: id)
         } else {
-          state.transaction = AppState.Transaction(filter: .none)
           state.sidebar.selection = nil
+          return .cancel(id: CancelId())
         }
         return .none
 
-      case .transaction(.didChange(let transactions)):
+      case let .selectAccount(id: id):
+        if let id = id, let overview = state.overviews[id: id] {
+          state.selection = Identified(overview, id: id)
+        } else {
+          state.selection = nil
+        }
+        return .none
+      case .transactionDidChange(let transactions):
         if let selection = state.sidebar.selection {
           return Effect(value: .selectMenu(selection: selection.id))
         }
@@ -74,26 +86,44 @@ enum AppReducers {
         return .none
       }
     },
-    AppReducers.Overview.reducer.forEach(
-      state: \AppState.overviews,
-      action: /AppAction.overview(id:action:),
-      environment: { $0 }
-    ),
+    AppReducers.Overview.reducer
+      .optional()
+      .pullback(state: \Identified.value, action: .self, environment: { $0 })
+      .optional()
+      .pullback(
+        state: \AppState.selection,
+        action: /AppAction.overview,
+        environment: { $0 }
+      ),
     AppReducers.AccountEditor.reducer.pullback(
       state: \AppState.accountEditor,
       action: /AppAction.accountEditor,
       environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
     ),
-    AppReducers.Transaction.reducer.pullback(
-      state: \AppState.transaction,
-      action: /AppAction.transaction,
-      environment: { $0 }
+    AppReducers.Transaction.reducer
+      .optional()
+      .pullback(state: \Identified.value, action: .self, environment: { $0 })
+      .optional()
+      .pullback(
+        state: \AppState.sidebar.selection,
+        action: /AppAction.transaction,
+        environment: { $0 }
     ),
     AppReducers.Settings.reducer.pullback(
       state: \AppState.settings,
       action: /AppAction.settings,
       environment: { $0 }
     )
+//    AppReducers.Overview.reducer.forEach(
+//      state: \AppState.overviews,
+//      action: /AppAction.overview(id:action:),
+//      environment: { $0 }
+//    ),
+//    AppReducers.Transaction.reducer.pullback(
+//      state: \AppState.transaction,
+//      action: /AppAction.transaction,
+//      environment: { $0 }
+//    ),
 //    AppReducers.Editor.reducer
 //      .pullback(
 //        state: \.editor,

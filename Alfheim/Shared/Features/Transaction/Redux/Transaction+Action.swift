@@ -10,11 +10,6 @@ import Foundation
 
 extension AppAction {
   enum Transaction {
-    case fetch
-    case didChange([Alfheim.Transaction])
-    case loadAll
-    case didLoadAll([Alfheim.Transaction])
-
     case editTransaction(Alfheim.Transaction)
     case didEditTransaction
 

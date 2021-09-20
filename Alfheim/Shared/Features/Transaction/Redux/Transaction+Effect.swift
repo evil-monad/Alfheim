@@ -142,7 +142,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func fetch(environment: AppEnvironment) -> Effect<AppAction.Transaction, Never> {
+    static func fetch(environment: AppEnvironment) -> Effect<AppAction, Never> {
       guard let context = environment.context else {
         return Effect.none
       }
@@ -151,7 +151,7 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { transactions in
-          .didChange(transactions)
+          .transactionDidChange(transactions)
         }
         .eraseToEffect()
     }

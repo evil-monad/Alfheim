@@ -10,7 +10,8 @@ import Foundation
 
 enum AppAction {
   //case overview(index: Int, action: Overview)
-  case overview(id: UUID, action: Overview)
+  case overview(Overview)
+  case selectAccount(id: UUID?)
   //case editor(Editor)
 //  case settings(Settings)
 //  case transactions(Transactions)
@@ -22,8 +23,11 @@ enum AppAction {
 
   // Account
   case load
-  case didLoad([Alfheim.Account])
+  case accountDidChange([Alfheim.Account])
   case cleanup
+
+  // Transaction
+  case transactionDidChange([Alfheim.Transaction])
 
   case addAccount(presenting: Bool)
   case editAccount(presenting: Bool, Alfheim.Account?)
