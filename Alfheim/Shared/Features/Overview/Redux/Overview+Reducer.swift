@@ -27,6 +27,12 @@ extension AppReducers {
           state: \.editor,
           action: /AppAction.Overview.editor,
           environment: { AppEnvironment.Editor(validator: Validator(), context: $0.context) }
+        ),
+      AppReducers.Transaction.reducer
+        .pullback(
+          state: \.transactions,
+          action: /AppAction.Overview.transaction,
+          environment: { $0 }
         )
     )
   }

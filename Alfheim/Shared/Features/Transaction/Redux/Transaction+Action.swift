@@ -19,7 +19,7 @@ extension AppAction {
     case didEditTransaction
 
     case delete(id: UUID)
-    case flag(id: UUID)
+    case toggleFlag(flag: Bool, id: UUID)
     case showStatistics([Alfheim.Transaction], interval: DateInterval)
     case dimissStatistics
   }

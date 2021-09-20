@@ -32,11 +32,13 @@ extension Transactions {
 
     let date: Date
     let flagged: Bool
+
+    let ommitedDate: Bool
   }
 }
 
 extension Transactions.ViewState {
-  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true) {
+  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true, ommitedDate: Bool = false) {
     self.transaction = transaction
     self.id = transaction.id
     self.tag = tag
@@ -51,6 +53,8 @@ extension Transactions.ViewState {
 
     self.date = transaction.date
     self.flagged = transaction.flagged
+
+    self.ommitedDate = ommitedDate
   }
 
   var forward: Bool {

@@ -15,7 +15,7 @@ enum Transactions {
   enum Filter: Equatable {
     case none
     case list(title: String, transactions: [Alfheim.Transaction])
-    case accounted(account: Alfheim.Account, interval: DateInterval)
+    case accounted(account: Alfheim.Account, interval: DateInterval?)
   }
 }
 
@@ -23,27 +23,34 @@ extension AppState {
   /// Transaction list view state
   struct Transaction: Equatable {
     private var filter: Transactions.Filter
-    var filteredTransactions: [Alfheim.Transaction]
     var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction>
 
     init(filter: Transactions.Filter) {
       self.filter = filter
 
+      let filteredTransactions: [Alfheim.Transaction]
+
       switch filter {
       case .none:
-        self.filteredTransactions = []
+        filteredTransactions = []
       case let .list(_, transactions):
-        self.filteredTransactions = transactions
+        filteredTransactions = transactions
       case let .accounted(account, interval):
-        self.filteredTransactions = account.transactions(.with)
-          .filter { interval.contains($0.date) }
+        if let interval = interval {
+          filteredTransactions = account.transactions(.with)
+            .filter { interval.contains($0.date) }
+        } else {
+          filteredTransactions = account.transactions(.with)
+        }
       }
 
-      self.sectionedTransactions = IdentifiedArrayOf(uniqueElements: Dictionary(grouping: self.filteredTransactions) { transaction in
-          return transaction.date.start(of: .day)
-        }
-        .map { SectionedTransaction(date: $0, transactions: $1) }
-        .sorted(by: { $0.date > $1.date }))
+      let sections = Dictionary(grouping: filteredTransactions) { transaction in
+        return transaction.date.start(of: .day)
+      }
+      .map { SectionedTransaction(date: $0, transactions: $1) }
+      .sorted(by: { $0.date > $1.date })
+
+      self.sectionedTransactions = IdentifiedArray(uniqueElements: sections)
     }
 
     var title: String {
@@ -51,8 +58,17 @@ extension AppState {
       case .none: return ""
       case .list(let title, _):
         return title
-      case .accounted(account: let account, _):
-        return account.name
+      case let .accounted(_, interval):
+        if let interval = interval {
+          if Calendar.autoupdatingCurrent.isDate(interval.start, equalTo: interval.end.advanced(by: -0.0001), toGranularity: .month) {
+            // the same month
+            return "\(interval.start.formatted(.dateTime.month(.wide).year()))"
+          } else {
+            return "Transactions"
+          }
+        } else {
+          return "All Transactions"
+        }
       }
     }
 
@@ -61,13 +77,13 @@ extension AppState {
         return date
       }
       let date: Date
-      private let transactions: [Alfheim.Transaction]
+      //private let transactions: [Alfheim.Transaction]
       let viewStates: IdentifiedArrayOf<Transactions.ViewState>
 
       init(date: Date, transactions: [Alfheim.Transaction]) {
         self.date = date
-        self.transactions = transactions
-        self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false) })
+        //self.transactions = transactions
+        self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
       }
     }
   }

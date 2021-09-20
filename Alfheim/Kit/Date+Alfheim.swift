@@ -43,11 +43,11 @@ extension Date {
     }
   }
 
-  func start(of component: Component, calendar: Calendar = Calendar.current) -> Date {
+  func start(of component: Component, calendar: Calendar = Calendar.autoupdatingCurrent) -> Date {
     interval(of: component, calendar: calendar)!.start
   }
 
-  func next(of component: Component, calendar: Calendar = .current) -> Date {
+  func next(of component: Component, calendar: Calendar = .autoupdatingCurrent) -> Date {
     switch component {
     case .day:
       return calendar.date(byAdding: .hour, value: 24, to: self)!
@@ -74,5 +74,11 @@ extension Date {
 
   var alfheim: String {
     return "\(formatted(.dateTime.day().month().hour().minute()))"
+  }
+}
+
+extension DateInterval {
+  static var infinited: DateInterval {
+    DateInterval(start: Date.distantPast, end: Date.distantFuture)
   }
 }

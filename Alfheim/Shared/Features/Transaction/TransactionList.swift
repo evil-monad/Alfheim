@@ -28,19 +28,21 @@ struct TransactionList: View {
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                   Button {
-                    vs.send(.flag(id: transaction.id))
+                    vs.send(.toggleFlag(flag: !transaction.flagged, id: transaction.id))
                   } label: {
                     Label(transaction.flagged ? "Unflag" : "Flag", systemImage: transaction.flagged ? "flag.slash" : "flag.fill")
                   }
                   .tint(transaction.flagged ? .indigo : .blue)
                 }
             }
+            .listRowInsets(EdgeInsets.default)
           } header: {
             Text("\(section.date.formatted(.dateTime.year().day().month()))")
-              .font(.subheadline).foregroundColor(.primary)
               .fontWeight(.medium)
-              .listRowInsets(EdgeInsets())
+              .font(.subheadline).foregroundColor(.primary)
+              .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0))
           }
+          .textCase(nil)
         }
       }
       .listStyle(.insetGrouped)

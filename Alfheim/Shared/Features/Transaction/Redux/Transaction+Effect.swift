@@ -58,6 +58,41 @@ extension AppEffects {
       .eraseToEffect()
     }
 
+    static func updateFlag(_ flag: Bool, with id: UUID, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
+        return Effect.none
+      }
+
+      let persistence = Persistences.Transaction(context: context)
+      if let object = persistence.transaction(withID: id) {
+        object.flagged = flag
+      } else {
+        fatalError("Should not be here!")
+      }
+
+      return Future { promise in
+        do {
+          try persistence.save()
+          promise(.success(true))
+        } catch {
+          print("Update transaction failed: \(error)")
+          promise(.failure(error as NSError))
+        }
+      }
+      .eraseToEffect()
+    }
+
+    static func delete(with ids: [UUID], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+      guard let context = context, !ids.isEmpty else {
+        return Effect.none
+      }
+
+      let persistence = Persistences.Transaction(context: context)
+      let transactions = ids.compactMap { persistence.transaction(withID: $0) }
+
+      return delete(transactions: transactions, in: context)
+    }
+
     static func delete(transactions: [Alfheim.Transaction], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none

@@ -20,5 +20,6 @@ extension AppAction {
     case onDetailed(Bool)
 
     case editor(Editor)
+    case transaction(Transaction)
   }
 }

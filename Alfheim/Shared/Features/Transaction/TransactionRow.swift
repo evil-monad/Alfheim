@@ -45,6 +45,7 @@ struct TransactionRow: View {
             .font(.footnote)
             .foregroundColor(.gray)
             .lineLimit(1)
+            .opacity(transaction.ommitedDate ? 0.0 : 1.0)
 
           if transaction.flagged {
             Image(systemName: "flag.fill")

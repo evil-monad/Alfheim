@@ -21,41 +21,45 @@ extension AppState {
 
     var isTransactionListActive = false
 
-    var account: Alfheim.Account
     var editor: Editor
+    var transactions: AppState.Transaction
     var timeInterval: DateInterval?
 
     var id: UUID
+    var account: Alfheim.Account
 
     init(account: Alfheim.Account) {
-      print("init")
+      print("init \(account.name)")
       self.account = account
       self.id = account.id
       self.editor = Editor(target: account)
-      let now = Date()
+      let interval: DateInterval?
       switch account.alne.group {
       case .income, .expenses:
-        self.timeInterval = DateInterval(start: now.start(of: .month), end: now.end(of: .month))
+        let now = Date()
+        interval = DateInterval(start: now.start(of: .month), end: now.end(of: .month))
       default:
-        self.timeInterval = nil
+        interval = nil
       }
+      self.timeInterval = interval
+      self.transactions = Transaction(filter: .accounted(account: account, interval: interval))
     }
 
-    private var transactions: [Alfheim.Transaction] {
+    private var allTransactions: [Alfheim.Transaction] {
       account.transactions()
     }
 
     private var periodTransactions: [Alfheim.Transaction] {
       if let timeInterval = timeInterval {
-        return transactions
+        return allTransactions
           .filter { $0.date >= timeInterval.start && $0.date <= timeInterval.end }
       } else {
-        return transactions
+        return allTransactions
       }
     }
 
     var periodText: String {
-      timeInterval?.end.formatted(.dateTime.month()) ?? ""
+      timeInterval?.start.formatted(.dateTime.month()) ?? ""
     }
 
     var balance: Double {
@@ -85,7 +89,7 @@ extension AppState.Overview {
 
   // prefix 5
   var recentTransactions: [Alfheim.Transaction] {
-    Array(transactions.sorted(by: { $0.date > $1.date }).prefix(5))
+    Array(allTransactions.sorted(by: { $0.date > $1.date }).prefix(5))
   }
 }
 
@@ -140,7 +144,7 @@ extension AppState.Overview {
       let start = month.start(of: .month)
       let end = month.end(of: .month)
 
-      let transactions = transactions
+      let transactions = allTransactions
         .filter { $0.date >= start && $0.date <= end }
       let balances = balances(account: account, transactions: transactions)
       let name = start.formatted(.dateTime.month())

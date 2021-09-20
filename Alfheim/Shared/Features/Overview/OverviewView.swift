@@ -64,8 +64,17 @@ private struct TransactionSection: View {
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
-        Header("Transactions")
-          .listRowInsets(EdgeInsets())
+        NavigationLink(
+          destination: TransactionList(
+            store: store.scope(
+              state: \.transactions,
+              action: AppAction.Overview.transaction
+            )
+          )
+        ) {
+          Header("Transactions")
+        }
+        .listRowInsets(.headerInsets)
       }
     }
   }
@@ -92,7 +101,7 @@ private struct StatisticsSection: View {
         }
       } header: {
         Header("Statistics")
-          .listRowInsets(EdgeInsets())
+          .listRowInsets(.headerInsets)
       }
     }
   }
@@ -107,11 +116,17 @@ private struct Header: View {
 
   var body: some View {
     HStack {
-      text.font(.subheadline).foregroundColor(.primary)
+      text.fontWeight(.medium).font(.subheadline)
       Spacer()
       Image(systemName: "chevron.right")
     }
+    .foregroundColor(.primary)
+    .textCase(nil)
   }
+}
+
+fileprivate extension EdgeInsets {
+  static let headerInsets = EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0)
 }
 
 ////#if DEBUG
