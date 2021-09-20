@@ -37,7 +37,7 @@ struct Slice: View {
       .scaleEffect(fill ? 1 : 0)
       .animation(Animation.spring().delay(Double(index) * 0.05), value: fill)
       .onAppear() {
-        fill.toggle()
+        fill = true
       }
   }
 }

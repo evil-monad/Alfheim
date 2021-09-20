@@ -69,7 +69,7 @@ struct Line: View {
             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
             .animation(.easeOut(duration: 1.2), value: fill)
         .onAppear() {
-          fill.toggle()
+          fill = true
         }
         .drawingGroup()
       if showsIndicator {
