@@ -178,14 +178,18 @@ extension CloudStore {
 extension CloudStore {
   func checkAccount() {
     Task {
-      let status = try await CKContainer.default().accountStatus()
-      switch status {
-      case .available:
-        print("iCloud account available")
-      case .noAccount, .couldNotDetermine, .restricted, .temporarilyUnavailable:
-        print("iCloud account not available")
-      @unknown default:
-        print("iCloud account not available")
+      do {
+        let status = try await CKContainer.default().accountStatus()
+        switch status {
+        case .available:
+          print("iCloud account available")
+        case .noAccount, .couldNotDetermine, .restricted, .temporarilyUnavailable:
+          print("iCloud account not available")
+        @unknown default:
+          print("iCloud account not available")
+        }
+      } catch {
+        print("Check account status failed: \(error)")
       }
     }
     /*
