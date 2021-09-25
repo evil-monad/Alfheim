@@ -21,7 +21,7 @@ struct AccountEditor: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        Section(header: Spacer()) {
+        Section {
           TextField(
             "Name",
             text: vs.binding(get: \.name, send: { .changed(.name($0)) })

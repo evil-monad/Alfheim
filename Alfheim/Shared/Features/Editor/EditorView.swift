@@ -21,7 +21,7 @@ struct EditorView: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        Section(header: Spacer()) {
+        Section {
           HStack {
             AccountPicker(
               vs.state.groupedRootAccounts,
