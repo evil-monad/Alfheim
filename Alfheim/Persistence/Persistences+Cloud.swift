@@ -11,11 +11,20 @@ import CoreData
 
 extension Persistences {
   struct Cloud {
-    let store: CloudKit
-    let context: NSManagedObjectContext?
+    let store: CloudStore
+    private(set) var context: NSManagedObjectContext?
 
     init() {
-      store = CloudKit()
+      store = CloudStore()
+      context = store.persistentContainer?.viewContext
+    }
+
+    func save() {
+      store.saveContext()
+    }
+
+    mutating func reloadContainer() {
+      store.reloadContainer()
       context = store.persistentContainer?.viewContext
     }
   }

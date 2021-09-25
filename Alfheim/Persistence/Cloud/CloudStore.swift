@@ -9,11 +9,13 @@
 import Foundation
 import CoreData
 import CloudKit
+import StoreKit
+import SwiftUI
 
-class CloudKit {
+final class CloudStore {
   private(set) var persistentContainer: NSPersistentCloudKitContainer?
 
-  func reloadPersistentContainer() {
+  func reloadContainer() {
     let persistent = UserDefaults.standard.bool(forKey: "com.alfheim.cloudkit.enabled")
     persistentContainer = initializeContainer(persistent: persistent)
   }
@@ -32,9 +34,14 @@ class CloudKit {
       description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
 
       if !persistent {
-        description.cloudKitContainerOptions = nil
+        description.cloudKitContainerOptions = nil // Close cloud sync
       } else {
         // TBD: Should set cloudKitContainerOptions here?
+        /*
+        let id = "iCloud.com.xspyhack.Alfheim"
+        let options = NSPersistentCloudKitContainerOptions(containerIdentifier: id)
+        description.cloudKitContainerOptions = options
+         */
       }
     }
 
@@ -77,17 +84,25 @@ class CloudKit {
     container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     container.viewContext.automaticallyMergesChangesFromParent = true
 
-    /*
+    // 避免在数据导入期间应用程序产生的数据变化和导入数据不一致而可能出现的不稳定情况
     do {
         try container.viewContext.setQueryGenerationFrom(.current)
     } catch {
         fatalError("###\(#function): Failed to pin viewContext to the current generation:\(error)")
-    }*/
+    }
 
     // Observe Core Data remote change notifications.
     NotificationCenter.default.addObserver(
-      self, selector: #selector(CloudKit.storeRemoteChange(_:)),
-      name: .NSPersistentStoreRemoteChange, object: container)
+      self, selector: #selector(CloudStore.storeRemoteChange(_:)),
+      name: .NSPersistentStoreRemoteChange,
+      object: container
+    )
+
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(CloudStore.storeEventChange(_:)),
+      name: NSPersistentCloudKitContainer.eventChangedNotification,
+      object: container
+    )
 
     return container
   }
@@ -104,7 +119,6 @@ class CloudKit {
   }
 
   // MARK: - Core Data Saving support
-
   func saveContext () {
     guard let context = persistentContainer?.viewContext, context.hasChanges else {
       return
@@ -136,15 +150,47 @@ class CloudKit {
 
 // MARK: - Notifications
 
-extension CloudKit {
-    /**
-     Handle remote store change notifications (.NSPersistentStoreRemoteChange).
-     */
-    @objc
-    func storeRemoteChange(_ notification: Notification) {
-      print("###\(#function): Merging changes from the other persistent store coordinator.")
+extension CloudStore {
+  /**
+   Handle remote store change notifications (.NSPersistentStoreRemoteChange).
+   */
+  @objc
+  private func storeRemoteChange(_ notification: Notification) {
+    print("###\(#function): Merging changes from the other persistent store coordinator.")
 
-      // Process persistent history to merge changes from other
-      // TODO: - alex
+    // Process persistent history to merge changes from other
+    // TODO: - alex
+  }
+
+  @objc
+  private func storeEventChange(_ notification: Notification) {
+    guard let userInfo = notification.userInfo,
+          let event = userInfo["event"] as? NSPersistentCloudKitContainer.Event
+    else {
+      return
     }
+
+    print("CloudKit container event changed: \(event.type)")
+  }
+}
+
+// MARK: Other Check
+extension CloudStore {
+  func checkAccount() {
+    Task {
+      let status = try await CKContainer.default().accountStatus()
+      switch status {
+      case .available:
+        print("iCloud account available")
+      case .noAccount, .couldNotDetermine, .restricted, .temporarilyUnavailable:
+        print("iCloud account not available")
+      @unknown default:
+        print("iCloud account not available")
+      }
+    }
+    /*
+    CKContainer.default().accountStatus { status, error in
+
+    }*/
+  }
 }

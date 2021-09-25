@@ -13,6 +13,7 @@ extension Persistences {
   struct Bootstrap {
     let context: NSManagedObjectContext
 
+    /// Setup default accounts
     func start() throws {
       // Creating default accounts
 

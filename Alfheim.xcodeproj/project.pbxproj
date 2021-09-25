@@ -121,7 +121,7 @@
 		FACF2A7A23FFD2B7003BB675 /* AccountDetailList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */; };
 		FAE1DF982441C77700741C86 /* Persistences+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE1DF972441C77700741C86 /* Persistences+Attachment.swift */; };
 		FAE434D624B815580035F0ED /* TransactionListViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE434D524B815580035F0ED /* TransactionListViewState.swift */; };
-		FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE84B3025B2E24E0027E215 /* CloudKit.swift */; };
+		FAE84B3125B2E24E0027E215 /* CloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE84B3025B2E24E0027E215 /* CloudStore.swift */; };
 		FAE84B3825B3F8730027E215 /* FlipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE84B3725B3F8730027E215 /* FlipView.swift */; };
 		FAE84B3C25B401AE0027E215 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE84B3B25B401AE0027E215 /* AppView.swift */; };
 		FAEAA03F24612645003C6799 /* emojis.json in Resources */ = {isa = PBXBuildFile; fileRef = FAEAA03E24612644003C6799 /* emojis.json */; };
@@ -294,7 +294,7 @@
 		FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailList.swift; sourceTree = "<group>"; };
 		FAE1DF972441C77700741C86 /* Persistences+Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Attachment.swift"; sourceTree = "<group>"; };
 		FAE434D524B815580035F0ED /* TransactionListViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewState.swift; sourceTree = "<group>"; };
-		FAE84B3025B2E24E0027E215 /* CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKit.swift; sourceTree = "<group>"; };
+		FAE84B3025B2E24E0027E215 /* CloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStore.swift; sourceTree = "<group>"; };
 		FAE84B3725B3F8730027E215 /* FlipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipView.swift; sourceTree = "<group>"; };
 		FAE84B3B25B401AE0027E215 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		FAEAA03E24612644003C6799 /* emojis.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emojis.json; sourceTree = "<group>"; };
@@ -748,7 +748,7 @@
 		FAE84B4125C676D30027E215 /* Cloud */ = {
 			isa = PBXGroup;
 			children = (
-				FAE84B3025B2E24E0027E215 /* CloudKit.swift */,
+				FAE84B3025B2E24E0027E215 /* CloudStore.swift */,
 			);
 			path = Cloud;
 			sourceTree = "<group>";
@@ -1051,7 +1051,7 @@
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
 				FA020B4026D1F4B500369350 /* Navigation.swift in Sources */,
 				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
-				FAE84B3125B2E24E0027E215 /* CloudKit.swift in Sources */,
+				FAE84B3125B2E24E0027E215 /* CloudStore.swift in Sources */,
 				FA020B2726BFD50D00369350 /* TrendView.swift in Sources */,
 				FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */,
 				1F2379B323D83BD900B4E79E /* Bar.swift in Sources */,

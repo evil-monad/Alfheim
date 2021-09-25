@@ -20,5 +20,9 @@ extension Persistences {
 
       // preview memory data
     }
+
+    func save() {
+      store.saveContext()
+    }
   }
 }
