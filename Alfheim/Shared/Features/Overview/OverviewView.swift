@@ -118,7 +118,7 @@ private struct Header: View {
     HStack {
       text.fontWeight(.medium).font(.subheadline)
       Spacer()
-      Image(systemName: "chevron.right")
+      Image(systemName: "chevron.forward")
     }
     .foregroundColor(.primary)
     .textCase(nil)

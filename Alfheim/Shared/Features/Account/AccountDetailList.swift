@@ -26,7 +26,7 @@ struct AccountDetailList: View {
             Spacer()
             if tag == self.account.tag {
               Image(systemName: "checkmark")
-                .font(Font.body.bold())
+                .font(.body.bold())
                 .foregroundColor(.blue)
             }
           }

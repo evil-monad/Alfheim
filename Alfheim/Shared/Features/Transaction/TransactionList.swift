@@ -19,6 +19,7 @@ struct TransactionList: View {
           Section {
             ForEach(section.viewStates) { transaction in
               TransactionRow(transaction: transaction)
+                .disclosure(alignment: .center)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                   Button(role: .destructive) {
                     vs.send(.delete(id: transaction.id))

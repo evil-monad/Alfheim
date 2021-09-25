@@ -118,6 +118,8 @@
 		FAC2BC3B25CED0B400169800 /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC3825CED0B300169800 /* ComposerView.swift */; };
 		FAC2BC3C25CED0B400169800 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC3925CED0B300169800 /* EditorView.swift */; };
 		FAC7622226DB79960020A8C9 /* Transaction+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC7622126DB79960020A8C9 /* Transaction+Environment.swift */; };
+		FAC88CD026FEFFF2005177BA /* DisclosureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */; };
+		FAC88CD226FF0EE7005177BA /* AccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC88CD126FF0EE7005177BA /* AccessoryView.swift */; };
 		FACF2A7A23FFD2B7003BB675 /* AccountDetailList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */; };
 		FAE1DF982441C77700741C86 /* Persistences+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE1DF972441C77700741C86 /* Persistences+Attachment.swift */; };
 		FAE434D624B815580035F0ED /* TransactionListViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE434D524B815580035F0ED /* TransactionListViewState.swift */; };
@@ -291,6 +293,8 @@
 		FAC2BC3825CED0B300169800 /* ComposerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
 		FAC2BC3925CED0B300169800 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		FAC7622126DB79960020A8C9 /* Transaction+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Environment.swift"; sourceTree = "<group>"; };
+		FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureRow.swift; sourceTree = "<group>"; };
+		FAC88CD126FF0EE7005177BA /* AccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryView.swift; sourceTree = "<group>"; };
 		FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailList.swift; sourceTree = "<group>"; };
 		FAE1DF972441C77700741C86 /* Persistences+Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Attachment.swift"; sourceTree = "<group>"; };
 		FAE434D524B815580035F0ED /* TransactionListViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewState.swift; sourceTree = "<group>"; };
@@ -578,16 +582,12 @@
 				1F91C9F02419DF1F00B552E7 /* Publishers+FetchRequest.swift */,
 				FAF3803A2414C5D600C592D4 /* Publishers+CoreData.swift */,
 				FABEBB8F245DB2CE00637226 /* View+Modal.swift */,
-				FABEBB79245C0B4C00637226 /* Grid.swift */,
-				FA020B3F26D1F4B300369350 /* Navigation.swift */,
+				FAC88CCE26FEFFC0005177BA /* Views */,
 				FA5F768524261F7D00277B6E /* InputTextField.swift */,
 				FA66C7D82427B40000462C46 /* SearchBar.swift */,
-				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
-				FA014087240C01B800F6FE92 /* EmojiPicker.swift */,
 				FABEBB8B245D826300637226 /* TextAlert.swift */,
 				78CB4D5924713D3500FF9A54 /* OverlaySheet.swift */,
 				FAEAA0402461278F003C6799 /* Emojis.swift */,
-				FA7368E52687441200BCF659 /* Hierarchy.swift */,
 				FA42CB3C26AD0B1D0080C9C3 /* Optional+Empty.swift */,
 				FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */,
 			);
@@ -735,6 +735,20 @@
 				FAC7622126DB79960020A8C9 /* Transaction+Environment.swift */,
 			);
 			path = Redux;
+			sourceTree = "<group>";
+		};
+		FAC88CCE26FEFFC0005177BA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FABEBB79245C0B4C00637226 /* Grid.swift */,
+				FA020B3F26D1F4B300369350 /* Navigation.swift */,
+				FA7368E52687441200BCF659 /* Hierarchy.swift */,
+				FA014087240C01B800F6FE92 /* EmojiPicker.swift */,
+				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
+				FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */,
+				FAC88CD126FF0EE7005177BA /* AccessoryView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FAE84B3625B3F8600027E215 /* Components */ = {
@@ -1024,6 +1038,7 @@
 				1F91CA06241A4CF900B552E7 /* Transaction+Effect.swift in Sources */,
 				FA014086240B8F7100F6FE92 /* AccountViewModel.swift in Sources */,
 				FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */,
+				FAC88CD026FEFFF2005177BA /* DisclosureRow.swift in Sources */,
 				FAEAA0412461278F003C6799 /* Emojis.swift in Sources */,
 				782403F823F83A6600478338 /* AccountDetail.swift in Sources */,
 				1F39995C23D7FCF500E6BBD9 /* Sector.swift in Sources */,
@@ -1038,6 +1053,7 @@
 				789E8E6923E80FFC006D180B /* Transaction.swift in Sources */,
 				FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */,
 				1F39990023D6958700E6BBD9 /* Alfheim.xcdatamodeld in Sources */,
+				FAC88CD226FF0EE7005177BA /* AccessoryView.swift in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
 				FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */,
 				FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */,
