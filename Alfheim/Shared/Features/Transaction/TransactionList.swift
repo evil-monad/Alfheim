@@ -60,8 +60,9 @@ struct TransactionList: View {
               }
             }
           } label: {
-            Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+            Label("Filter", systemImage: vs.filter != .none ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
           }
+          .disabled(!vs.isFilterEnabled)
         }
       }
     }
