@@ -230,19 +230,20 @@ private struct AccountRow: View {
           selection: vs.binding(
             get: \.selection?.id,
             send: AppAction.selectAccount(id:)
-          )) {
-            IfLetStore(
-             store.scope(
-               state: \.selection?.value,
-               action: AppAction.overview
-             ),
-             then: OverviewView.init(store:)
-            )
-          } label: {
-            EmptyView()
-          }
-          .buttonStyle(.plain)
-          .opacity(account.hasChildren ? 0: 1)
+          )
+        ) {
+          IfLetStore(
+            store.scope(
+              state: \.selection?.value,
+              action: AppAction.overview
+            ),
+            then: OverviewView.init(store:)
+          )
+        } label: {
+          EmptyView()
+        }
+        .buttonStyle(.plain)
+        .opacity(account.hasChildren ? 0: 1)
       }
     }
   }
