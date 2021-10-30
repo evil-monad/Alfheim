@@ -17,6 +17,9 @@ extension AppReducers {
         case .toggleNewTransaction(let presenting):
           state.editor.reset(.new)
           state.isEditorPresented = presenting
+
+        case .showTrasactions(let active):
+          state.isTransactionListActive = active
         default:
           ()
         }

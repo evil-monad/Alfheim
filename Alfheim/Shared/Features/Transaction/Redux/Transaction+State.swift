@@ -10,39 +10,31 @@ import Foundation
 import CoreData
 import Combine
 import IdentifiedCollections
-
-enum Transactions {
-  enum Filter: Equatable {
-    case none
-    case list(title: String, transactions: [Alfheim.Transaction])
-    case accounted(account: Alfheim.Account, interval: DateInterval?)
-  }
-}
+import SwiftUI // LocalizedStringKey
 
 extension AppState {
   /// Transaction list view state
-  struct Transaction: Equatable {
-    private var filter: Transactions.Filter
+  struct Transaction: Equatable, Identifiable {
+    private(set) var source: Transactions.Source
+
+    let id: String
+    var filter: Filter = .none
+
     var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction>
 
-    init(filter: Transactions.Filter) {
-      self.filter = filter
+    init(source: Transactions.Source) {
+      self.source = source
 
-      let filteredTransactions: [Alfheim.Transaction]
-
-      switch filter {
+      switch source {
       case .none:
-        filteredTransactions = []
-      case let .list(_, transactions):
-        filteredTransactions = transactions
-      case let .accounted(account, interval):
-        if let interval = interval {
-          filteredTransactions = account.transactions(.with)
-            .filter { interval.contains($0.date) }
-        } else {
-          filteredTransactions = account.transactions(.with)
-        }
+        id = UUID().uuidString
+      case .list(title: let title, _):
+        id = title
+      case .accounted(account: let account, _):
+        id = account.id.uuidString
       }
+
+      let filteredTransactions: [Alfheim.Transaction] = source.filteredTransactions
 
       let sections = Dictionary(grouping: filteredTransactions) { transaction in
         return transaction.date.start(of: .day)
@@ -54,7 +46,7 @@ extension AppState {
     }
 
     var title: String {
-      switch filter {
+      switch source {
       case .none: return ""
       case .list(let title, _):
         return title
@@ -72,6 +64,36 @@ extension AppState {
       }
     }
 
+    var isFilterEnabled: Bool {
+      return source != .none
+    }
+
+    var filteredSectionedTransactions: IdentifiedArrayOf<SectionedTransaction> {
+      let filteredTransactions: [Alfheim.Transaction]
+      switch filter {
+      case .none:
+        filteredTransactions = source.filteredTransactions
+      case .week:
+        let timeInterval: DateInterval = Date().interval(of: .week)
+        filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
+      case .month:
+        let timeInterval: DateInterval = Date().interval(of: .week)
+        filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
+      case .year:
+        let timeInterval: DateInterval = Date().interval(of: .week)
+        filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
+      case .all:
+        filteredTransactions = source.allTransactions
+      }
+
+      let sections = Dictionary(grouping: filteredTransactions) { transaction in
+        return transaction.date.start(of: .day)
+      }.map { AppState.Transaction.SectionedTransaction(date: $0, transactions: $1) }
+      .sorted(by: { $0.date > $1.date })
+
+      return IdentifiedArray(uniqueElements: sections)
+    }
+
     struct SectionedTransaction: Equatable, Identifiable {
       var id: Date {
         return date
@@ -85,6 +107,55 @@ extension AppState {
         //self.transactions = transactions
         self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
       }
+    }
+  }
+}
+
+enum Transactions {
+  enum Source: Equatable {
+    case none
+    case list(title: String, transactions: [Alfheim.Transaction])
+    case accounted(account: Alfheim.Account, interval: DateInterval?)
+
+    var filteredTransactions: [Alfheim.Transaction] {
+      switch self {
+      case .none:
+        return []
+      case let .list(_, transactions):
+        return transactions
+      case let .accounted(account, interval):
+        if let interval = interval {
+          return account.transactions(.with)
+            .filter { interval.contains($0.date) }
+        } else {
+          return account.transactions(.with)
+        }
+      }
+    }
+
+    var allTransactions: [Alfheim.Transaction] {
+      switch self {
+      case .none:
+        return []
+      case let .list(_, transactions):
+        return transactions
+      case let .accounted(account, _):
+        return account.transactions(.with)
+      }
+    }
+  }
+}
+
+extension AppState.Transaction {
+  enum Filter: LocalizedStringKey, CaseIterable, Hashable {
+    case none = "None"
+    case week = "This Week"
+    case month = "This Month"
+    case year = "This Year"
+    case all = "All"
+
+    var name: LocalizedStringKey {
+      rawValue
     }
   }
 }

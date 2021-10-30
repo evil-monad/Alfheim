@@ -15,7 +15,7 @@ struct TransactionList: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        ForEach(vs.sectionedTransactions) { section in
+        ForEach(vs.filteredSectionedTransactions) { section in
           Section {
             ForEach(section.viewStates) { transaction in
               TransactionRow(transaction: transaction)
@@ -48,6 +48,22 @@ struct TransactionList: View {
       }
       .listStyle(.insetGrouped)
       .navigationTitle(vs.title)
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Menu {
+            Picker(
+              selection: vs.binding(get: \.filter, send: AppAction.Transaction.filter),
+              label: Text("Period")
+            ) {
+              ForEach(AppState.Transaction.Filter.allCases, id: \.self) { filter in
+                Text(filter.name).tag(filter)
+              }
+            }
+          } label: {
+            Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+          }
+        }
+      }
     }
   }
 }

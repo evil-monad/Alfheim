@@ -17,5 +17,7 @@ extension AppAction {
     case toggleFlag(flag: Bool, id: UUID)
     case showStatistics([Alfheim.Transaction], interval: DateInterval)
     case dimissStatistics
+
+    case filter(selection: AppState.Transaction.Filter)
   }
 }

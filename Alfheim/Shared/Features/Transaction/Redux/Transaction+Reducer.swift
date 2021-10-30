@@ -24,6 +24,8 @@ extension AppReducers {
           .replaceError(with: false)
           .ignoreOutput()
           .fireAndForget()
+      case .filter(let selection):
+        state.filter = selection
       default:
         break
       }

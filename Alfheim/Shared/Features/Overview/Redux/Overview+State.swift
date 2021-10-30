@@ -42,7 +42,7 @@ extension AppState {
         interval = nil
       }
       self.timeInterval = interval
-      self.transactions = Transaction(filter: .accounted(account: account, interval: interval))
+      self.transactions = Transaction(source: .accounted(account: account, interval: interval))
     }
 
     private var allTransactions: [Alfheim.Transaction] {

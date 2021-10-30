@@ -71,7 +71,7 @@ extension AppState {
 
       if let id = selectionMenu, let filter = AppState.QuickFilter(rawValue: id) {
         let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
-        let transaction = AppState.Transaction(filter: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+        let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
         self.selection = Identified(transaction, id: id)
       } else {
         self.selection = nil

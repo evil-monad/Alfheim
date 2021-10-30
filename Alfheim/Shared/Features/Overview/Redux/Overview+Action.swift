@@ -21,5 +21,7 @@ extension AppAction {
 
     case editor(Editor)
     case transaction(Transaction)
+
+    case showTrasactions(Bool)
   }
 }

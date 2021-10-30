@@ -66,6 +66,12 @@ extension Date {
 }
 
 extension Date {
+  func interval(of component: Component, calendar: Calendar = .autoupdatingCurrent) -> DateInterval {
+    DateInterval(start: start(of: component, calendar: calendar), end: end(of: component))
+  }
+}
+
+extension Date {
   var string: String {
     let formatter = DateFormatter()
     formatter.dateFormat = "MMM dd HH:mm"
