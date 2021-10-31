@@ -29,7 +29,7 @@ struct SettingsView: View {
             NavigationLink {
               AppearanceView()
             } label: {
-              Text("Dark Mode").fontWeight(.medium)
+              Text("Appearance").fontWeight(.medium)
             }
 
             NavigationLink {
