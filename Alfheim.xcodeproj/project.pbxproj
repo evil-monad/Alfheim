@@ -106,6 +106,7 @@
 		FAA64134272E531C00B36DDF /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64133272E531C00B36DDF /* HelpView.swift */; };
 		FAA64136272E534200B36DDF /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64135272E534200B36DDF /* AppearanceView.swift */; };
 		FAA64139272E5DDD00B36DDF /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64138272E5DDD00B36DDF /* Appearance.swift */; };
+		FAA6413B272E64C300B36DDF /* CloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6413A272E64C300B36DDF /* CloudView.swift */; };
 		FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */; };
 		FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */; };
 		FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */; };
@@ -286,6 +287,7 @@
 		FAA64133272E531C00B36DDF /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		FAA64135272E534200B36DDF /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
 		FAA64138272E5DDD00B36DDF /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		FAA6413A272E64C300B36DDF /* CloudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudView.swift; sourceTree = "<group>"; };
 		FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Preview.swift"; sourceTree = "<group>"; };
 		FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Bootstrap.swift"; sourceTree = "<group>"; };
 		FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 			children = (
 				FAA64137272E58AE00B36DDF /* Redux */,
 				FAA2331B26E3492A009C9925 /* SettingsView.swift */,
+				FAA6413A272E64C300B36DDF /* CloudView.swift */,
 				FAA64135272E534200B36DDF /* AppearanceView.swift */,
 				FAA6412F272E52CE00B36DDF /* AppIconView.swift */,
 				FAA64131272E530F00B36DDF /* AboutView.swift */,
@@ -1042,6 +1045,7 @@
 				783793D525D128F000ECD0D4 /* Editor+Action.swift in Sources */,
 				FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */,
 				FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */,
+				FAA6413B272E64C300B36DDF /* CloudView.swift in Sources */,
 				FAEABD4525CE2B41003D866E /* Effect.swift in Sources */,
 				1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */,
 				FA020B3226C8E67C00369350 /* Snapshot.swift in Sources */,

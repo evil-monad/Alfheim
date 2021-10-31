@@ -19,7 +19,7 @@ struct SettingsView: View {
         List {
           Section {
             NavigationLink {
-              AppearanceView()
+              CloudView()
             } label: {
               Text("Cloud").fontWeight(.medium)
             }
