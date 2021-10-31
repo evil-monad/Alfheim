@@ -57,7 +57,7 @@ struct Line: View {
     ZStack {
       if fill && showsBackground {
         closedPath
-          .fill(LinearGradient(gradient: Gradient(colors: [.ah01, Color(.systemBackground)]), startPoint: .bottom, endPoint: .top))
+          .fill(LinearGradient(gradient: Gradient(colors: [.ah01, Color(UIColor.secondarySystemGroupedBackground)]), startPoint: .bottom, endPoint: .top))
           .rotationEffect(.degrees(180), anchor: .center)
           .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
           .transition(.opacity)
