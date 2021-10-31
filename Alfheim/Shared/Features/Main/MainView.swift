@@ -348,7 +348,7 @@ struct MenuRow: View {
     }
     .padding(12)
     .background(Color(UIColor.systemGray4).opacity(isSelected ? 1.0 : 0.0))
-    .background(.background)
+    .background(Color(UIColor.secondarySystemGroupedBackground))
     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
   }
 }
