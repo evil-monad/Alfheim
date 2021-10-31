@@ -12,5 +12,10 @@ extension AppState {
   /// Settings view state
   struct Settings: Equatable {
     var isPresented: Bool = false
+
+    var appIcon: AppIcon = .primary
+    var appVersion: String {
+      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+    }
   }
 }

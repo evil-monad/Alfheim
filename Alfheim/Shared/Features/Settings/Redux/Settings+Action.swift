@@ -11,5 +11,7 @@ import Foundation
 extension AppAction {
   enum Settings {
     case sheet(isPresented: Bool)
+
+    case selectAppIcon(AppIcon)
   }
 }

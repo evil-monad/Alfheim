@@ -66,7 +66,8 @@ struct Sidebar: View {
           ToolbarItemGroup(placement: .bottomBar) {
             HStack {
               Button {
-                vs.send(.cleanup)
+                //vs.send(.cleanup)
+                vs.send(.settings(.sheet(isPresented: true)))
               } label: {
                 Image(systemName: "gear")
               }
@@ -139,8 +140,15 @@ struct ContentView: View {
             mode: .new
           )
         }
-        .sheet(isPresented: vs.binding(get: \.settings.isPresented, send: { .settings(.sheet(isPresented: $0)) })) {
-          SettingsView()
+        .sheet(
+          isPresented: vs.binding(get: \.settings.isPresented, send: { .settings(.sheet(isPresented: $0)) })
+        ) {
+          SettingsView(
+            store: store.scope(
+              state: \.settings,
+              action: AppAction.settings
+            )
+          )
         }
     }
   }

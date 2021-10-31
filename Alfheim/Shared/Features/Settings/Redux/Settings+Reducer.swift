@@ -16,6 +16,8 @@ extension AppReducers {
         switch action {
         case .sheet(let presented):
           state.isPresented = presented
+        case .selectAppIcon(let icon):
+          state.appIcon = icon
         }
         return .none
       }

@@ -101,6 +101,10 @@
 		FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331D26E349CF009C9925 /* Settings+State.swift */; };
 		FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331F26E34BB7009C9925 /* Settings+Action.swift */; };
 		FAA2332226E34C14009C9925 /* Settings+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2332126E34C14009C9925 /* Settings+Reducer.swift */; };
+		FAA64130272E52CE00B36DDF /* AppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6412F272E52CE00B36DDF /* AppIconView.swift */; };
+		FAA64132272E530F00B36DDF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64131272E530F00B36DDF /* AboutView.swift */; };
+		FAA64134272E531C00B36DDF /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64133272E531C00B36DDF /* HelpView.swift */; };
+		FAA64136272E534200B36DDF /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA64135272E534200B36DDF /* AppearanceView.swift */; };
 		FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */; };
 		FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */; };
 		FABAA8EF26ABFB4500D7006C /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */; };
@@ -276,6 +280,10 @@
 		FAA2331D26E349CF009C9925 /* Settings+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+State.swift"; sourceTree = "<group>"; };
 		FAA2331F26E34BB7009C9925 /* Settings+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Action.swift"; sourceTree = "<group>"; };
 		FAA2332126E34C14009C9925 /* Settings+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Reducer.swift"; sourceTree = "<group>"; };
+		FAA6412F272E52CE00B36DDF /* AppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconView.swift; sourceTree = "<group>"; };
+		FAA64131272E530F00B36DDF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		FAA64133272E531C00B36DDF /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
+		FAA64135272E534200B36DDF /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
 		FABAA8E926ABF8C400D7006C /* Persistences+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Preview.swift"; sourceTree = "<group>"; };
 		FABAA8EB26ABF8F600D7006C /* Persistences+Bootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Bootstrap.swift"; sourceTree = "<group>"; };
 		FABAA8EE26ABFB4500D7006C /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
@@ -629,12 +637,24 @@
 		FAA2331A26E3491A009C9925 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				FAA64137272E58AE00B36DDF /* Redux */,
 				FAA2331B26E3492A009C9925 /* SettingsView.swift */,
+				FAA64135272E534200B36DDF /* AppearanceView.swift */,
+				FAA6412F272E52CE00B36DDF /* AppIconView.swift */,
+				FAA64131272E530F00B36DDF /* AboutView.swift */,
+				FAA64133272E531C00B36DDF /* HelpView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		FAA64137272E58AE00B36DDF /* Redux */ = {
+			isa = PBXGroup;
+			children = (
 				FAA2331D26E349CF009C9925 /* Settings+State.swift */,
 				FAA2331F26E34BB7009C9925 /* Settings+Action.swift */,
 				FAA2332126E34C14009C9925 /* Settings+Reducer.swift */,
 			);
-			path = Settings;
+			path = Redux;
 			sourceTree = "<group>";
 		};
 		FABAA8ED26ABFB0500D7006C /* Preview */ = {
@@ -1002,6 +1022,7 @@
 				789E8E7023EA96FC006D180B /* TransactionList.swift in Sources */,
 				787D3C5F25D8F58B00B52520 /* AccountPicker.swift in Sources */,
 				1F8AC495241210AF006D9551 /* EditorViewModel.swift in Sources */,
+				FAA64136272E534200B36DDF /* AppearanceView.swift in Sources */,
 				FAA2331C26E3492A009C9925 /* SettingsView.swift in Sources */,
 				FABAA8EC26ABF8F600D7006C /* Persistences+Bootstrap.swift in Sources */,
 				1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */,
@@ -1020,6 +1041,7 @@
 				FAEABD4525CE2B41003D866E /* Effect.swift in Sources */,
 				1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */,
 				FA020B3226C8E67C00369350 /* Snapshot.swift in Sources */,
+				FAA64134272E531C00B36DDF /* HelpView.swift in Sources */,
 				1F39995E23D805C600E6BBD9 /* PieChart.swift in Sources */,
 				FAF380392414BA2400C592D4 /* Persistences.swift in Sources */,
 				1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */,
@@ -1055,6 +1077,7 @@
 				1F39990023D6958700E6BBD9 /* Alfheim.xcdatamodeld in Sources */,
 				FAC88CD226FF0EE7005177BA /* AccessoryView.swift in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
+				FAA64132272E530F00B36DDF /* AboutView.swift in Sources */,
 				FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */,
 				FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */,
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
@@ -1099,6 +1122,7 @@
 				78CB4D5A24713D3500FF9A54 /* OverlaySheet.swift in Sources */,
 				FA020B2326BFC64800369350 /* Pie+Histogram.swift in Sources */,
 				FAE1DF982441C77700741C86 /* Persistences+Attachment.swift in Sources */,
+				FAA64130272E52CE00B36DDF /* AppIconView.swift in Sources */,
 				FABEBB7A245C0B4C00637226 /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
