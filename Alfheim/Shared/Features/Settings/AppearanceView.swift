@@ -34,11 +34,7 @@ struct AppearanceView: View {
           .onTapGesture {
             selectedAppearance = 2
           }
-
-      } header: {
-        Text("Theme")
       }
-      .padding(.vertical, 12)
     }
     .onChange(of: selectedAppearance) { value in
       Appearance.shared.overrideDisplayMode()
