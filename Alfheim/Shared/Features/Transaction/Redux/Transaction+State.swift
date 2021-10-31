@@ -20,8 +20,6 @@ extension AppState {
     let id: String
     var filter: Filter = .none
 
-    var sectionedTransactions: IdentifiedArrayOf<SectionedTransaction>
-
     init(source: Transactions.Source) {
       self.source = source
 
@@ -33,16 +31,6 @@ extension AppState {
       case .accounted(account: let account, _):
         id = account.id.uuidString
       }
-
-      let filteredTransactions: [Alfheim.Transaction] = source.filteredTransactions
-
-      let sections = Dictionary(grouping: filteredTransactions) { transaction in
-        return transaction.date.start(of: .day)
-      }
-      .map { SectionedTransaction(date: $0, transactions: $1) }
-      .sorted(by: { $0.date > $1.date })
-
-      self.sectionedTransactions = IdentifiedArray(uniqueElements: sections)
     }
 
     var title: String {
@@ -68,7 +56,7 @@ extension AppState {
       return source != .none
     }
 
-    var filteredSectionedTransactions: IdentifiedArrayOf<SectionedTransaction> {
+    var filteredTransactions: IdentifiedArrayOf<SectionedTransaction> {
       let filteredTransactions: [Alfheim.Transaction]
       switch filter {
       case .none:
@@ -77,10 +65,10 @@ extension AppState {
         let timeInterval: DateInterval = Date().interval(of: .week)
         filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
       case .month:
-        let timeInterval: DateInterval = Date().interval(of: .week)
+        let timeInterval: DateInterval = Date().interval(of: .month)
         filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
       case .year:
-        let timeInterval: DateInterval = Date().interval(of: .week)
+        let timeInterval: DateInterval = Date().interval(of: .year)
         filteredTransactions = source.allTransactions.filter { timeInterval.contains($0.date) }
       case .all:
         filteredTransactions = source.allTransactions

@@ -15,7 +15,7 @@ struct TransactionList: View {
   var body: some View {
     WithViewStore(store) { vs in
       List {
-        ForEach(vs.filteredSectionedTransactions) { section in
+        ForEach(vs.filteredTransactions) { section in
           Section {
             ForEach(section.viewStates) { transaction in
               TransactionRow(transaction: transaction)
