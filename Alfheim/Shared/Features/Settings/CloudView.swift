@@ -10,7 +10,17 @@ import SwiftUI
 
 struct CloudView: View {
   var body: some View {
-    Text("Cloud sync!")
+    List {
+      Section {
+        Toggle(isOn: .constant(true)) {
+          Text("Cloud sync")
+        }
+      } footer: {
+        Text("Keep your data up-to-date between your iPhone, iPad and Mac. Data is securely store on iCloud.")
+      }
+    }
+    .listStyle(.insetGrouped)
+    .navigationTitle("Cloud")
   }
 }
 

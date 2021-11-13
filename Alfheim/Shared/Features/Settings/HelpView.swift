@@ -10,7 +10,11 @@ import SwiftUI
 
 struct HelpView: View {
   var body: some View {
-    Text("mailto: [xspyhack@gmail.com](mailto:xspyhack@gmail.com)")
+    List {
+      Text("mailto: [xspyhack@gmail.com](mailto:xspyhack@gmail.com)")
+    }
+    .listStyle(.insetGrouped)
+    .navigationTitle("Help")
   }
 }
 

@@ -10,7 +10,11 @@ import SwiftUI
 
 struct AboutView: View {
   var body: some View {
-    Text("**Clic** is not a goal, it is a way of life.")
+    List {
+      Text("**Clic** is not a goal, it is a way of life.")
+    }
+    .listStyle(.insetGrouped)
+    .navigationTitle("About")
   }
 }
 
