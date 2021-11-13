@@ -15,8 +15,8 @@ extension Publishers {
     typealias Output = [Result]
     typealias Failure = NSError
 
-    let fetchRequest: NSFetchRequest<Result>
-    let context: NSManagedObjectContext
+    private let fetchRequest: NSFetchRequest<Result>
+    private let context: NSManagedObjectContext
 
     init(fetchRequest: NSFetchRequest<Result>, context: NSManagedObjectContext) {
       self.fetchRequest = fetchRequest
@@ -24,7 +24,7 @@ extension Publishers {
     }
 
     func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-      let subscription = FetchRequestSubscription(subscriber: subscriber, fetchRequest: fetchRequest, context: context)
+      let subscription = FetchRequestSubscription(subscriber: subscriber, request: fetchRequest, context: context)
       subscriber.receive(subscription: subscription)
     }
   }
@@ -38,17 +38,17 @@ extension Publishers {
 
     private var subscriber: Subscriber?
     private var context: NSManagedObjectContext?
-    private var fetchRequest: NSFetchRequest<Result>?
+    private var request: NSFetchRequest<Result>?
     private var controller: NSFetchedResultsController<Result>?
 
-    init(subscriber: Subscriber, fetchRequest: NSFetchRequest<Result>, context: NSManagedObjectContext) {
+    init(subscriber: Subscriber, request: NSFetchRequest<Result>, context: NSManagedObjectContext) {
       self.subscriber = subscriber
-      self.fetchRequest = fetchRequest
+      self.request = request
       self.context = context
     }
 
     func request(_ demand: Subscribers.Demand) {
-      guard demand > 0, let subscriber = subscriber, let fetchRequest = fetchRequest, let context = context else {
+      guard demand > 0, let subscriber = subscriber, let fetchRequest = request, let context = context else {
         return
       }
 
@@ -74,7 +74,7 @@ extension Publishers {
     func cancel() {
       subscriber = nil
       controller = nil
-      fetchRequest = nil
+      request = nil
       context = nil
     }
 

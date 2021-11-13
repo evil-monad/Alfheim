@@ -14,25 +14,25 @@ struct AppearanceView: View {
   var body: some View {
     List {
       Section {
-        Text("System Default")
-          .modifier(CheckmarkModifier(checked: selectedAppearance == 0))
+        Text("System")
+          .modifier(CheckmarkModifier(checked: selectedAppearance == Theme.system.rawValue))
           .contentShape(Rectangle())
           .onTapGesture {
-            selectedAppearance = 0
+            selectedAppearance = Theme.system.rawValue
           }
 
-        Text("Light Mode")
-          .modifier(CheckmarkModifier(checked: selectedAppearance == 1))
+        Text("Light")
+          .modifier(CheckmarkModifier(checked: selectedAppearance == Theme.light.rawValue))
           .contentShape(Rectangle())
           .onTapGesture {
-            selectedAppearance = 1
+            selectedAppearance = Theme.light.rawValue
           }
 
-        Text("Dark Mode")
-          .modifier(CheckmarkModifier(checked: selectedAppearance == 2))
+        Text("Dark")
+          .modifier(CheckmarkModifier(checked: selectedAppearance == Theme.dark.rawValue))
           .contentShape(Rectangle())
           .onTapGesture {
-            selectedAppearance = 2
+            selectedAppearance = Theme.dark.rawValue
           }
       }
     }

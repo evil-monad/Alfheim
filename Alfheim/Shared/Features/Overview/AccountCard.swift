@@ -16,7 +16,7 @@ struct AccountCard: View {
   private let cornerRadius: CGFloat = 20
 
   var body: some View {
-    WithViewStore(store) { viewStore in
+    WithViewStore(store.stateless) { viewStore in
       FlipView(visibleSide: flipped ? .back : .front) {
         Front(store: store, onFlip: { flip(true) })
           .background(

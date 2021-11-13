@@ -10,7 +10,13 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class Appearance {
+enum Theme: Int, CaseIterable {
+  case system
+  case light
+  case dark
+}
+
+final class Appearance {
   static let shared = Appearance()
   
   @AppStorage("selectedAppearance") var selectedAppearance = 0
