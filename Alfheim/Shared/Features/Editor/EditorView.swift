@@ -8,6 +8,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Domain
 
 struct EditorView: View {
   let store: Store<AppState.Editor, AppAction.Editor>
@@ -134,7 +135,7 @@ struct EditorView: View {
     }
   }
 
-  private func selectedAccount(_ account: Account?) -> some View {
+  private func selectedAccount(_ account: Domain.Account.Summary?) -> some View {
     let padding = account != nil ? 8.0 : 0
     return Text(account?.fullName ?? "Select Account")
       .font(account != nil ? .callout : .body)

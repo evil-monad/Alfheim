@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreData
+import Domain
 
 enum Transfer {
   case `in`
@@ -16,7 +16,7 @@ enum Transfer {
 
 extension Transactions {
   struct ViewState: Equatable, Identifiable {
-    let transaction: Alfheim.Transaction
+    let transaction: Domain.Transaction
 
     let tag: Alne.Tagit
 
@@ -38,18 +38,18 @@ extension Transactions {
 }
 
 extension Transactions.ViewState {
-  init(transaction: Alfheim.Transaction, tag: Alne.Tagit, deposit: Bool = true, ommitedDate: Bool = false) {
+  init(transaction: Domain.Transaction, tag: Alne.Tagit, deposit: Bool = true, ommitedDate: Bool = false) {
     self.transaction = transaction
     self.id = transaction.id
     self.tag = tag
 
     self.title = transaction.payee.map { "@\($0)" } ?? transaction.notes
-    self.source = transaction.source?.fullName ?? ""
-    self.target = transaction.target?.fullName ?? ""
+    self.source = transaction.source.fullName
+    self.target = transaction.target.fullName
     self.deposit = deposit
 
     self.amount = transaction.amount
-    self.currency = Currency(rawValue: Int(transaction.currency)) ?? .cny
+    self.currency = transaction.currency
 
     self.date = transaction.date
     self.flagged = transaction.flagged
@@ -81,37 +81,45 @@ extension Transactions.ViewState {
 }
 
 extension Transactions.ViewState {
-  static func mock(cxt: NSManagedObjectContext) -> Transactions.ViewState {
-    let transaction = Alfheim.Transaction(context: cxt)
-    transaction.id = UUID()
-    transaction.amount = 23.0
-    transaction.currency = Int16(Currency.cny.rawValue)
+  static func mock() -> Transactions.ViewState {
+    let source = Domain.Account.Summary(
+      id: UUID(),
+      name: "Checking",
+      introduction: "Assets",
+      group: .assets,
+      currency: .cny,
+      tag: "Tag",
+      emoji: "🍉",
+      descendants: nil,
+      ancestors: nil
+    )
 
-    transaction.date = Date(timeIntervalSince1970: 1582726132.0)
-    transaction.notes = "Apple"
-    transaction.payee = "McDonalds"
-    transaction.number = "233"
-    transaction.repeated = 0
-    transaction.cleared = true
+    let target = Domain.Account.Summary(
+      id: UUID(),
+      name: "Salary",
+      introduction: "Income",
+      group: .income,
+      currency: .cny,
+      tag: "Salary",
+      emoji: "💵",
+      descendants: nil,
+      ancestors: nil
+    )
 
-    let source = Alfheim.Account(context: cxt)
-    source.currency = Int16(Currency.cny.rawValue)
-    source.emoji = "🍉"
-    source.introduction = "Assets"
-    source.name = "Checking"
-    source.group = "Assets"
-    source.id = UUID()
-
-    let target = Alfheim.Account(context: cxt)
-    target.currency = Int16(Currency.cny.rawValue)
-    target.emoji = "💵"
-    target.introduction = "Income"
-    target.name = "Salary"
-    target.group = "Income"
-    target.id = UUID()
-
-    transaction.source = source
-    transaction.target = target
+    let transaction = Domain.Transaction(
+      id: UUID(),
+      amount: 23.0,
+      currency: .cny,
+      date: Date(timeIntervalSince1970: 1582726132.0),
+      notes: "Apple",
+      payee: "McDonalds",
+      number: "233",
+      repeated: 0,
+      cleared: true,
+      flagged: true,
+      target: target,
+      source: source,
+      attachments: [])
 
     return Transactions.ViewState(transaction: transaction, tag: .alfheim)
   }

@@ -9,12 +9,14 @@
 import Foundation
 import Combine
 import CoreData
+import Database
+import Domain
 
 extension Persistences {
   struct Transaction {
     let context: NSManagedObjectContext
 
-    typealias FetchRequestPublisher = Publishers.FetchRequest<Alfheim.Transaction>
+    typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Transaction>
 
     init(context: NSManagedObjectContext) {
       self.context = context
@@ -36,9 +38,9 @@ extension Persistences {
       context.delete(object)
     }
 
-    func transaction(withID id: UUID) -> Alfheim.Transaction? {
+    func transaction(withID id: UUID) -> Database.Transaction? {
       let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-      guard let object = context.registeredObjects(Alfheim.Transaction.self, with: predicate).first else {
+      guard let object = context.registeredObjects(Database.Transaction.self, with: predicate).first else {
         return nil
       }
       return object
@@ -48,40 +50,40 @@ extension Persistences {
 
     func fetchRequestPublisher(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "date", ascending: false)],
                                predicate: NSPredicate? = nil) -> FetchRequestPublisher {
-      let fetchRequest = NSFetchRequest<Alfheim.Transaction>(entityName: "Transaction")
+      let fetchRequest: NSFetchRequest<Database.Transaction> = Database.Transaction.fetchRequest()
       fetchRequest.sortDescriptors = sortDescriptors
       fetchRequest.predicate = predicate
       return Publishers.FetchRequest(fetchRequest: fetchRequest, context: context)
     }
 
-    func fetchAllPublisher() -> AnyPublisher<[Alfheim.Transaction], NSError> {
+    func fetchAllPublisher() -> AnyPublisher<[Database.Transaction], NSError> {
       fetchRequestPublisher()
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Alfheim.Transaction], NSError> {
+    func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Database.Transaction], NSError> {
       fetchRequestPublisher(predicate: predicate)
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(withName name: String) -> AnyPublisher<Alfheim.Transaction, NSError> {
+    func fetchPublisher(withName name: String) -> AnyPublisher<Database.Transaction, NSError> {
       let predicate = NSPredicate(format: "name == %@", name)
       return fetchPublisher(with: predicate).compactMap { $0.first }
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(withID id: UUID) -> AnyPublisher<Alfheim.Transaction, NSError> {
+    func fetchPublisher(withID id: UUID) -> AnyPublisher<Database.Transaction, NSError> {
       let predicate = NSPredicate(format: "id == %@", id as CVarArg)
       return fetchPublisher(with: predicate).compactMap { $0.first }
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(from start: Date, closedTo end: Date = Date()) -> AnyPublisher<[Alfheim.Transaction], NSError> {
+    func fetchPublisher(from start: Date, closedTo end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
       let predicate = NSPredicate(format: "date >= %@ AND date <= %@", start as NSDate, end as NSDate)
       return fetchPublisher(with: predicate)
     }
 
-    func fetchPublisher(from start: Date, to end: Date = Date()) -> AnyPublisher<[Alfheim.Transaction], NSError> {
+    func fetchPublisher(from start: Date, to end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
       let predicate = NSPredicate(format: "date >= %@ AND date < %@", start as NSDate, end as NSDate)
       return fetchPublisher(with: predicate)
     }

@@ -10,17 +10,27 @@ import Foundation
 import Combine
 import ComposableArchitecture
 import CoreData
+import Database
+import Domain
 
 extension AppEffects {
   enum Transaction {
-    static func create(snapshot: Alfheim.Transaction.Snapshot, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func create(model: Domain.Transaction, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
 
       let persistence = Persistences.Transaction(context: context)
-      let object = Alfheim.Transaction(context: context)
-      object.fill(snapshot)
+      let entity = Database.Transaction(context: context)
+      entity.fill(model)
+
+      let controller = Persistences.Account(context: context)
+      if let target = controller.account(withID: model.target.id) {
+        entity.fill(target: target)
+      }
+      if let source = controller.account(withID: model.source.id) {
+        entity.fill(source: source)
+      }
 
       return Future { promise in
         do {
@@ -34,14 +44,22 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func update(snapshot: Alfheim.Transaction.Snapshot, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func update(model: Domain.Transaction, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
 
       let persistence = Persistences.Transaction(context: context)
-      if let object = persistence.transaction(withID: snapshot.id) {
-        object.fill(snapshot)
+      if let entity = persistence.transaction(withID: model.id) {
+        entity.fill(model)
+
+        let controller = Persistences.Account(context: context)
+        if let target = controller.account(withID: model.target.id) {
+          entity.fill(target: target)
+        }
+        if let source = controller.account(withID: model.source.id) {
+          entity.fill(source: source)
+        }
       } else {
         fatalError("Should not be here!")
       }
@@ -93,7 +111,7 @@ extension AppEffects {
       return delete(transactions: transactions, in: context)
     }
 
-    static func delete(transactions: [Alfheim.Transaction], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func delete(transactions: [Database.Transaction], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -151,7 +169,7 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { transactions in
-          .transactionDidChange(transactions)
+          AppAction.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
         }
         .eraseToEffect()
     }

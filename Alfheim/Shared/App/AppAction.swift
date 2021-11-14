@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Domain
 
 enum AppAction {
   //case overview(index: Int, action: Overview)
@@ -23,15 +24,15 @@ enum AppAction {
 
   // Account
   case load
-  case accountDidChange([Alfheim.Account])
+  case accountDidChange([Domain.Account])
   case cleanup
 
   // Transaction
-  case transactionDidChange([Alfheim.Transaction])
+  case transactionDidChange([Domain.Transaction])
 
   case addAccount(presenting: Bool)
-  case editAccount(presenting: Bool, Alfheim.Account?)
-  case deleteAccount(Alfheim.Account)
+  case editAccount(presenting: Bool, Domain.Account?)
+  case deleteAccount(Domain.Account)
 
   case newTransaction
   case accountEditor(AccountEditor)

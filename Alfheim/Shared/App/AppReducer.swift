@@ -10,6 +10,8 @@ import Foundation
 import CasePaths
 import ComposableArchitecture
 import IdentifiedCollections
+import Database
+import Domain
 
 enum AppReducers {
   static let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
@@ -60,7 +62,7 @@ enum AppReducers {
           let allTransactions = state.sidebar.accounts.flatMap {
             $0.transactions(.only)
           }
-          let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
+          let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
           let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
           state.sidebar.selection = Identified(transaction, id: id)
         } else {

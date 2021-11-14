@@ -11,6 +11,7 @@ import CoreData
 import Combine
 import IdentifiedCollections
 import SwiftUI // LocalizedStringKey
+import Domain
 
 extension AppState {
   /// Transaction list view state
@@ -57,7 +58,7 @@ extension AppState {
     }
 
     var filteredTransactions: IdentifiedArrayOf<SectionedTransaction> {
-      let filteredTransactions: [Alfheim.Transaction]
+      let filteredTransactions: [Domain.Transaction]
       switch filter {
       case .none:
         filteredTransactions = source.filteredTransactions
@@ -90,7 +91,7 @@ extension AppState {
       //private let transactions: [Alfheim.Transaction]
       let viewStates: IdentifiedArrayOf<Transactions.ViewState>
 
-      init(date: Date, transactions: [Alfheim.Transaction]) {
+      init(date: Date, transactions: [Domain.Transaction]) {
         self.date = date
         //self.transactions = transactions
         self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
@@ -102,10 +103,10 @@ extension AppState {
 enum Transactions {
   enum Source: Equatable {
     case none
-    case list(title: String, transactions: [Alfheim.Transaction])
-    case accounted(account: Alfheim.Account, interval: DateInterval?)
+    case list(title: String, transactions: [Domain.Transaction])
+    case accounted(account: Domain.Account, interval: DateInterval?)
 
-    var filteredTransactions: [Alfheim.Transaction] {
+    var filteredTransactions: [Domain.Transaction] {
       switch self {
       case .none:
         return []
@@ -121,7 +122,7 @@ enum Transactions {
       }
     }
 
-    var allTransactions: [Alfheim.Transaction] {
+    var allTransactions: [Domain.Transaction] {
       switch self {
       case .none:
         return []

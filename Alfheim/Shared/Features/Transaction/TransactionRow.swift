@@ -65,7 +65,7 @@ struct TransactionRow: View {
 struct TransactionRow_Previews: PreviewProvider {
   static var previews: some View {
     ScrollView {
-      TransactionRow(transaction: Transactions.ViewState.mock(cxt: viewContext))
+      TransactionRow(transaction: Transactions.ViewState.mock())
     }
     .padding()
   }

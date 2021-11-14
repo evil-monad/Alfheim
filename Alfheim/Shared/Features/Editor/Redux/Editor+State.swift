@@ -10,13 +10,15 @@ import Foundation
 import Combine
 import CoreData
 import ComposableArchitecture
+import Domain
+import Database
 
 extension AppState {
   /// Composer, editor state
   struct Editor: Equatable {
     enum Mode: Equatable {
       case new
-      case edit(Alfheim.Transaction)
+      case edit(Domain.Transaction)
 
       var isNew: Bool {
         switch self {
@@ -47,11 +49,11 @@ extension AppState {
     var repeated: Repeat = .never
     var cleared: Bool = true
 
-    var target: Alfheim.Account? = nil
-    var source: Alfheim.Account? = nil
-    var attachments: [Alfheim.Attachment] = []
+    var target: Domain.Account.Summary? = nil
+    var source: Domain.Account.Summary? = nil
+    var attachments: [Domain.Attachment] = []
 
-    var accounts: [Alfheim.Account] = []
+    var accounts: [Domain.Account] = []
 
     var isValid: Bool = false
     var focusField: FocusField? = nil
@@ -79,7 +81,7 @@ extension AppState.Editor {
       attachments = []
     case .edit(let transaction):
       amount = "\(transaction.amount)"
-      currency = Currency(rawValue: Int(transaction.currency)) ?? .cny
+      currency = transaction.currency
       date = transaction.date
       notes = transaction.notes
       payee = transaction.payee
@@ -88,18 +90,18 @@ extension AppState.Editor {
       cleared = transaction.cleared
       source = transaction.source
       target = transaction.target
-      attachments = transaction.attachments?.allObjects as? [Attachment] ?? []
+      attachments = transaction.attachments
     }
     self.mode = mode
   }
 }
 
 extension AppState.Editor {
-  var transaction: Alfheim.Transaction.Snapshot {
-    let snapshot: Alfheim.Transaction.Snapshot
+  var transaction: Domain.Transaction {
     switch mode {
     case .new:
-      snapshot = Alfheim.Transaction.Snapshot(
+      return Domain.Transaction(
+        id: UUID(),
         amount: Double(amount)!,
         currency: Int16(currency.rawValue),
         date: date,
@@ -108,31 +110,35 @@ extension AppState.Editor {
         number: number,
         repeated: Int16(repeated.rawValue),
         cleared: cleared,
+        flagged: false,
         target: target!,
-        source: source!
+        source: source!,
+        attachments: attachments
       )
     case .edit(let transaction):
-      transaction.amount = Double(amount)!
-      transaction.currency = Int16(currency.rawValue)
-      transaction.date = date
-      transaction.notes = notes
-      transaction.payee = payee
-      transaction.number = number
-      transaction.repeated = Int16(repeated.rawValue)
-      transaction.cleared = cleared
-      transaction.target = target
-      transaction.source = source
-      transaction.attachments = NSSet(objects: attachments)
-      snapshot = Alfheim.Transaction.Snapshot(transaction)
+      return Domain.Transaction(
+        id: transaction.id,
+        amount: Double(amount)!,
+        currency: Int16(currency.rawValue),
+        date: date,
+        notes: notes,
+        payee: payee,
+        number: number,
+        repeated: Int16(repeated.rawValue),
+        cleared: cleared,
+        flagged: false,
+        target: target!,
+        source: source!,
+        attachments: attachments
+      )
     }
-    return snapshot
   }
 
-  var groupedRootAccounts: [String: [Alfheim.Account]] {
-    return rootAccounts.grouped(by: { $0.group })
+  var groupedRootAccounts: [String: [Domain.Account]] {
+    return rootAccounts.grouped(by: { $0.group.rawValue })
   }
 
-  var rootAccounts: [Alfheim.Account] {
+  var rootAccounts: [Domain.Account] {
     accounts.filter { $0.subroot }
   }
 }

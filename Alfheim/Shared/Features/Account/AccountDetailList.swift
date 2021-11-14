@@ -7,15 +7,16 @@
 //
 
 import SwiftUI
+import Domain
 
 struct AccountDetailList: View {
-  @Binding var account: Alne.Account
+  @Binding var account: Domain.Account
 
   var body: some View {
     List {
       Section(header: Spacer()) {
         Text(account.name)
-        Text(account.description)
+        Text(account.introduction)
       }
 
       Section {
@@ -24,7 +25,7 @@ struct AccountDetailList: View {
             Circle().fill(Color(tagit: tag)).frame(width: 20, height: 20)
             Text(tag.name)
             Spacer()
-            if tag == self.account.tag {
+            if tag.rawValue == self.account.tag {
               Image(systemName: "checkmark")
                 .font(.body.bold())
                 .foregroundColor(.blue)
@@ -32,7 +33,7 @@ struct AccountDetailList: View {
           }
           .contentShape(Rectangle())
           .onTapGesture {
-            self.account.tag = tag
+            self.account.tag = tag.rawValue
           }
         }
       }
@@ -43,7 +44,7 @@ struct AccountDetailList: View {
 
 #if DEBUG
 struct AccountDetailList_Previews: PreviewProvider {
-  @State static var account = Alne.Accounts.expenses
+  @State static var account = Domain.Account.mock()
   static var previews: some View {
     AccountDetailList(account: $account)
   }

@@ -9,7 +9,8 @@
 import Foundation
 import Combine
 import ComposableArchitecture
-import CoreData
+import Database
+import Domain
 
 extension AppEffects {
   enum Editor {
@@ -22,12 +23,12 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map {
-          .didLoadAccounts($0)
+          .didLoadAccounts(Domain.Account.mapAccounts($0))
         }
         .eraseToEffect()
     }
 
-    static func delete(accounts: [Alfheim.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
+    static func delete(accounts: [Domain.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none
       }

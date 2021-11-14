@@ -7,13 +7,14 @@
 //
 
 import Foundation
+import Domain
 
 extension AppState {
   /// Overview view state
   struct Overview: Equatable, Identifiable {
     var isEditorPresented: Bool = false
     var isStatisticsPresented: Bool = false
-    var selectedTransaction: Alfheim.Transaction?
+    var selectedTransaction: Domain.Transaction?
     var editingTransaction: Bool = false
     var isAccountDetailPresented: Bool = false
     var isSettingsPresented: Bool = false
@@ -26,15 +27,15 @@ extension AppState {
     var timeInterval: DateInterval?
 
     var id: UUID
-    var account: Alfheim.Account
+    var account: Domain.Account
 
-    init(account: Alfheim.Account) {
+    init(account: Domain.Account) {
       print("init \(account.name)")
       self.account = account
       self.id = account.id
-      self.editor = Editor(target: account)
+      self.editor = Editor(target: account.summary)
       let interval: DateInterval?
-      switch account.alne.group {
+      switch account.group {
       case .income, .expenses:
         let now = Date()
         interval = DateInterval(start: now.start(of: .month), end: now.end(of: .month))
@@ -45,11 +46,11 @@ extension AppState {
       self.transactions = Transaction(source: .accounted(account: account, interval: interval))
     }
 
-    private var allTransactions: [Alfheim.Transaction] {
+    private var allTransactions: [Domain.Transaction] {
       account.transactions()
     }
 
-    private var periodTransactions: [Alfheim.Transaction] {
+    private var periodTransactions: [Domain.Transaction] {
       if let timeInterval = timeInterval {
         return allTransactions
           .filter { $0.date >= timeInterval.start && $0.date <= timeInterval.end }
@@ -63,11 +64,11 @@ extension AppState {
     }
 
     var balance: Double {
-      let deposits = periodTransactions.filter { (account.isAncestor(of: $0.target) && $0.amount < 0) || (account.isAncestor(of: $0.source) && $0.amount >= 0) }
+      let deposits = periodTransactions.filter { (account.summary.isAncestor(of: $0.target) && $0.amount < 0) || (account.summary.isAncestor(of: $0.source) && $0.amount >= 0) }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
-      let withdrawal = periodTransactions.filter { (account.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.isAncestor(of: $0.source) && $0.amount < 0)  }
+      let withdrawal = periodTransactions.filter { (account.summary.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.summary.isAncestor(of: $0.source) && $0.amount < 0)  }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
@@ -75,7 +76,7 @@ extension AppState {
     }
 
     var balanceText: String {
-      let code = Alne.Currency(rawValue: Int(account.currency))!.code
+      let code = account.currency.code
       return balance.formatted(.currency(code: code))
     }
   }
@@ -88,7 +89,7 @@ extension AppState.Overview {
   }
 
   // prefix 5
-  var recentTransactions: [Alfheim.Transaction] {
+  var recentTransactions: [Domain.Transaction] {
     Array(allTransactions.sorted(by: { $0.date > $1.date }).prefix(5))
   }
 }
@@ -110,9 +111,9 @@ extension AppState.Overview {
     }
 
     let transfer: Account.Transfer
-    if account.alne.group == .expenses {
+    if account.group == .expenses {
       transfer = .deposit
-    } else if account.alne.group == .income {
+    } else if account.group == .income {
       transfer = .withdrawal
     } else {
       transfer = .all
@@ -130,7 +131,7 @@ extension AppState.Overview {
   }
 
   var showTrendStatistics: Bool {
-    return account.alne.group.balance
+    return account.group.balance
   }
 
   // recent 6 month

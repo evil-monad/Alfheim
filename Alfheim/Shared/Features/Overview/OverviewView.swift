@@ -8,6 +8,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Domain
 
 struct OverviewView: View {
   let store: Store<AppState.Overview, AppAction.Overview>
@@ -60,7 +61,7 @@ private struct TransactionSection: View {
     WithViewStore(store) { vs in
       Section {
         ForEach(vs.recentTransactions) { transaction in
-          TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.isAncestor(of: transaction.target)))
+          TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.summary.isAncestor(of: transaction.target)))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
@@ -89,7 +90,7 @@ private struct StatisticsSection: View {
         if vs.showTrendStatistics {
           TrendView(
             units: vs.trendUnit.map { Dimension(symbol: $0.name, value: $0.value) },
-            currency: vs.account.alne.currency
+            currency: vs.account.currency
           )
           .frame(height: 240)
           .listRowInsets(EdgeInsets(top: 14, leading: 12, bottom: 16, trailing: 16))

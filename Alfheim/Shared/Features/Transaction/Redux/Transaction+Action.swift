@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import Domain
 
 extension AppAction {
   enum Transaction {
-    case editTransaction(Alfheim.Transaction)
+    case editTransaction(Domain.Transaction)
     case didEditTransaction
 
     case delete(id: UUID)
     case toggleFlag(flag: Bool, id: UUID)
-    case showStatistics([Alfheim.Transaction], interval: DateInterval)
+    case showStatistics([Domain.Transaction], interval: DateInterval)
     case dimissStatistics
 
     case filter(selection: AppState.Transaction.Filter)

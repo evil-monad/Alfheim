@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Domain
 
 /// A type that specifies the appearance and interaction of all account pickers
 /// within a view hierarchy.
@@ -52,12 +53,12 @@ struct AccountPicker<Label>: View where Label: View {
   @Environment(\.accountPickerStyle) private var style
 
   @State private var isContentActive: Bool = false
-  private let selection: Binding<Alfheim.Account?>
+  private let selection: Binding<Domain.Account.Summary?>
   private let label: () -> Label
-  private let accounts: [String: [Alfheim.Account]]
+  private let accounts: [String: [Domain.Account]]
 
-  init(_ accounts: [String: [Alfheim.Account]],
-       selection: Binding<Alfheim.Account?>,
+  init(_ accounts: [String: [Domain.Account]],
+       selection: Binding<Domain.Account.Summary?>,
        @ViewBuilder label: @escaping () -> Label) {
     self.accounts = accounts
     self.selection = selection
@@ -91,12 +92,12 @@ struct AccountPicker<Label>: View where Label: View {
   private var content: some View {
     Hierarchy(accounts) { account in
       Button {
-        selection.wrappedValue = account
+        selection.wrappedValue = account.summary
         isContentActive = false
       } label: {
         HStack {
           Group {
-            if let selection = selection, selection.wrappedValue == account {
+            if let selection = selection, selection.wrappedValue == account.summary {
               Image(systemName: "checkmark").foregroundColor(.blue)
             } else {
               Text("\(account.emoji ?? "")")
@@ -119,12 +120,12 @@ struct AccountPicker<Label>: View where Label: View {
 
 /// Only for account picker
 private struct Hierarchy<RowContent, Header>: View where RowContent: View, Header: View {
-  private let groupAccount: [String: [Alfheim.Account]]
-  private let rowContent: (Alfheim.Account) -> RowContent
+  private let groupAccount: [String: [Domain.Account]]
+  private let rowContent: (Domain.Account) -> RowContent
   private let header: (String) -> Header
 
-  init(_ data: [String: [Alfheim.Account]],
-       rowContent: @escaping (Alfheim.Account) -> RowContent,
+  init(_ data: [String: [Domain.Account]],
+       rowContent: @escaping (Domain.Account) -> RowContent,
        @ViewBuilder header: @escaping (String) -> Header) {
     self.groupAccount = data
     self.rowContent = rowContent
@@ -135,8 +136,8 @@ private struct Hierarchy<RowContent, Header>: View where RowContent: View, Heade
     List {
       ForEach(Array(groupAccount.keys).sorted(), id: \.self) { group in
         Section {
-          let account: [Alfheim.Account] = groupAccount[group] ?? [] // TODO: filter root
-          RecursiveView(account, children: \.optinalChildren, rowContent: rowContent)
+          let account: [Domain.Account] = groupAccount[group] ?? [] // TODO: filter root
+          RecursiveView(account, children: \.children, rowContent: rowContent)
         } header: {
           header(group)
         }
@@ -146,8 +147,8 @@ private struct Hierarchy<RowContent, Header>: View where RowContent: View, Heade
 }
 
 extension Hierarchy where RowContent: View, Header == EmptyView {
-  init(_ data: [String: [Alfheim.Account]],
-       rowContent: @escaping (Alfheim.Account) -> RowContent) {
+  init(_ data: [String: [Domain.Account]],
+       rowContent: @escaping (Domain.Account) -> RowContent) {
     self.groupAccount = data
     self.rowContent = rowContent
     self.header = { _ in EmptyView() }

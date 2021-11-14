@@ -14,7 +14,7 @@ enum Alne {
 
 /// Shorthand alias
 //typealias Transaction = Alne.Transaction
-typealias Currency = Alne.Currency
+//typealias Currency = Alne.Currency
 typealias Repeat = Alne.Repeat
 //typealias Account = Alne.Account
 typealias Catemoji = Alne.Catemoji

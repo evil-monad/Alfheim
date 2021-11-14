@@ -8,13 +8,14 @@
 
 import Foundation
 import SwiftUI
+import Domain
 
 extension AppState {
   /// Composer, editor state
   struct AccountEditor: Equatable {
     enum Mode: Equatable {
       case new
-      case edit(Alfheim.Account)
+      case edit(Domain.Account)
 
       var isNew: Bool {
         switch self {
@@ -31,7 +32,7 @@ extension AppState {
       case introduction
     }
 
-    var accounts: [Alfheim.Account] = []
+    var accounts: [Domain.Account] = []
 
     var mode: Mode = .new
     var isValid: Bool = false
@@ -46,7 +47,7 @@ extension AppState {
     var currency: Currency = .cny
     var tag: String = ""
     var emoji: String?
-    var parent: Alfheim.Account?
+    var parent: Domain.Account.Summary?
   }
 }
 
@@ -64,52 +65,61 @@ extension AppState.AccountEditor {
     case .edit(let account):
       name = account.name
       introduction = account.introduction
-      group = account.group
-      currency = Currency(rawValue: Int(account.currency)) ?? .cny
+      group = account.group.rawValue
+      currency = account.currency
       tag = account.tag
       emoji = account.emoji
-      parent = account.parent
+      parent = account.parent?.summary
     }
     self.mode = mode
   }
 }
 
 extension AppState.AccountEditor {
-  func makeSnapshot() -> Alfheim.Account.Snapshot {
-    let snapshot: Alfheim.Account.Snapshot
+  func makeAccount() -> Domain.Account {
     switch mode {
     case .new:
-      snapshot = Alfheim.Account.Snapshot(
+      var snapshot = Domain.Account(
+        id: UUID(),
+        name: name,
+        introduction: introduction,
+        group: Domain.Account.Group(rawValue: group)!,
+        currency: currency,
+        tag: tag,
+        emoji: emoji,
+        targets: [],
+        sources: []
+      )
+      snapshot.parents = parent.map(Domain.Account.init).map { [$0] }
+      return snapshot
+    case .edit(let account):
+      var snapshot = Domain.Account(
+        id: account.id,
         name: name,
         introduction: introduction,
         group: group,
-        currency: Int16(currency.rawValue),
+        currency: currency.rawValue,
         tag: tag,
         emoji: emoji,
-        parent: parent
+        targets: account.targets,
+        sources: account.sources
       )
-    case .edit(let account):
-      account.name = name
-      account.introduction = introduction
-      account.group = group
-      account.currency = Int16(currency.rawValue)
-      account.tag = tag
-      account.emoji = emoji
-      account.parent = parent
-      snapshot = Alfheim.Account.Snapshot(account)
+
+      snapshot.children = account.children
+      snapshot.parents = parent.map(Domain.Account.init).map { [$0] }
+      return snapshot
     }
-    return snapshot
   }
 
-  var snapshot: Alfheim.Account.Snapshot {
-    makeSnapshot()
+  var snapshot: Domain.Account {
+    makeAccount()
   }
 
-  var groupedRootAccounts: [String: [Alfheim.Account]] {
-    return rootAccounts.grouped(by: { $0.group })
+  var groupedRootAccounts: [String: [Domain.Account]] {
+    return rootAccounts.grouped(by: { $0.group.rawValue })
   }
 
-  var rootAccounts: [Alfheim.Account] {
+  var rootAccounts: [Domain.Account] {
     accounts.filter { $0.root }
   }
 }

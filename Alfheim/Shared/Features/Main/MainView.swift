@@ -9,6 +9,7 @@
 import SwiftUI
 import ComposableArchitecture
 import CoreMedia
+import Domain
 
 struct MainView: View {
   let store: Store<AppState, AppAction>
@@ -173,7 +174,7 @@ struct HomeView: View {
         .buttonStyle(.plain)
 
         Section {
-          OutlineGroup(vs.rootAccounts, children: \.optinalChildren) { account in
+          OutlineGroup(vs.rootAccounts, children: \.children) { account in
             AccountRow(store: store, account: account)
               .contextMenu(account.root ? nil : ContextMenu {
                 Button {
@@ -210,21 +211,21 @@ struct HomeView: View {
 
 /// Don't use AccountList in Home
 /// children 更新时，不会刷新！
-struct AccountList: View {
-  let store: Store<AppState, AppAction>
-  let accounts: [Account]
-
-  var body: some View {
-    List(accounts, children: \.optinalChildren) { account in
-      AccountRow(store: store, account: account)
-    }
-  }
-}
+//struct AccountList: View {
+//  let store: Store<AppState, AppAction>
+//  let accounts: [Account]
+//
+//  var body: some View {
+//    List(accounts, children: \.children) { account in
+//      AccountRow(store: store, account: account)
+//    }
+//  }
+//}
 
 private struct AccountRow: View {
   @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
   let store: Store<AppState, AppAction>
-  let account: Account
+  let account: Domain.Account
 
   var body: some View {
     ZStack {

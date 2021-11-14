@@ -9,6 +9,7 @@
 import Foundation
 import IdentifiedCollections
 import ComposableArchitecture
+import Domain
 
 struct AppState: Equatable {
   var overviews: IdentifiedArrayOf<Overview> = []
@@ -25,11 +26,11 @@ struct AppState: Equatable {
 }
 
 extension AppState {
-  var accounts: [Alfheim.Account] {
+  var accounts: [Domain.Account] {
     overviews.map { $0.account }
   }
 
-  var rootAccounts: [Alfheim.Account] {
+  var rootAccounts: [Domain.Account] {
     accounts.filter { $0.root }
   }
 }
@@ -58,11 +59,11 @@ extension AppState {
       }
     }
 
-    var accounts: [Alfheim.Account]
+    var accounts: [Domain.Account]
     var menus: IdentifiedArrayOf<MenuItem>
     var selection: Identified<MenuItem.ID, Transaction?>?
 
-    init(accounts: [Alfheim.Account] = [], selectionMenu: MenuItem.ID? = nil) {
+    init(accounts: [Domain.Account] = [], selectionMenu: MenuItem.ID? = nil) {
       self.accounts = accounts
 
       let allTransactions = accounts.flatMap {
@@ -70,14 +71,14 @@ extension AppState {
       }
 
       if let id = selectionMenu, let filter = AppState.QuickFilter(rawValue: id) {
-        let uniqueTransactions = Alfheim.Transaction.uniqued(allTransactions)
+        let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
         let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
         self.selection = Identified(transaction, id: id)
       } else {
         self.selection = nil
       }
 
-      var uniqueTransactions: [Alfheim.Transaction] = []
+      var uniqueTransactions: [Domain.Transaction] = []
       var filter = Set<UUID>()
       for transaction in allTransactions {
         if !filter.contains(transaction.id) {
@@ -88,9 +89,9 @@ extension AppState {
 
       self.menus = [
         MenuItem(filter: .all, value: "\(uniqueTransactions.count)"),
-        MenuItem(filter: .uncleared, value: "\(uniqueTransactions.filter(\.alne.uncleared).count)"),
-        MenuItem(filter: .repeating, value: "\(uniqueTransactions.filter(\.alne.repeating).count)"),
-        MenuItem(filter: .flagged, value: "\(uniqueTransactions.filter(\.alne.flagged).count)"),
+        MenuItem(filter: .uncleared, value: "\(uniqueTransactions.filter { !$0.cleared }.count)"),
+        MenuItem(filter: .repeating, value: "\(uniqueTransactions.filter { $0.repeated > 0 }.count)"),
+        MenuItem(filter: .flagged, value: "\(uniqueTransactions.filter(\.flagged).count)"),
       ]
     }
   }
@@ -115,16 +116,16 @@ extension AppState.QuickFilter {
     }
   }
 
-  func filteredTransactions(_ transations: [Alfheim.Transaction]) -> [Alfheim.Transaction] {
+  func filteredTransactions(_ transations: [Domain.Transaction]) -> [Domain.Transaction] {
     switch self {
     case .all:
       return transations
     case .uncleared:
-      return transations.filter(\.alne.uncleared)
+      return transations.filter { !$0.cleared }
     case .repeating:
-      return transations.filter(\.alne.repeating)
+      return transations.filter { $0.repeated > 0 }
     case .flagged:
-      return transations.filter(\.alne.flagged)
+      return transations.filter(\.flagged)
     }
   }
 }

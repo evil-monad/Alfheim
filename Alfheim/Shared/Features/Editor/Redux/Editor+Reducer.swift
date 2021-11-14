@@ -19,16 +19,16 @@ extension AppReducers {
         state.reset(.new)
       case .edit(let transaction):
         state.reset(.edit(transaction))
-      case let .save(snapshot, mode):
+      case let .save(model, mode):
         switch mode {
         case .new:
-          return AppEffects.Transaction.create(snapshot: snapshot, context: environment.context)
+          return AppEffects.Transaction.create(model: model, context: environment.context)
             .replaceError(with: false)
             .ignoreOutput()
             .eraseToEffect()
             .fireAndForget()
         case .update:
-          return AppEffects.Transaction.update(snapshot: snapshot, context: environment.context)
+          return AppEffects.Transaction.update(model: model, context: environment.context)
             .replaceError(with: false)
             .ignoreOutput()
             .eraseToEffect()
@@ -40,6 +40,7 @@ extension AppReducers {
         return AppEffects.Editor.loadAccounts(environment: environment)
       case .didLoadAccounts(let accounts):
         state.accounts = accounts
+        break
       case .changed(let field):
         switch field {
         case .amount(let value):

@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreData
+import Database
+import Domain
 
 extension Persistences {
   struct Bootstrap {
@@ -18,8 +20,8 @@ extension Persistences {
       // Creating default accounts
 
       func expenses() {
-        let group = Alne.Account.Group.expenses.rawValue
-        let expenses = Alfheim.Account(context: context)
+        let group = Domain.Account.Group.expenses.rawValue
+        let expenses = Database.Account(context: context)
         expenses.id = UUID()
         expenses.name = "Expenses"
         expenses.introduction = "Expenses account are where you spend money for (e.g. food)."
@@ -28,7 +30,7 @@ extension Persistences {
         expenses.tag = Tagit.red.rawValue
         expenses.emoji = "💸"
 
-        let food = Alfheim.Account(context: context)
+        let food = Database.Account(context: context)
         food.id = UUID()
         food.name = "Food"
         food.introduction = "Food account are where you spend money for (e.g. apple)."
@@ -38,7 +40,7 @@ extension Persistences {
         food.emoji = "🍔"
         food.parent = expenses
 
-        let drink = Alfheim.Account(context: context)
+        let drink = Database.Account(context: context)
         drink.id = UUID()
         drink.name = "Drink"
         drink.introduction = "Drink account are where you spend money for (e.g. milk)."
@@ -48,7 +50,7 @@ extension Persistences {
         drink.emoji = "🍹"
         drink.parent = expenses
 
-        let entertainment = Alfheim.Account(context: context)
+        let entertainment = Database.Account(context: context)
         entertainment.id = UUID()
         entertainment.name = "Entertainment"
         entertainment.introduction = "Entertainment account are where you spend money for (e.g. Movie)."
@@ -60,8 +62,8 @@ extension Persistences {
       }
 
       func income() {
-        let group = Alne.Account.Group.income.rawValue
-        let income = Alfheim.Account(context: context)
+        let group = Domain.Account.Group.income.rawValue
+        let income = Database.Account(context: context)
         income.id = UUID()
         income.name = "Income"
         income.introduction = "Income account are where you get money from (e.g. salary)."
@@ -70,7 +72,7 @@ extension Persistences {
         income.emoji = "💰"
         income.tag = Tagit.indigo.rawValue
 
-        let salary = Alfheim.Account(context: context)
+        let salary = Database.Account(context: context)
         salary.id = UUID()
         salary.name = "Salary"
         salary.introduction = "Salary account are where you get money from (e.g. salary)."
@@ -82,8 +84,8 @@ extension Persistences {
       }
 
       func assets() {
-        let group = Alne.Account.Group.assets.rawValue
-        let assets = Alfheim.Account(context: context)
+        let group = Domain.Account.Group.assets.rawValue
+        let assets = Database.Account(context: context)
         assets.id = UUID()
         assets.name = "Assets"
         assets.introduction = "Assets represent the money you have (e.g. cash)."
@@ -92,7 +94,7 @@ extension Persistences {
         assets.emoji = "💵"
         assets.tag = Tagit.cyan.rawValue
 
-        let checking = Alfheim.Account(context: context)
+        let checking = Database.Account(context: context)
         checking.id = UUID()
         checking.name = "Checking"
         checking.introduction = "Checking represent the money you have."
@@ -102,7 +104,7 @@ extension Persistences {
         checking.tag = Tagit.alfheim.rawValue
         checking.parent = assets
 
-        let cash = Alfheim.Account(context: context)
+        let cash = Database.Account(context: context)
         cash.id = UUID()
         cash.name = "Cash"
         cash.introduction = "Cash represent the money you have (e.g. cash)."
@@ -114,8 +116,8 @@ extension Persistences {
       }
 
       func liabilities() {
-        let group = Alne.Account.Group.liabilities.rawValue
-        let liabilities = Alfheim.Account(context: context)
+        let group = Domain.Account.Group.liabilities.rawValue
+        let liabilities = Database.Account(context: context)
         liabilities.id = UUID()
         liabilities.name = "Liabilities"
         liabilities.introduction = "Liabilities is what you owe somebody (e.g. credit card)."
@@ -124,7 +126,7 @@ extension Persistences {
         liabilities.emoji = "💳"
         liabilities.tag = Tagit.green.rawValue
 
-        let credit = Alfheim.Account(context: context)
+        let credit = Database.Account(context: context)
         credit.id = UUID()
         credit.name = "Credit Card"
         credit.introduction = "Credit card is what you owe somebody (e.g. credit card)."
@@ -136,8 +138,8 @@ extension Persistences {
       }
 
       func equity() {
-        let group = Alne.Account.Group.equity.rawValue
-        let equity = Alfheim.Account(context: context)
+        let group = Domain.Account.Group.equity.rawValue
+        let equity = Database.Account(context: context)
         equity.id = UUID()
         equity.name = "Equity"
         equity.introduction = "Equity represents the value of something (e.g. existing assets)."
@@ -146,7 +148,7 @@ extension Persistences {
         equity.emoji = "📈"
         equity.tag = Tagit.yellow.hex
 
-        let opening = Alfheim.Account(context: context)
+        let opening = Database.Account(context: context)
         opening.id = UUID()
         opening.name = "Opening Balance"
         opening.introduction = "Opening balance represents the value of something (e.g. existing assets)."
@@ -165,7 +167,7 @@ extension Persistences {
 
       // Catemoji
       buildinCatemojis().forEach {
-        let emoji = Alfheim.Emoji(context: context)
+        let emoji = Database.Emoji(context: context)
         emoji.category = $0.category.name
         emoji.text = $0.emoji
       }

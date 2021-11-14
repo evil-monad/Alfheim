@@ -8,16 +8,16 @@
 
 import Foundation
 
-@dynamicMemberLookup
-class Snapshot<Object> {
-  private(set) var original: Object
-
-  init(object: Object) {
-    self.original = object
-  }
-
-  subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> Subject {
-    get { original[keyPath: keyPath] }
-    set { original[keyPath: keyPath] = newValue }
-  }
-}
+//@dynamicMemberLookup
+//class Snapshot<Object> {
+//  private(set) var original: Object
+//
+//  init(object: Object) {
+//    self.original = object
+//  }
+//
+//  subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> Subject {
+//    get { original[keyPath: keyPath] }
+//    set { original[keyPath: keyPath] = newValue }
+//  }
+//}

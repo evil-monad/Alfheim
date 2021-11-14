@@ -10,6 +10,8 @@ import Foundation
 import Combine
 import ComposableArchitecture
 import CoreData
+import Database
+import Domain
 
 extension AppEffects {
   enum Account {
@@ -22,12 +24,12 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { accounts in
-          .accountDidChange(accounts)
+          .accountDidChange(Domain.Account.mapAccounts(accounts))
         }
         .eraseToEffect()
     }
 
-    static func delete(accounts: [Alfheim.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
+    static func delete(accounts: [Domain.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none
       }
@@ -52,18 +54,18 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func create(snapshot: Alfheim.Account.Snapshot, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
+    static func create(snapshot: Domain.Account, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none
       }
 
-      let object = Alfheim.Account(context: context)
+      let object = Database.Account(context: context)
       object.fill(snapshot)
 
       return create(account: object, context: context)
     }
 
-    static func create(account: Alfheim.Account, environment: AppEnvironment) -> Effect<Bool, NSError> {
+    static func create(account: Database.Account, environment: AppEnvironment) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none
       }
@@ -71,7 +73,7 @@ extension AppEffects {
       return create(account: account, context: context)
     }
 
-    static func create(account: Alfheim.Account, context: NSManagedObjectContext) -> Effect<Bool, NSError> {
+    static func create(account: Database.Account, context: NSManagedObjectContext) -> Effect<Bool, NSError> {
       let persistence = Persistences.Account(context: context)
 
       return Future { promise in
@@ -86,7 +88,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func update(snapshot: Alfheim.Account.Snapshot, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
+    static func update(snapshot: Domain.Account, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none
       }
@@ -94,6 +96,9 @@ extension AppEffects {
       let persistence = Persistences.Account(context: context)
       if let object = persistence.account(withID: snapshot.id) {
         object.fill(snapshot)
+        if let id = snapshot.parent?.id, let parent = persistence.account(withID: id) {
+          object.fill(parent: parent)
+        }
       } else {
         fatalError("Should not be here!")
       }
@@ -119,7 +124,7 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map {
-          .didLoadAccounts($0)
+          .didLoadAccounts(Domain.Account.mapAccounts($0))
         }
         .eraseToEffect()
     }

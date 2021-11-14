@@ -9,12 +9,13 @@
 import Foundation
 import Combine
 import CoreData
+import Database
 
 extension Persistences {
   struct Account {
     let context: NSManagedObjectContext
 
-    typealias FetchRequestPublisher = Publishers.FetchRequest<Alfheim.Account>
+    typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Account>
 
     enum Buildin: String {
       case expenses
@@ -34,7 +35,7 @@ extension Persistences {
     // MARK: - Operators, CURD
 
     func count(with predicate: NSPredicate? = nil) throws -> Int {
-      let fetchRequest: NSFetchRequest<Alfheim.Account> = Alfheim.Account.fetchRequest()
+      let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
       fetchRequest.predicate = predicate
       return try context.count(for: fetchRequest)
     }
@@ -44,8 +45,8 @@ extension Persistences {
     }
 
     /// Needs executed within a context  in scope
-    func all() throws -> [Alfheim.Account] {
-      let fetchRequest: NSFetchRequest<Alfheim.Account> = Alfheim.Account.fetchRequest()
+    func all() throws -> [Database.Account] {
+      let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
       return try fetchRequest.execute()
     }
 
@@ -66,8 +67,8 @@ extension Persistences {
     }
 
     /// Fetch with predicate, should use in context queue
-    func fetch(with predicate: NSPredicate) throws -> [Alfheim.Account] {
-      let fetchRequest: NSFetchRequest<Alfheim.Account> = Alfheim.Account.fetchRequest()
+    func fetch(with predicate: NSPredicate) throws -> [Database.Account] {
+      let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
       fetchRequest.predicate = predicate
       return try context.fetch(fetchRequest)
     }
@@ -81,9 +82,9 @@ extension Persistences {
       try context.save()
     }
 
-    func account(withID id: UUID) -> Alfheim.Account? {
+    func account(withID id: UUID) -> Database.Account? {
       let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-      guard let object = context.registeredObjects(Alfheim.Account.self, with: predicate).first else {
+      guard let object = context.registeredObjects(Database.Account.self, with: predicate).first else {
         return nil
       }
       return object
@@ -93,29 +94,29 @@ extension Persistences {
 
     func fetchRequestPublisher(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "name", ascending: true)],
                                predicate: NSPredicate? = nil) -> FetchRequestPublisher {
-      let fetchRequest: NSFetchRequest<Alfheim.Account> = Alfheim.Account.fetchRequest()
+      let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
       fetchRequest.sortDescriptors = sortDescriptors
       fetchRequest.predicate = predicate
       return Publishers.FetchRequest(fetchRequest: fetchRequest, context: context)
     }
 
-    func fetchAllPublisher() -> AnyPublisher<[Alfheim.Account], NSError> {
+    func fetchAllPublisher() -> AnyPublisher<[Database.Account], NSError> {
       let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
       return fetchRequestPublisher(sortDescriptors: sortDescriptors).eraseToAnyPublisher()
     }
 
-    func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Alfheim.Account], NSError> {
+    func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Database.Account], NSError> {
       fetchRequestPublisher(predicate: predicate)
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(withName name: String) -> AnyPublisher<Alfheim.Account, NSError> {
+    func fetchPublisher(withName name: String) -> AnyPublisher<Database.Account, NSError> {
       let predicate = NSPredicate(format: "name == %@", name)
       return fetchPublisher(with: predicate).compactMap { $0.first }
         .eraseToAnyPublisher()
     }
 
-    func fetchPublisher(withID id: UUID) -> AnyPublisher<Alfheim.Account, NSError> {
+    func fetchPublisher(withID id: UUID) -> AnyPublisher<Database.Account, NSError> {
       let predicate = NSPredicate(format: "id == %@", id as CVarArg)
       return fetchPublisher(with: predicate).compactMap { $0.first }
         .eraseToAnyPublisher()

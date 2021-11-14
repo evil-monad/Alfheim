@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Domain
 
 extension AppAction {
   enum Account {
-    case update(Alfheim.Account)
+    case update(Domain.Account)
   }
 }

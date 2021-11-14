@@ -7,13 +7,14 @@
 //
 
 import Foundation
+import Domain
 
-struct EditorViewModel {
-  let transaction: Alfheim.Transaction?
-
-  var date: Date = Date()
-  var amount = ""
-  var catemoji = Catemoji(uncleared: .uncleared)
-  var notes: String = ""
-  var currency: Currency = .cny
-}
+//struct EditorViewModel {
+//  let transaction: Domain.Transaction?
+//
+//  var date: Date = Date()
+//  var amount = ""
+//  var catemoji = Catemoji(uncleared: .uncleared)
+//  var notes: String = ""
+//  var currency: Currency = .cny
+//}

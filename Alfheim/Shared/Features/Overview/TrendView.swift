@@ -8,12 +8,13 @@
 
 import SwiftUI
 import CombineSchedulers
+import Domain
 
 struct TrendView: View {
   var histogram: Histogram<Dimension>
-  let currency: Currency
+  let currency: Domain.Currency
 
-  init(units: [Dimension], currency: Currency) {
+  init(units: [Dimension], currency: Domain.Currency) {
     self.histogram = Histogram(units: units)
     self.currency = currency
   }

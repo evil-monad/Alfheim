@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import Domain
 
 extension AppState {
   struct Account: Equatable {
-    var accounts: [Alfheim.Account] = []
+    var accounts: [Domain.Account] = []
 
     var periods: [String: Period] = [:]
     var period: Period = .monthly

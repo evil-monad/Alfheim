@@ -1,6 +1,6 @@
 //
 //  Transaction+CoreData.swift
-//  Alfheim
+//  Database
 //
 //  Created by alex.huo on 2020/3/6.
 //  Copyright © 2020 blessingsoft. All rights reserved.
@@ -9,85 +9,36 @@
 import Foundation
 import CoreData
 
-// typealias Database.Transaction = Alfheim.Transaction
-
-final class Transaction: NSManagedObject, Identifiable {
-  class func fetchRequest() -> NSFetchRequest<Transaction> {
+public final class Transaction: NSManagedObject, Identifiable {
+  public class func fetchRequest() -> NSFetchRequest<Transaction> {
       return NSFetchRequest<Transaction>(entityName: "Transaction")
   }
 
-  @NSManaged var id: UUID
-  @NSManaged var amount: Double
-  @NSManaged var currency: Int16
+  @NSManaged public var id: UUID
+  @NSManaged public var amount: Double
+  @NSManaged public var currency: Int16
 
-  @NSManaged var date: Date
-  @NSManaged var notes: String
-  @NSManaged var payee: String?
-  @NSManaged var number: String?
+  @NSManaged public var date: Date
+  @NSManaged public var notes: String
+  @NSManaged public var payee: String?
+  @NSManaged public var number: String?
 
-  @NSManaged var repeated: Int16
-  @NSManaged var cleared: Bool
-  @NSManaged var flagged: Bool
+  @NSManaged public var repeated: Int16
+  @NSManaged public var cleared: Bool
+  @NSManaged public var flagged: Bool
 
   // relationship
-  @NSManaged var target: Account?
-  @NSManaged var source: Account?
-  @NSManaged var attachments: NSSet?
+  @NSManaged public var target: Account?
+  @NSManaged public var source: Account?
+  @NSManaged public var attachments: Set<Attachment>?
 }
 
-extension Transaction {
-  var postings: [Account] {
-    return []// [target, source]
-  }
-}
-
-// for ui
-extension Transaction {
-
-}
-
-extension Transaction: Duplicatable {
-  /// Just like Equatable `==` method
-  static func duplicated(lhs: Transaction, rhs: Transaction) -> Bool {
-    guard lhs.id == rhs.id,
-      lhs.date == rhs.date,
-      lhs.amount == rhs.amount,
-      lhs.notes == rhs.notes,
-      lhs.currency == rhs.currency,
-      lhs.payee == rhs.payee,
-      lhs.number == rhs.number,
-      lhs.target == rhs.target,
-      lhs.source == rhs.source,
-      lhs.attachments == rhs.attachments
-    else {
-      return false
-    }
-    return true
-  }
-}
-
-
-extension Array where Element: Alfheim.Transaction {
-  static func duplicated(lhs: Self, rhs: Self) -> Bool {
-    guard lhs.count == rhs.count else {
-      return false
-    }
-
-    for (l, r) in zip(lhs, rhs) {
-      if !Transaction.duplicated(lhs: l, rhs: r) {
-        return false
-      }
-    }
-    return true
-  }
-}
-
-extension Transaction {
+public extension Transaction {
   class Snapshot {
     let transaction: Transaction?
 
-    var id: UUID
-    var amount: Double
+    public var id: UUID
+    public var amount: Double
     var currency: Int16
 
     var date: Date
@@ -101,9 +52,9 @@ extension Transaction {
 
     var target: Account?
     var source: Account?
-    var attachments: NSSet?
+    var attachments: Set<Attachment>?
 
-    init(_ transaction: Transaction) {
+    public init(_ transaction: Transaction) {
       self.transaction = transaction
 
       self.id = transaction.id
@@ -124,7 +75,7 @@ extension Transaction {
       self.attachments = transaction.attachments
     }
 
-    init(amount: Double,
+    public init(amount: Double,
          currency: Int16,
          date: Date,
          notes: String,
@@ -149,14 +100,14 @@ extension Transaction {
       self.flagged = flagged
       self.target = target
       self.source = source
-      self.attachments = NSSet(object: attachments)
+      self.attachments = Set(attachments)
     }
   }
 }
 
-extension Alfheim.Transaction {
-  static func object(_ snapshot: Snapshot, context: NSManagedObjectContext) -> Alfheim.Transaction {
-    let object = snapshot.transaction ?? Alfheim.Transaction(context: context)
+public extension Transaction {
+  static func object(_ snapshot: Snapshot, context: NSManagedObjectContext) -> Transaction {
+    let object = snapshot.transaction ?? Transaction(context: context)
     object.fill(snapshot)
     return object
   }
@@ -178,7 +129,7 @@ extension Alfheim.Transaction {
   }
 }
 
-extension Alfheim.Transaction {
+public extension Transaction {
   static func uniqued(_ transactions: [Transaction]) -> [Transaction] {
     var uniqueTransactions: [Transaction] = []
     var filter = Set<UUID>()

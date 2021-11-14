@@ -7,21 +7,22 @@
 //
 
 import Foundation
+import Domain
 
 extension AppAction {
   enum AccountEditor {
-    case save(Alfheim.Account.Snapshot, mode: EditMode)
-    case edit(Alfheim.Account)
+    case save(Domain.Account, mode: EditMode)
+    case edit(Domain.Account)
     case new
     case changed(Field)
     case loadAccounts
-    case didLoadAccounts([Alfheim.Account])
+    case didLoadAccounts([Domain.Account])
 
     enum Field {
       case name(String)
       case introduction(String)
       case currency(Currency)
-      case parent(Alfheim.Account?)
+      case parent(Domain.Account.Summary?)
       case tag(String)
       case emoji(String?)
     }

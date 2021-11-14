@@ -8,6 +8,8 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Database
+import Domain
 
 struct AccountEditor: View {
   let store: Store<AppState.AccountEditor, AppAction.AccountEditor>

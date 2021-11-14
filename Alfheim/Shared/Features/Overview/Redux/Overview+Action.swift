@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import Domain
 
 extension AppAction {
   enum Overview {
     case toggleNewTransaction(presenting: Bool)
-    case editTransaction(Alfheim.Transaction)
+    case editTransaction(Domain.Transaction)
     case editTransactionDone
     case toggleStatistics(presenting: Bool)
     case toggleAccountDetail(presenting: Bool)

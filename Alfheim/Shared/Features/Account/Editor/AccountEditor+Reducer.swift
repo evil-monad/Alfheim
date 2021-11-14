@@ -55,7 +55,7 @@ extension AppReducers {
           state.emoji = value
         case .parent(let value):
           state.parent = value
-          state.group = value?.group ?? ""
+          state.group = value?.group.rawValue ?? ""
         }
         state.isValid = environment.validator.validate(state: state)
       }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Domain
 
 struct TransactionListViewState {
   let transactions: [Transactions.ViewState]
@@ -39,7 +40,7 @@ struct TransactionListViewState {
     displayAmount.formatted(.currency(code: currency.code))
   }
 
-  init(transactions: [Alfheim.Transaction],
+  init(transactions: [Domain.Transaction],
        tag: Alne.Tagit,
        currency: Currency,
        filterDate: Date) {

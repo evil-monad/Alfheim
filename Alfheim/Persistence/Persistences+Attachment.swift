@@ -9,18 +9,19 @@
 import Foundation
 import Combine
 import CoreData
+import Database
 
 extension Persistences {
   struct Attachment {
     let context: NSManagedObjectContext
 
-    typealias FetchRequestPublisher = Publishers.FetchRequest<Alfheim.Attachment>
+    typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Attachment>
 
     // MARK: - Operators, CURD
 
     /// Fetch with predicate, should use in context queue
-    func fetch(with predicate: NSPredicate) throws -> [Alfheim.Attachment] {
-      let fetchRequest: NSFetchRequest<Alfheim.Attachment> = Alfheim.Attachment.fetchRequest()
+    func fetch(with predicate: NSPredicate) throws -> [Database.Attachment] {
+      let fetchRequest: NSFetchRequest<Database.Attachment> = Database.Attachment.fetchRequest()
       fetchRequest.predicate = predicate
       return try context.fetch(fetchRequest)
     }
