@@ -33,7 +33,7 @@ extension Domain.Account {
         return []
       }
 
-      return Array(accounts).flatMap { ele -> [Domain.Account] in
+      return Array(accounts.sorted(by: { $0.name < $1.name })).flatMap { ele -> [Domain.Account] in
         var model = Domain.Account(ele)
         model.parents = parent.map { [$0] }
         let children = makeAccounts(accounts: ele.children, parent: model)
