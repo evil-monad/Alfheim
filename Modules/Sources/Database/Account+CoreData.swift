@@ -126,3 +126,9 @@ public extension Account {
     return [id] + parent.ancestors()
   }
 }
+
+extension Account: Comparable {
+  public static func < (lhs: Account, rhs: Account) -> Bool {
+    return lhs.name < rhs.name
+  }
+}

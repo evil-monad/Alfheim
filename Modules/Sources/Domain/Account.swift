@@ -92,6 +92,12 @@ extension Account: Hashable {
   }
 }
 
+extension Account: Comparable {
+  public static func < (lhs: Account, rhs: Account) -> Bool {
+    return lhs.name < rhs.name
+  }
+}
+
 public extension Account {
   func descendants() -> [Account.ID] {
     guard let children = children, children.isEmpty else {
