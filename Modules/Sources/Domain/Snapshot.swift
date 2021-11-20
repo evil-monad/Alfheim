@@ -1,6 +1,6 @@
 //
 //  Snapshot.swift
-//  Snapshot
+//  Domain
 //
 //  Created by alex.huo on 2021/8/15.
 //  Copyright © 2021 blessingsoft. All rights reserved.

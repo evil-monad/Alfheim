@@ -88,12 +88,10 @@ extension AppState {
         return date
       }
       let date: Date
-      //private let transactions: [Alfheim.Transaction]
       let viewStates: IdentifiedArrayOf<Transactions.ViewState>
 
       init(date: Date, transactions: [Domain.Transaction]) {
         self.date = date
-        //self.transactions = transactions
         self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
       }
     }
