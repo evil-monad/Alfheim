@@ -9,13 +9,22 @@
 import UIKit
 import SwiftUI
 import CoreData
+import ComposableArchitecture
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
 
   private var environment: AppEnvironment?
-  private var store: AppStore?
+  private lazy var store: AppStore = {
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var environment = AppEnvironment.default
+    environment.context = context
+    let state = AppState()
+    return AppStore(initialState: state, reducer: AppReducers.appReducer, environment: environment)
+  }()
+
+  private lazy var sceneStore: ViewStore<AppState, AppAction> = ViewStore(store)
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Get the managed object context from the shared persistent container.
@@ -25,15 +34,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //    if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
 //      state.settings.appIcon = icon
 //    }
-    var environment = AppEnvironment.default
-    environment.context = context
 
-    let state = AppState()
-
-    let store = AppStore(initialState: state, reducer: AppReducers.appReducer, environment: environment)
     // Start app story
     startAppStory(scene: scene, store: store, context: context)
-    self.store = store
+
+    sceneStore.send(.lifecycle(.willConnect))
   }
 
   private func startAppStory(scene: UIScene, store: AppStore, context: NSManagedObjectContext) {
@@ -90,27 +95,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // This occurs shortly after the scene enters the background, or when its session is discarded.
     // Release any resources associated with this scene that can be re-created the next time the scene connects.
     // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
+    sceneStore.send(.lifecycle(.didDisconnect))
   }
 
   func sceneDidBecomeActive(_ scene: UIScene) {
     // Called when the scene has moved from an inactive state to an active state.
     // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    sceneStore.send(.lifecycle(.didBecomeActive))
   }
 
   func sceneWillResignActive(_ scene: UIScene) {
     // Called when the scene will move from an active state to an inactive state.
     // This may occur due to temporary interruptions (ex. an incoming phone call).
+    sceneStore.send(.lifecycle(.willResignActive))
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {
     // Called as the scene transitions from the background to the foreground.
     // Use this method to undo the changes made on entering the background.
+    sceneStore.send(.lifecycle(.willEnterForeground))
   }
 
   func sceneDidEnterBackground(_ scene: UIScene) {
     // Called as the scene transitions from the foreground to the background.
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
+    sceneStore.send(.lifecycle(.didEnterBackground))
 
     // Save changes in the application's managed object context when the application transitions to the background.
     (UIApplication.shared.delegate as? AppDelegate)?.saveContext()

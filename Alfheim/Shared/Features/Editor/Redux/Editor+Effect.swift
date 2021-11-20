@@ -20,7 +20,8 @@ extension AppEffects {
       }
 
       return Persistences.Account(context: context)
-        .fetchAllPublisher()
+        .publisher
+        .fetchAll()
         .replaceError(with: [])
         .map {
           .didLoadAccounts(Domain.Account.mapAccounts($0))

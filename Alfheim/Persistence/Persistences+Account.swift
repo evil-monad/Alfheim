@@ -14,8 +14,14 @@ import Database
 extension Persistences {
   struct Account {
     let context: NSManagedObjectContext
+    let publisher: Publisher
 
     typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Account>
+
+    init(context: NSManagedObjectContext) {
+      self.context = context
+      self.publisher = Publisher(context: context)
+    }
 
     enum Buildin: String {
       case expenses
@@ -92,34 +98,38 @@ extension Persistences {
 
     // MARK: - Publishes
 
-    func fetchRequestPublisher(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "name", ascending: true)],
-                               predicate: NSPredicate? = nil) -> FetchRequestPublisher {
-      let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
-      fetchRequest.sortDescriptors = sortDescriptors
-      fetchRequest.predicate = predicate
-      return Publishers.FetchRequest(fetchRequest: fetchRequest, context: context)
-    }
+    struct Publisher {
+      let context: NSManagedObjectContext
 
-    func fetchAllPublisher() -> AnyPublisher<[Database.Account], NSError> {
-      let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-      return fetchRequestPublisher(sortDescriptors: sortDescriptors).eraseToAnyPublisher()
-    }
+      func fetchRequest(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "name", ascending: true)],
+                        predicate: NSPredicate? = nil) -> FetchRequestPublisher {
+        let fetchRequest: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.predicate = predicate
+        return Publishers.FetchRequest(fetchRequest: fetchRequest, context: context)
+      }
 
-    func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Database.Account], NSError> {
-      fetchRequestPublisher(predicate: predicate)
-        .eraseToAnyPublisher()
-    }
+      func fetchAll() -> AnyPublisher<[Database.Account], NSError> {
+        let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        return fetchRequest(sortDescriptors: sortDescriptors).eraseToAnyPublisher()
+      }
 
-    func fetchPublisher(withName name: String) -> AnyPublisher<Database.Account, NSError> {
-      let predicate = NSPredicate(format: "name == %@", name)
-      return fetchPublisher(with: predicate).compactMap { $0.first }
-        .eraseToAnyPublisher()
-    }
+      func fetch(with predicate: NSPredicate) -> AnyPublisher<[Database.Account], NSError> {
+        fetchRequest(predicate: predicate)
+          .eraseToAnyPublisher()
+      }
 
-    func fetchPublisher(withID id: UUID) -> AnyPublisher<Database.Account, NSError> {
-      let predicate = NSPredicate(format: "id == %@", id as CVarArg)
-      return fetchPublisher(with: predicate).compactMap { $0.first }
-        .eraseToAnyPublisher()
+      func fetch(withName name: String) -> AnyPublisher<Database.Account, NSError> {
+        let predicate = NSPredicate(format: "name == %@", name)
+        return fetch(with: predicate).compactMap { $0.first }
+          .eraseToAnyPublisher()
+      }
+
+      func fetch(withID id: UUID) -> AnyPublisher<Database.Account, NSError> {
+        let predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        return fetch(with: predicate).compactMap { $0.first }
+          .eraseToAnyPublisher()
+      }
     }
   }
 }

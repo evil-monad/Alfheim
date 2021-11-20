@@ -21,7 +21,8 @@ extension AppEffects {
       }
 
       return Persistences.Account(context: context)
-        .fetchAllPublisher()
+        .publisher
+        .fetchAll()
         .replaceError(with: [])
         .map { accounts in
           .accountDidChange(Domain.Account.mapAccounts(accounts))
@@ -121,7 +122,8 @@ extension AppEffects {
       }
 
       return Persistences.Account(context: context)
-        .fetchAllPublisher()
+        .publisher
+        .fetchAll()
         .replaceError(with: [])
         .map {
           .didLoadAccounts(Domain.Account.mapAccounts($0))

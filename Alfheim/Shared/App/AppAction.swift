@@ -10,6 +10,7 @@ import Foundation
 import Domain
 
 enum AppAction {
+  case lifecycle(SceneLifecycleEvent)
   //case overview(index: Int, action: Overview)
   case overview(Overview)
   case selectAccount(id: UUID?)

@@ -123,7 +123,24 @@ enum AppReducers {
       state: \AppState.settings,
       action: /AppAction.settings,
       environment: { $0 }
-    )
+    ),
+    Reducer { state, action, environment in
+      switch action {
+      case .lifecycle(.willConnect):
+        // TODO: load all data
+        return .none
+      case .lifecycle(.willEnterForeground):
+        // TODO: Sync iCloud, Subscribe
+        return .none
+      case .lifecycle(.didEnterBackground):
+        // TODO: Unsubscribe
+        return .none
+      case .lifecycle:
+        return .none
+      default:
+        return .none
+      }
+    }
 //    AppReducers.Overview.reducer.forEach(
 //      state: \AppState.overviews,
 //      action: /AppAction.overview(id:action:),

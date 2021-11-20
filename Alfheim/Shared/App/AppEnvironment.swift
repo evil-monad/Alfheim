@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import ComposableArchitecture
 
 struct AppEnvironment {
   let decoder = JSONDecoder()
@@ -16,6 +17,7 @@ struct AppEnvironment {
   let queue = DispatchQueue.main
 
   var context: NSManagedObjectContext?
+  var mainQueue: AnySchedulerOf<DispatchQueue> = DispatchQueue.main.eraseToAnyScheduler()
 }
 
 extension AppEnvironment {

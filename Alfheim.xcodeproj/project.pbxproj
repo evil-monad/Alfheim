@@ -99,6 +99,8 @@
 		FA9D207D2740090200413E6E /* Database in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207C2740090200413E6E /* Database */; };
 		FA9D207F274118FE00413E6E /* Account+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D207E274118FE00413E6E /* Account+Summary.swift */; };
 		FA9D20812741191F00413E6E /* Transaction+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D20802741191F00413E6E /* Transaction+Summary.swift */; };
+		FA9D20842748AEED00413E6E /* SceneLifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D20832748AEED00413E6E /* SceneLifeCycle.swift */; };
+		FA9D20862748B22600413E6E /* Redux+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D20852748B22600413E6E /* Redux+Publisher.swift */; };
 		FAA2331C26E3492A009C9925 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331B26E3492A009C9925 /* SettingsView.swift */; };
 		FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331D26E349CF009C9925 /* Settings+State.swift */; };
 		FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2331F26E34BB7009C9925 /* Settings+Action.swift */; };
@@ -280,6 +282,8 @@
 		FA9D2079273FE73300413E6E /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		FA9D207E274118FE00413E6E /* Account+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Summary.swift"; sourceTree = "<group>"; };
 		FA9D20802741191F00413E6E /* Transaction+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Summary.swift"; sourceTree = "<group>"; };
+		FA9D20832748AEED00413E6E /* SceneLifeCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLifeCycle.swift; sourceTree = "<group>"; };
+		FA9D20852748B22600413E6E /* Redux+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Redux+Publisher.swift"; sourceTree = "<group>"; };
 		FAA2331B26E3492A009C9925 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		FAA2331D26E349CF009C9925 /* Settings+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+State.swift"; sourceTree = "<group>"; };
 		FAA2331F26E34BB7009C9925 /* Settings+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings+Action.swift"; sourceTree = "<group>"; };
@@ -642,6 +646,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		FA9D20822748AED100413E6E /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				FA9D20832748AEED00413E6E /* SceneLifeCycle.swift */,
+				FA9D20852748B22600413E6E /* Redux+Publisher.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
 		FAA2331A26E3491A009C9925 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -845,6 +858,7 @@
 		FAEABD5325CE2FD9003D866E /* App */ = {
 			isa = PBXGroup;
 			children = (
+				FA9D20822748AED100413E6E /* Scene */,
 				FAEABD6225CE3011003D866E /* AppStore.swift */,
 				FAEABD4D25CE2D7C003D866E /* AppState.swift */,
 				FAEABD5A25CE3005003D866E /* AppAction.swift */,
@@ -1040,6 +1054,7 @@
 				FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */,
 				FAEABD5B25CE3005003D866E /* AppAction.swift in Sources */,
 				FA020B3426C8E82600369350 /* AccountEditor+Action.swift in Sources */,
+				FA9D20842748AEED00413E6E /* SceneLifeCycle.swift in Sources */,
 				789E8E6C23E810A6006D180B /* Account.swift in Sources */,
 				FAEABD6325CE3011003D866E /* AppStore.swift in Sources */,
 				1F3998FD23D6958700E6BBD9 /* SceneDelegate.swift in Sources */,
@@ -1113,6 +1128,7 @@
 				1F91CA02241A4CE000B552E7 /* Transaction+State.swift in Sources */,
 				1F39995723D7F34E00E6BBD9 /* Pie.swift in Sources */,
 				1F91CA04241A4CEE00B552E7 /* Transaction+Action.swift in Sources */,
+				FA9D20862748B22600413E6E /* Redux+Publisher.swift in Sources */,
 				FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */,
 				1F39992723D695EE00E6BBD9 /* Path+QuadCurve.swift in Sources */,
 				FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */,
