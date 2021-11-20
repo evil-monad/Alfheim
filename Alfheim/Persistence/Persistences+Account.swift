@@ -96,6 +96,23 @@ extension Persistences {
       return object
     }
 
+    // MARK: - Async
+    func fetchAll() async throws -> [Database.Account] {
+      try await performFetch(request: Database.Account.fetchRequest())
+    }
+
+    func fetch(withID id: UUID) async throws -> Database.Account? {
+      let request: NSFetchRequest<Database.Account> = Database.Account.fetchRequest()
+      request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+      return try await performFetch(request: request).first
+    }
+
+    private func performFetch(request: NSFetchRequest<Database.Account>) async throws -> [Database.Account] {
+      try await context.perform {
+        return try context.fetch(request)
+      }
+    }
+
     // MARK: - Publishes
 
     struct Publisher {

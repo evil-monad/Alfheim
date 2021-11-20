@@ -30,6 +30,24 @@ extension AppEffects {
         .eraseToEffect()
     }
 
+    static func fetchAll(environment: AppEnvironment) -> Effect<AppAction, Never> {
+      guard let context = environment.context else {
+        return Effect.none
+      }
+
+      return Effect<[Database.Account], Never>.task {
+        guard let accounts = try? await Persistences.Account(context: context)
+          .fetchAll()
+        else {
+          return []
+        }
+        return accounts
+      }
+      .receive(on: environment.mainQueue)
+      .eraseToEffect()
+      .map { AppAction.accountDidFetch(Domain.Account.mapAccounts($0)) }
+    }
+
     static func delete(accounts: [Domain.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
       guard let context = environment.context else {
         return Effect.none

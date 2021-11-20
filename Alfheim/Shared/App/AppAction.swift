@@ -25,8 +25,9 @@ enum AppAction {
 
   // Account
   case loadAll
-  case fetchAccounts
   case accountDidChange([Domain.Account])
+  case fetchAccounts
+  case accountDidFetch([Domain.Account])
   case cleanup
 
   // Transaction

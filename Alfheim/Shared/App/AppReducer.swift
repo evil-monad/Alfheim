@@ -24,9 +24,6 @@ enum AppReducers {
             AppEffects.Account.load(environment: environment),
             AppEffects.Transaction.fetch(environment: environment)
           )
-      case .fetchAccounts:
-        return AppEffects.Account.load(environment: environment)
-          .cancellable(id: CancelId(), cancelInFlight: true)
       case .accountDidChange(let accounts):
         state.sidebar = AppState.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
@@ -34,6 +31,11 @@ enum AppReducers {
           state.selection = Identified(overview, id: id)
         }
         return .none
+      case .fetchAccounts:
+        return AppEffects.Account.fetchAll(environment: environment)
+          .cancellable(id: CancelId(), cancelInFlight: true)
+      case .accountDidFetch(let accounts):
+        return Effect(value: .accountDidChange(accounts))
       case .cleanup:
         return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
           .replaceError(with: false)
