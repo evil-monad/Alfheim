@@ -39,7 +39,7 @@ struct SidebarNavigation: View {
       WithViewStore(store) { viewStore in
         Sidebar(store: store)
           .task {
-            viewStore.send(.load)
+            viewStore.send(.loadAll)
           }
       }
       // detail view in iPad
@@ -94,7 +94,7 @@ struct ListNavigation: View {
       WithViewStore(store) { viewStore in
         ContentView(store: store)
           .task {
-            viewStore.send(.load)
+            viewStore.send(.loadAll)
           }
       }
     }

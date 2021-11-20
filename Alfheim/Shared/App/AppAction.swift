@@ -23,7 +23,8 @@ enum AppAction {
 //  case finishImport
 
   // Account
-  case load
+  case loadAll
+  case fetchAccounts
   case accountDidChange([Domain.Account])
   case cleanup
 

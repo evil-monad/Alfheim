@@ -18,11 +18,15 @@ enum AppReducers {
     Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
       struct CancelId: Hashable {}
       switch action {
-      case .load:
-        return Effect.merge(
-          AppEffects.Account.load(environment: environment),
-          AppEffects.Transaction.fetch(environment: environment)
-        )
+      case .loadAll:
+        return Effect
+          .merge(
+            AppEffects.Account.load(environment: environment),
+            AppEffects.Transaction.fetch(environment: environment)
+          )
+      case .fetchAccounts:
+        return AppEffects.Account.load(environment: environment)
+          .cancellable(id: CancelId(), cancelInFlight: true)
       case .accountDidChange(let accounts):
         state.sidebar = AppState.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
@@ -79,6 +83,7 @@ enum AppReducers {
         }
         return .none
       case .transactionDidChange(let transactions):
+        // TODO: find changed transaction, and update account
         if let selection = state.sidebar.selection {
           return Effect(value: .selectMenu(selection: selection.id))
         }

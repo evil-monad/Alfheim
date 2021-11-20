@@ -169,7 +169,8 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { transactions in
-          AppAction.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
+          AppAction.fetchAccounts // refresh accounts
+          //AppAction.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
         }
         .eraseToEffect()
     }
