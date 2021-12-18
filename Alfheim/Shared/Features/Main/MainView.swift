@@ -36,7 +36,7 @@ struct SidebarNavigation: View {
 
   var body: some View {
     NavigationView {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store.stateless) { viewStore in
         Sidebar(store: store)
           .task {
             viewStore.send(.loadAll)
@@ -52,7 +52,7 @@ struct Sidebar: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.stateless) { vs in
       HomeView(store: store)
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
@@ -268,9 +268,9 @@ struct QuickMenu: View {
   }
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.sidebar)) { vs in
       LazyVGrid(columns: columns, spacing: 18) {
-        ForEach(vs.sidebar.menus) { item in
+        ForEach(vs.menus) { item in
           Button {
             selection = item.id
           } label: {
