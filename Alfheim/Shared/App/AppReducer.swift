@@ -52,7 +52,7 @@ enum AppReducers {
         } else {
           state.accountEditor.reset(.new)
         }
-        state.isEditingAcount = presenting
+        state.isEditingAccount = presenting
         return .none
       case .deleteAccount(let account):
         if !account.canDelete {

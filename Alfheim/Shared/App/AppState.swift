@@ -22,7 +22,7 @@ struct AppState: Equatable {
 
   var isAddingAccount: Bool = false
   var accountEditor = AccountEditor()
-  var isEditingAcount: Bool = false
+  var isEditingAccount: Bool = false
 }
 
 extension AppState {

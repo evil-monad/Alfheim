@@ -94,6 +94,50 @@ extension AppState.Overview {
   }
 }
 
+extension AppState.Overview {
+  struct ContentState: Equatable {
+    var accountName: String
+    var isRootAccount: Bool
+    var showRecentTransactionsSection: Bool
+    var showStatisticsSection: Bool
+    var showCompositonStatistics: Bool
+    var isEditorPresented: Bool
+  }
+
+  var contentState: ContentState {
+    get {
+      ContentState(
+        accountName: account.name,
+        isRootAccount: account.root,
+        showRecentTransactionsSection: showRecentTransactionsSection,
+        showStatisticsSection: showStatisticsSection,
+        showCompositonStatistics: showCompositonStatistics,
+        isEditorPresented: isEditorPresented
+      )
+    }
+    set {
+      isEditorPresented = newValue.isEditorPresented
+    }
+  }
+}
+
+extension AppState.Overview {
+  struct TransactionState: Equatable {
+    var recentTransactions: [Domain.Transaction]
+    var account: Domain.Account
+    var isTransactionListActive: Bool
+  }
+
+  var transactionState: TransactionState {
+    get {
+      TransactionState(recentTransactions: recentTransactions, account: account, isTransactionListActive: isTransactionListActive)
+    }
+    set {
+      isTransactionListActive = newValue.isTransactionListActive
+    }
+  }
+}
+
 // Stat
 extension AppState.Overview {
   var showStatisticsSection: Bool {

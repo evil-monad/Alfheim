@@ -14,7 +14,7 @@ struct OverviewView: View {
   let store: Store<AppState.Overview, AppAction.Overview>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.contentState)) { vs in
       List {
         Section {
           AccountCard(store: store)
@@ -31,7 +31,7 @@ struct OverviewView: View {
           StatisticsSection(store: store)
         }
       }
-      .navigationTitle(vs.account.name)
+      .navigationTitle(vs.accountName)
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Button {
@@ -39,7 +39,7 @@ struct OverviewView: View {
           } label: {
             Image(systemName: "plus.circle")
           }
-          .disabled(vs.account.root)
+          .disabled(vs.isRootAccount)
         }
       }
       .sheet(isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })) {
@@ -58,13 +58,29 @@ private struct TransactionSection: View {
   let store: Store<AppState.Overview, AppAction.Overview>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.transactionState)) { vs in
       Section {
         ForEach(vs.recentTransactions) { transaction in
           TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.summary.isAncestor(of: transaction.target)))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
+        NavigationLink(
+          isActive: vs.binding(get: \.isTransactionListActive, send: AppAction.Overview.showTrasactions),
+          destination: {
+            TransactionList(
+              store: store.scope(
+                state: \.transactions,
+                action: AppAction.Overview.transaction
+              )
+            )
+          }, label: {
+            Header("Transactions")
+          }
+        )
+        .listRowInsets(.headerInsets)
+
+        /*
         NavigationLink(
           destination: TransactionList(
             store: store.scope(
@@ -76,6 +92,7 @@ private struct TransactionSection: View {
           Header("Transactions")
         }
         .listRowInsets(.headerInsets)
+         */
       }
     }
   }

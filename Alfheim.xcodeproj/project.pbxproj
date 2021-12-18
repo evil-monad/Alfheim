@@ -95,6 +95,7 @@
 		FA83858B24A479EF0011E0D7 /* Filled60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */; };
 		FA83858C24A479EF0011E0D7 /* Filled20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */; };
 		FA83858E24A47A5A0011E0D7 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83858D24A47A5A0011E0D7 /* AppIcon.swift */; };
+		FA8E94C6276E056F0020DB47 /* Main+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8E94C5276E056F0020DB47 /* Main+State.swift */; };
 		FA9D207B273FE96100413E6E /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207A273FE96100413E6E /* Domain */; };
 		FA9D207D2740090200413E6E /* Database in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207C2740090200413E6E /* Database */; };
 		FA9D207F274118FE00413E6E /* Account+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D207E274118FE00413E6E /* Account+Summary.swift */; };
@@ -279,6 +280,7 @@
 		FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@3x.png"; sourceTree = "<group>"; };
 		FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@2x.png"; sourceTree = "<group>"; };
 		FA83858D24A47A5A0011E0D7 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		FA8E94C5276E056F0020DB47 /* Main+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main+State.swift"; sourceTree = "<group>"; };
 		FA9D2079273FE73300413E6E /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		FA9D207E274118FE00413E6E /* Account+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Summary.swift"; sourceTree = "<group>"; };
 		FA9D20802741191F00413E6E /* Transaction+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Summary.swift"; sourceTree = "<group>"; };
@@ -706,6 +708,7 @@
 			children = (
 				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				1F45EBD824235F130058AEDC /* MainView.swift */,
+				FA8E94C5276E056F0020DB47 /* Main+State.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1118,6 +1121,7 @@
 				1F39992423D695EE00E6BBD9 /* Line.swift in Sources */,
 				FA020B4026D1F4B500369350 /* Navigation.swift in Sources */,
 				1F91C9F6241A4BB100B552E7 /* Account+Action.swift in Sources */,
+				FA8E94C6276E056F0020DB47 /* Main+State.swift in Sources */,
 				FAE84B3125B2E24E0027E215 /* CloudStore.swift in Sources */,
 				FA020B2726BFD50D00369350 /* TrendView.swift in Sources */,
 				FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */,

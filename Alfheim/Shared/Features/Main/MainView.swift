@@ -91,7 +91,7 @@ struct ListNavigation: View {
 
   var body: some View {
     NavigationView {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store.stateless) { viewStore in
         ContentView(store: store)
           .task {
             viewStore.send(.loadAll)
@@ -105,7 +105,7 @@ struct ContentView: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.contentState)) { vs in
       HomeView(store: store)
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
@@ -133,7 +133,7 @@ struct ContentView: View {
             }
           }
         }
-        .sheet(isPresented: vs.binding(get: \.isAddingAccount, send: AppAction.addAccount)) {
+        .sheet(isPresented: vs.binding(get: \.isAccountComposerPresented, send: AppAction.addAccount)) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,
@@ -142,7 +142,7 @@ struct ContentView: View {
           )
         }
         .sheet(
-          isPresented: vs.binding(get: \.settings.isPresented, send: { .settings(.sheet(isPresented: $0)) })
+          isPresented: vs.binding(get: \.isSettingsPresented, send: { .settings(.sheet(isPresented: $0)) })
         ) {
           SettingsView(
             store: store.scope(
@@ -159,7 +159,7 @@ struct HomeView: View {
   let store: Store<AppState, AppAction>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store.scope(state: \.homeState)) { vs in
       List {
         Section {
           GridMenu(store: store)
@@ -195,7 +195,7 @@ struct HomeView: View {
           Text("Accounts").font(.headline).foregroundColor(.primary)
         }
         .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
-        .sheet(isPresented: vs.binding(get: \.isEditingAcount, send: { AppAction.editAccount(presenting: $0, nil) })) {
+        .sheet(isPresented: vs.binding(get: \.isEditingAccount, send: { AppAction.editAccount(presenting: $0, nil) })) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,
@@ -223,7 +223,6 @@ struct HomeView: View {
 //}
 
 private struct AccountRow: View {
-  @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
   let store: Store<AppState, AppAction>
   let account: Domain.Account
 
@@ -233,11 +232,11 @@ private struct AccountRow: View {
         Text("\(account.emoji ?? "") \(account.name)")
         Spacer()
       }
-      WithViewStore(store) { vs in
+      WithViewStore(store.scope(state: \.rowState)) { vs in
         NavigationLink(
           tag: account.id,
           selection: vs.binding(
-            get: \.selection?.id,
+            get: \.selectionID,
             send: AppAction.selectAccount(id:)
           )
         ) {
