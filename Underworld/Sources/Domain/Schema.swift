@@ -1,5 +1,5 @@
 //
-//  Scheme.swift
+//  Schema.swift
 //  Domain
 //
 //  Created by alex.huo on 2021/1/31.
@@ -11,6 +11,6 @@ import Foundation
 /**
  Relevant entities and attributes in the Core Data schema.
  */
-public enum Scheme {
+public enum Schema {
 
 }

@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Modules",
+    name: "Underworld",
     platforms: [
       .iOS(.v15)
     ],

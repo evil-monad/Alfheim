@@ -281,7 +281,7 @@
 		FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@2x.png"; sourceTree = "<group>"; };
 		FA83858D24A47A5A0011E0D7 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		FA8E94C5276E056F0020DB47 /* Main+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main+State.swift"; sourceTree = "<group>"; };
-		FA9D2079273FE73300413E6E /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
+		FA9D2079273FE73300413E6E /* Underworld */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Underworld; sourceTree = "<group>"; };
 		FA9D207E274118FE00413E6E /* Account+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Summary.swift"; sourceTree = "<group>"; };
 		FA9D20802741191F00413E6E /* Transaction+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Summary.swift"; sourceTree = "<group>"; };
 		FA9D20832748AEED00413E6E /* SceneLifeCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLifeCycle.swift; sourceTree = "<group>"; };
@@ -386,7 +386,7 @@
 		1F3998EE23D6958700E6BBD9 = {
 			isa = PBXGroup;
 			children = (
-				FA9D2079273FE73300413E6E /* Modules */,
+				FA9D2079273FE73300413E6E /* Underworld */,
 				1F3998F923D6958700E6BBD9 /* Alfheim */,
 				1F39991323D6958800E6BBD9 /* AlfheimTests */,
 				1F3998F823D6958700E6BBD9 /* Products */,
