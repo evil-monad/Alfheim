@@ -54,7 +54,7 @@ struct AccountPicker<Label>: View where Label: View {
 
   @State private var isContentActive: Bool = false
   private let selection: Binding<Domain.Account.Summary?>
-  private let label: () -> Label
+  private let label: Label
   private let accounts: [String: [Domain.Account]]
 
   init(_ accounts: [String: [Domain.Account]],
@@ -62,7 +62,7 @@ struct AccountPicker<Label>: View where Label: View {
        @ViewBuilder label: @escaping () -> Label) {
     self.accounts = accounts
     self.selection = selection
-    self.label = label
+    self.label = label()
   }
 
   @ViewBuilder
@@ -70,14 +70,14 @@ struct AccountPicker<Label>: View where Label: View {
     if style is DefaultAccountPickerStyle {
       NavigationLink(destination: content, isActive: $isContentActive) {
         HStack {
-          label()
+          label
           Spacer()
           Text(selection.wrappedValue?.name ?? "")
         }
       }
     } else {
       ZStack {
-        label()
+        label
 
         NavigationLink(destination: content, isActive: $isContentActive) {
           EmptyView()

@@ -14,20 +14,20 @@ struct EmojiPicker<Label>: View where Label: View {
   private let numbersPerRow = 6
 
   @State private var isContentActive: Bool = false
-  private let label: () -> Label
+  private let label: Label
   private let selection: Binding<Emoji?>
 
   init(selection: Binding<Emoji?>,
        @ViewBuilder label: @escaping () -> Label) {
     self.emojis = loadEmojis()
     self.selection = selection
-    self.label = label
+    self.label = label()
   }
 
   var body: some View {
     NavigationLink(destination: content, isActive: $isContentActive) {
       HStack {
-        label()
+        label
         Spacer()
         Text(selection.wrappedValue ?? "")
       }

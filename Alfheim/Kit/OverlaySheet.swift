@@ -10,7 +10,7 @@ import SwiftUI
 
 struct OverlaySheet<Content: View>: View {
   private let isPresented: Binding<Bool>
-  private let makeContent: () -> Content
+  private let content: Content
   private let onDismiss: (() -> Void)?
 
   @GestureState private var translation = CGPoint.zero
@@ -20,14 +20,14 @@ struct OverlaySheet<Content: View>: View {
        @ViewBuilder content: @escaping () -> Content) {
     self.isPresented = isPresented
     self.onDismiss = onDismiss
-    self.makeContent = content
+    self.content = content()
   }
 
   var body: some View {
     ZStack {
       VStack {
         Spacer()
-        makeContent()
+        content
       }
       .offset(y: (isPresented.wrappedValue ? 0 : UIScreen.main.bounds.height) + max(0, translation.y))
       .animation(.default, value: isPresented.wrappedValue)

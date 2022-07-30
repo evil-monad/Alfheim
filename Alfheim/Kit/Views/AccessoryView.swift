@@ -12,7 +12,6 @@ struct RowAccessoryView<Content, Accessory>: View where Content: View, Accessory
   private let accessory: Accessory
   private let alignment: VerticalAlignment
   private let spacing: CGFloat?
-  @ViewBuilder
   private let content: Content
 
   @inlinable

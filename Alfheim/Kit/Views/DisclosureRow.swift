@@ -11,7 +11,6 @@ import SwiftUI
 struct DisclosureRow<Content>: View where Content: View {
   private let alignment: VerticalAlignment
   private let spacing: CGFloat?
-  @ViewBuilder
   private let content: Content
 
   @inlinable
@@ -65,7 +64,6 @@ extension View {
 struct CheckmarkRow<Content>: View where Content: View {
   private let alignment: VerticalAlignment
   private let spacing: CGFloat?
-  @ViewBuilder
   private let content: Content
 
   @inlinable
