@@ -39,6 +39,29 @@ extension View {
   }
 }
 
+
+struct CheckmarkRow: ViewModifier {
+  let alignment: VerticalAlignment
+  let spacing: CGFloat?
+
+  func body(content: Content) -> some View {
+    HStack(alignment: alignment, spacing: spacing) {
+      content
+      Spacer()
+      Image(systemName: "checkmark")
+        .font(.body.bold())
+        .foregroundColor(.blue)
+    }
+  }
+}
+
+extension View {
+  func checkmark(alignment: VerticalAlignment = .center, spacing: CGFloat? = nil) -> some View {
+    ModifiedContent(content: self, modifier: CheckmarkRow(alignment: alignment, spacing: spacing))
+  }
+}
+
+/*
 struct CheckmarkRow<Content>: View where Content: View {
   private let alignment: VerticalAlignment
   private let spacing: CGFloat?
@@ -55,13 +78,13 @@ struct CheckmarkRow<Content>: View where Content: View {
   var body: some View {
     HStack(alignment: alignment, spacing: spacing) {
       content
+      Spacer()
       Image(systemName: "checkmark")
         .font(.body.bold())
         .foregroundColor(.blue)
     }
   }
 }
-
 
 extension View {
   func checkmark() -> some View {
@@ -70,6 +93,7 @@ extension View {
     }
   }
 }
+*/
 
 struct DisclosureRow_Previews: PreviewProvider {
   static var previews: some View {
@@ -82,13 +106,9 @@ struct DisclosureRow_Previews: PreviewProvider {
     .frame(height: 44)
     .background(.yellow)
 
-    CheckmarkRow {
-      HStack {
-        Text("Checkmark Row")
-        Spacer()
-      }
-    }
-    .frame(height: 44)
-    .background(.yellow)
+    Text("Checkmark Row")
+      .checkmark()
+      .frame(height: 44)
+      .background(.yellow)
   }
 }

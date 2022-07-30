@@ -787,7 +787,6 @@
 			children = (
 				FABEBB79245C0B4C00637226 /* Grid.swift */,
 				FA020B3F26D1F4B300369350 /* Navigation.swift */,
-				FA7368E52687441200BCF659 /* Hierarchy.swift */,
 				FA014087240C01B800F6FE92 /* EmojiPicker.swift */,
 				FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */,
 				FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */,
@@ -799,6 +798,7 @@
 		FAE84B3625B3F8600027E215 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				FA7368E52687441200BCF659 /* Hierarchy.swift */,
 				FAE84B3725B3F8730027E215 /* FlipView.swift */,
 			);
 			path = Components;
