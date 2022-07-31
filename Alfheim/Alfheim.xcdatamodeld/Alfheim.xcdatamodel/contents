@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="Database.Account" syncable="YES">
+        <attribute name="currency" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="emoji" optional="YES" attributeType="String"/>
+        <attribute name="group" attributeType="String" defaultValueString="expenses"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="introduction" attributeType="String" defaultValueString=""/>
+        <attribute name="name" attributeType="String" defaultValueString="Undefined"/>
+        <attribute name="tag" attributeType="String" defaultValueString=""/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="parent" inverseEntity="Account"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="children" inverseEntity="Account"/>
+        <relationship name="sources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Transaction" inverseName="source" inverseEntity="Transaction"/>
+        <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Transaction" inverseName="target" inverseEntity="Transaction"/>
+    </entity>
+    <entity name="Attachment" representedClassName="Database.Attachment" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Transformable"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Transaction" inverseName="attachments" inverseEntity="Transaction"/>
+    </entity>
+    <entity name="Emoji" representedClassName="Database.Emoji" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Transaction" representedClassName="Database.Transaction" syncable="YES">
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="cleared" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="currency" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="flagged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" attributeType="String" defaultValueString=""/>
+        <attribute name="number" optional="YES" attributeType="String"/>
+        <attribute name="payee" optional="YES" attributeType="String"/>
+        <attribute name="repeated" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="YES"/>
+        <relationship name="attachments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Attachment" inverseName="transaction" inverseEntity="Attachment"/>
+        <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="sources" inverseEntity="Account"/>
+        <relationship name="target" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="targets" inverseEntity="Account"/>
+    </entity>
+    <elements>
+        <element name="Account" positionX="45.05267333984375" positionY="-15.37484741210938" width="128" height="194"/>
+        <element name="Attachment" positionX="166.4041137695312" positionY="22.6102294921875" width="128" height="89"/>
+        <element name="Emoji" positionX="134.3572387695312" positionY="258.7683410644531" width="128" height="59"/>
+        <element name="Transaction" positionX="449.241943359375" positionY="-31.40805053710938" width="128" height="224"/>
+    </elements>
+</model>
