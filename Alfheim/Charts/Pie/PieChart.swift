@@ -50,7 +50,7 @@ struct PieChart: View {
 
       if histogram.isNamed {
         VStack(alignment: .leading, spacing: 8) {
-          ForEach(0..<histogram.units.count) { index in
+          ForEach(0..<histogram.units.count, id: \.self) { index in
             HStack {
               HStack {
                 Text(unit(at: index).symbol)

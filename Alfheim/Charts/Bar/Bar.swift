@@ -27,7 +27,7 @@ struct Bar: View {
   var body: some View {
     GeometryReader { geometry in
       HStack(alignment: .bottom, spacing: CGFloat(geometry.size.width) / CGFloat(3 * (pieces.count - 1))) {
-        ForEach(0..<pieces.count) { index in
+        ForEach(0..<pieces.count, id: \.self) { index in
           VStack(spacing: 4) {
             ZStack(alignment: .bottom) {
               Capsule().fill(Color(.secondarySystemBackground))

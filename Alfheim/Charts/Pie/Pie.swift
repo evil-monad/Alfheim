@@ -34,7 +34,7 @@ struct Pie: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        ForEach(0..<slices.count) { index in
+        ForEach(0..<slices.count, id: \.self) { index in
           slice(at: index)
         }
       }
