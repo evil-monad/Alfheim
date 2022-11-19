@@ -9,7 +9,7 @@
 import Foundation
 import Domain
 
-extension AppState {
+extension RealWorld.State {
   struct ContentState: Equatable {
     var isAccountComposerPresented: Bool
     var isSettingsPresented: Bool
@@ -29,7 +29,7 @@ extension AppState {
   }
 }
 
-extension AppState {
+extension RealWorld.State {
   struct HomeState: Equatable {
     var rootAccounts: [Domain.Account]
     var isEditingAccount: Bool
@@ -45,7 +45,7 @@ extension AppState {
   }
 }
 
-extension AppState {
+extension RealWorld.State {
   struct RowState: Equatable {
     var selectionID: UUID?
   }

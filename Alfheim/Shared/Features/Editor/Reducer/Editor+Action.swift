@@ -9,15 +9,15 @@
 import Foundation
 import Domain
 
-extension AppAction {
-  enum Editor {
-    case save(Domain.Transaction, mode: EditMode)
+extension Editor {
+  enum Action {
+    case save(Domain.Transaction, mode: App.Action.EditMode)
     case edit(Domain.Transaction)
     case new
     case changed(Field)
     case loadAccounts
     case didLoadAccounts([Domain.Account])
-    case focused(AppState.Editor.FocusField?)
+    case focused(Editor.State.FocusField?)
 
     enum Field {
       case amount(String)

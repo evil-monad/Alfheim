@@ -9,9 +9,9 @@
 import Foundation
 import Domain
 
-extension AppAction {
-  enum AccountEditor {
-    case save(Domain.Account, mode: EditMode)
+extension AccountEdit {
+  enum Action {
+    case save(Domain.Account, mode: App.Action.EditMode)
     case edit(Domain.Account)
     case new
     case changed(Field)

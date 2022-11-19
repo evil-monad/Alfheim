@@ -12,8 +12,8 @@ import Database
 import Domain
 
 struct AccountEditor: View {
-  let store: Store<AppState.AccountEditor, AppAction.AccountEditor>
-  @FocusState private var focus: AppState.AccountEditor.FocusField?
+  let store: Store<AccountEdit.State, AccountEdit.Action>
+  @FocusState private var focus: AccountEdit.State.FocusField?
 
   enum Mode {
     case new

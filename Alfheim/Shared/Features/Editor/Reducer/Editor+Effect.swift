@@ -12,11 +12,11 @@ import ComposableArchitecture
 import Database
 import Domain
 
-extension AppEffects {
-  enum Editor {
-    static func loadAccounts(environment: AppEnvironment.Editor) -> Effect<AppAction.Editor, Never> {
-      guard let context = environment.context else {
-        return Effect.none
+extension Editor {
+  enum Effects {
+    static func loadAccounts(context: AppContext?) -> EffectTask<Editor.Action> {
+      guard let context = context else {
+        return .none
       }
 
       return Persistences.Account(context: context)
@@ -29,8 +29,8 @@ extension AppEffects {
         .eraseToEffect()
     }
 
-    static func delete(accounts: [Domain.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
-      guard let context = environment.context else {
+    static func delete(accounts: [Domain.Account], context: AppContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
         return Effect.none
       }
 

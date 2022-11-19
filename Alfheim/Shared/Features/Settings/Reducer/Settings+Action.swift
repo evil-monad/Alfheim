@@ -8,10 +8,9 @@
 
 import Foundation
 
-extension AppAction {
-  enum Settings {
+extension Settings {
+  enum Action {
     case sheet(isPresented: Bool)
-
     case selectAppIcon(AppIcon)
   }
 }

@@ -7,24 +7,14 @@
 //
 
 import Foundation
-import Combine
 import ComposableArchitecture
-import CoreData
 
-extension AppEnvironment {
-  struct Editor {
-    let validator: Validator
-    var context: NSManagedObjectContext?
-
-    init(validator: Validator, context: NSManagedObjectContext?) {
-      self.validator = validator
-      self.context = context
-    }
+final class Validator: DependencyKey {
+  static var liveValue: Validator {
+    return Validator()
   }
-}
 
-class Validator {
-  func validate(state: AppState.Editor) -> Bool {
+  func validate(state: Editor.State) -> Bool {
     guard state.source != nil, state.target != nil else {
       return false
     }
@@ -32,5 +22,12 @@ class Validator {
     let isNotesValid = state.notes != ""
     let isValid = isAmountValid && isNotesValid
     return isValid
+  }
+}
+
+extension DependencyValues {
+  var validator: Validator {
+    get { self[Validator.self] }
+    set { self[Validator.self] = newValue }
   }
 }

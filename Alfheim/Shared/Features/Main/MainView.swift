@@ -12,7 +12,7 @@ import CoreMedia
 import Domain
 
 struct MainView: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
   #if os(iOS)
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   #endif
@@ -32,7 +32,7 @@ struct MainView: View {
 
 /// iPad & Mac
 struct SidebarNavigation: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
 
   var body: some View {
     NavigationView {
@@ -49,7 +49,7 @@ struct SidebarNavigation: View {
 }
 
 struct Sidebar: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
 
   var body: some View {
     WithViewStore(store.stateless) { vs in
@@ -87,7 +87,7 @@ struct Sidebar: View {
 
 /// iOS
 struct ListNavigation: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
 
   var body: some View {
     NavigationView {
@@ -102,7 +102,7 @@ struct ListNavigation: View {
 }
 
 struct ContentView: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
 
   var body: some View {
     WithViewStore(store.scope(state: \.contentState)) { vs in
@@ -133,11 +133,11 @@ struct ContentView: View {
             }
           }
         }
-        .sheet(isPresented: vs.binding(get: \.isAccountComposerPresented, send: AppAction.addAccount)) {
+        .sheet(isPresented: vs.binding(get: \.isAccountComposerPresented, send: App.Action.addAccount)) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,
-              action: AppAction.accountEditor),
+              action: App.Action.accountEditor),
             mode: .new
           )
         }
@@ -147,7 +147,7 @@ struct ContentView: View {
           SettingsView(
             store: store.scope(
               state: \.settings,
-              action: AppAction.settings
+              action: App.Action.settings
             )
           )
         }
@@ -156,7 +156,7 @@ struct ContentView: View {
 }
 
 struct HomeView: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
 
   var body: some View {
     WithViewStore(store.scope(state: \.homeState)) { vs in
@@ -195,11 +195,11 @@ struct HomeView: View {
           Text("Accounts").font(.headline).foregroundColor(.primary)
         }
         .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
-        .sheet(isPresented: vs.binding(get: \.isEditingAccount, send: { AppAction.editAccount(presenting: $0, nil) })) {
+        .sheet(isPresented: vs.binding(get: \.isEditingAccount, send: { App.Action.editAccount(presenting: $0, nil) })) {
           AccountComposer(
             store: store.scope(
               state: \.accountEditor,
-              action: AppAction.accountEditor),
+              action: App.Action.accountEditor),
             mode: .new
           )
         }
@@ -223,7 +223,7 @@ struct HomeView: View {
 //}
 
 private struct AccountRow: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
   let account: Domain.Account
 
   var body: some View {
@@ -237,13 +237,13 @@ private struct AccountRow: View {
           tag: account.id,
           selection: vs.binding(
             get: \.selectionID,
-            send: AppAction.selectAccount(id:)
+            send: App.Action.selectAccount(id:)
           )
         ) {
           IfLetStore(
             store.scope(
               state: \.selection?.value,
-              action: AppAction.overview
+              action: App.Action.overview
             ),
             then: OverviewView.init(store:)
           )
@@ -258,11 +258,11 @@ private struct AccountRow: View {
 }
 
 struct QuickMenu: View {
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
   @State private var selection: Int? = nil
   private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
 
-  init(store: Store<AppState, AppAction>) {
+  init(store: Store<App.State, App.Action>) {
     self.store = store
     self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
   }
@@ -292,10 +292,10 @@ struct QuickMenu: View {
 
 struct GridMenu: View {
   @Environment(\.managedObjectContext) var viewContext // FIXME: use store environment
-  let store: Store<AppState, AppAction>
+  let store: Store<App.State, App.Action>
   private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
 
-  init(store: Store<AppState, AppAction>) {
+  init(store: Store<App.State, App.Action>) {
     self.store = store
     self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
   }
@@ -306,11 +306,11 @@ struct GridMenu: View {
         ForEach(vs.menus) { item in
           NavigationRow(
             tag: item.id,
-            selection: vs.binding(get: \.selection?.id, send: { AppAction.selectMenu(selection: $0) })) {
+            selection: vs.binding(get: \.selection?.id, send: { App.Action.selectMenu(selection: $0) })) {
               IfLetStore(
                store.scope(
                 state: \.sidebar.selection?.value,
-                action: AppAction.transaction
+                action: App.Action.transaction
                ),
                then: TransactionList.init(store:)
               )
@@ -334,7 +334,7 @@ struct GridMenu: View {
 }
 
 struct MenuRow: View {
-  let item: AppState.Sidebar.MenuItem
+  let item: App.State.Sidebar.MenuItem
   let isSelected: Bool
 
   var body: some View {
@@ -357,7 +357,7 @@ extension EdgeInsets {
   static let `default` = EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16)
 }
 
-extension AppState.Sidebar.MenuItem {
+extension App.State.Sidebar.MenuItem {
   var color: Color {
     switch filter {
     case .all: return Color.red
@@ -383,7 +383,7 @@ struct Home_Previews: PreviewProvider {
   static var previews: some View {
     List {
       Section(header: EmptyView()) {
-        QuickMenu(store: AppStore(initialState: AppState(), reducer: AppReducers.appReducer, environment: AppEnvironment.default)).listRowBackground(Color.clear)
+        QuickMenu(store: AppStore(initialState: App.State(), reducer: RealWorld())).listRowBackground(Color.clear)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())

@@ -13,9 +13,9 @@ import CoreData
 import Database
 import Domain
 
-extension AppEffects {
-  enum Transaction {
-    static func create(model: Domain.Transaction, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+extension Transaction {
+  enum Effects {
+    static func create(model: Domain.Transaction, context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -44,7 +44,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func update(model: Domain.Transaction, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func update(model: Domain.Transaction, context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -76,7 +76,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func updateFlag(_ flag: Bool, with id: UUID, context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func updateFlag(_ flag: Bool, with id: UUID, context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -100,7 +100,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func delete(with ids: [UUID], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func delete(with ids: [UUID], in context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context, !ids.isEmpty else {
         return Effect.none
       }
@@ -111,7 +111,7 @@ extension AppEffects {
       return delete(transactions: transactions, in: context)
     }
 
-    static func delete(transactions: [Database.Transaction], in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func delete(transactions: [Database.Transaction], in context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -142,7 +142,7 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func save(in context: NSManagedObjectContext?) -> Effect<Bool, NSError> {
+    static func save(in context: AppContext?) -> Effect<Bool, NSError> {
       guard let context = context else {
         return Effect.none
       }
@@ -160,8 +160,8 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func fetch(environment: AppEnvironment) -> Effect<AppAction, Never> {
-      guard let context = environment.context else {
+    static func fetch(context: AppContext?) -> Effect<App.Action, Never> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -169,7 +169,7 @@ extension AppEffects {
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { transactions in
-          AppAction.fetchAccounts // refresh accounts
+          App.Action.fetchAccounts // refresh accounts
           //AppAction.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
         }
         .eraseToEffect()

@@ -13,31 +13,36 @@ import IdentifiedCollections
 import Database
 import Domain
 
-enum AppReducers {
-  static let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
-    Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
+typealias App = RealWorld
+
+struct RealWorld: ReducerProtocol {
+
+  @Dependency(\.context) var context
+  
+  var body: some ReducerProtocol<State, Action> {
+    Reduce { state, action in
       struct CancelId: Hashable {}
       switch action {
       case .loadAll:
         return Effect
           .merge(
-            AppEffects.Account.load(environment: environment),
-            AppEffects.Transaction.fetch(environment: environment)
+            Account.Effects.load(context: context),
+            Transaction.Effects.fetch(context: context)
           )
       case .accountDidChange(let accounts):
-        state.sidebar = AppState.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
-        state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
+        state.sidebar = App.State.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
+        state.overviews = IdentifiedArray(uniqueElements: accounts.map { Overview.State(account: $0) })
         if let id = state.selection?.id, let overview = state.overviews[id: id] {
           state.selection = Identified(overview, id: id)
         }
         return .none
       case .fetchAccounts:
-        return AppEffects.Account.fetchAll(environment: environment)
+        return Account.Effects.fetchAll(context: context, on: .main)
           .cancellable(id: CancelId(), cancelInFlight: true)
       case .accountDidFetch(let accounts):
         return Effect(value: .accountDidChange(accounts))
       case .cleanup:
-        return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
+        return Account.Effects.delete(accounts: state.accounts, context: context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
@@ -58,18 +63,18 @@ enum AppReducers {
         if !account.canDelete {
           return .none
         }
-        return AppEffects.Account.delete(accounts: [account], environment: environment)
+        return Account.Effects.delete(accounts: [account], context: context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
           .fireAndForget()
       case .selectMenu(selection: let item):
-        if let id = item, let filter = AppState.QuickFilter(rawValue: id) {
+        if let id = item, let filter = App.State.QuickFilter(rawValue: id) {
           let allTransactions = state.sidebar.accounts.flatMap {
             $0.transactions(.only)
           }
           let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
-          let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+          let transaction = Transaction.State(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
           state.sidebar.selection = Identified(transaction, id: id)
         } else {
           state.sidebar.selection = nil
@@ -90,43 +95,36 @@ enum AppReducers {
           return Effect(value: .selectMenu(selection: selection.id))
         }
         if let selection = state.selection, let overview = selection.value {
-          state.overviews[id: selection.id] = AppState.Overview(account: overview.account)
+          state.overviews[id: selection.id] = Overview.State(account: overview.account)
         }
         return .none
 
       default:
         return .none
       }
-    },
-    AppReducers.Overview.reducer
-      .optional()
-      .pullback(state: \Identified.value, action: .self, environment: { $0 })
-      .optional()
-      .pullback(
-        state: \AppState.selection,
-        action: /AppAction.overview,
-        environment: { $0 }
-      ),
-    AppReducers.AccountEditor.reducer.pullback(
-      state: \AppState.accountEditor,
-      action: /AppAction.accountEditor,
-      environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
-    ),
-    AppReducers.Transaction.reducer
-      .optional()
-      .pullback(state: \Identified.value, action: .self, environment: { $0 })
-      .optional()
-      .pullback(
-        state: \AppState.sidebar.selection,
-        action: /AppAction.transaction,
-        environment: { $0 }
-    ),
-    AppReducers.Settings.reducer.pullback(
-      state: \AppState.settings,
-      action: /AppAction.settings,
-      environment: { $0 }
-    ),
-    Reducer { state, action, environment in
+    }
+    .ifLet(\App.State.selection, action: /App.Action.overview) {
+      EmptyReducer()
+        .ifLet(\Identified<Overview.State.ID, Overview.State?>.value, action: .self) {
+          Overview()
+        }
+    }
+    .ifLet(\App.State.sidebar.selection, action: /App.Action.transaction) {
+      EmptyReducer()
+        .ifLet(\Identified<App.State.Sidebar.MenuItem.ID, Transaction.State?>.value, action: .self) {
+          Transaction()
+        }
+    }
+
+    Scope(state: \.accountEditor, action: /App.Action.accountEditor) {
+      AccountEdit()
+    }
+
+    Scope(state: \.settings, action: /App.Action.settings) {
+      Settings()
+    }
+
+    Reduce { state, action in
       switch action {
       case .lifecycle(.willConnect):
         // TODO: load all data
@@ -143,21 +141,5 @@ enum AppReducers {
         return .none
       }
     }
-//    AppReducers.Overview.reducer.forEach(
-//      state: \AppState.overviews,
-//      action: /AppAction.overview(id:action:),
-//      environment: { $0 }
-//    ),
-//    AppReducers.Transaction.reducer.pullback(
-//      state: \AppState.transaction,
-//      action: /AppAction.transaction,
-//      environment: { $0 }
-//    ),
-//    AppReducers.Editor.reducer
-//      .pullback(
-//        state: \.editor,
-//        action: /AppAction.editor,
-//        environment: { _ in AppEnvironment.Editor(validator: Validator()) }
-//      )	
-  )
+  }
 }

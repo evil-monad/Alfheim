@@ -9,8 +9,8 @@
 import Foundation
 import Domain
 
-extension AppAction {
-  enum Overview {
+extension Overview {
+  enum Action {
     case toggleNewTransaction(presenting: Bool)
     case editTransaction(Domain.Transaction)
     case editTransactionDone
@@ -20,8 +20,8 @@ extension AppAction {
     case toggleSettings(presenting: Bool)
     case onDetailed(Bool)
 
-    case editor(Editor)
-    case transaction(Transaction)
+    case editor(Editor.Action)
+    case transaction(Transaction.Action)
 
     case showTrasactions(Bool)
   }

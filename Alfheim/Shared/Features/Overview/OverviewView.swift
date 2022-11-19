@@ -11,7 +11,7 @@ import ComposableArchitecture
 import Domain
 
 struct OverviewView: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
     WithViewStore(store.scope(state: \.contentState)) { vs in
@@ -46,7 +46,7 @@ struct OverviewView: View {
         ComposerView(
           store: store.scope(
             state: \.editor,
-            action: AppAction.Overview.editor),
+            action: Overview.Action.editor),
           mode: .new
         )
       }
@@ -55,7 +55,7 @@ struct OverviewView: View {
 }
 
 private struct TransactionSection: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
     WithViewStore(store.scope(state: \.transactionState)) { vs in
@@ -66,12 +66,12 @@ private struct TransactionSection: View {
         .listRowInsets(EdgeInsets.default)
       } header: {
         NavigationLink(
-          isActive: vs.binding(get: \.isTransactionListActive, send: AppAction.Overview.showTrasactions),
+          isActive: vs.binding(get: \.isTransactionListActive, send: Overview.Action.showTrasactions),
           destination: {
             TransactionList(
               store: store.scope(
                 state: \.transactions,
-                action: AppAction.Overview.transaction
+                action: Overview.Action.transaction
               )
             )
           }, label: {
@@ -99,7 +99,7 @@ private struct TransactionSection: View {
 }
 
 private struct StatisticsSection: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
     WithViewStore(store) { vs in

@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct AccountComposer: View {
   @Environment(\.dismiss) var dismiss
-  let store: Store<AppState.AccountEditor, AppAction.AccountEditor>
+  let store: Store<AccountEdit.State, AccountEdit.Action>
 
   let mode: AccountEditor.Mode
 
@@ -23,7 +23,7 @@ struct AccountComposer: View {
           .toolbar {
             ToolbarItem(placement: .confirmationAction) {
               Button {
-                let action = AppAction.AccountEditor.save(vs.snapshot, mode: vs.isNew ? .new : .update)
+                let action = AccountEdit.Action.save(vs.snapshot, mode: vs.isNew ? .new : .update)
                  vs.send(action)
                 dismiss()
               } label: {

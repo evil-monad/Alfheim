@@ -10,7 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct TransactionList: View {
-  let store: Store<AppState.Transaction, AppAction.Transaction>
+  let store: Store<Transaction.State, Transaction.Action>
 
   var body: some View {
     WithViewStore(store) { vs in
@@ -52,10 +52,10 @@ struct TransactionList: View {
         ToolbarItem(placement: .primaryAction) {
           Menu {
             Picker(
-              selection: vs.binding(get: \.filter, send: AppAction.Transaction.filter),
+              selection: vs.binding(get: \.filter, send: Transaction.Action.filter),
               label: Text("Period")
             ) {
-              ForEach(AppState.Transaction.Filter.allCases, id: \.self) { filter in
+              ForEach(Transaction.State.Filter.allCases, id: \.self) { filter in
                 Text(filter.name).tag(filter)
               }
             }

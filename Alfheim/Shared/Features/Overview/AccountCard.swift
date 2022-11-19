@@ -10,7 +10,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct AccountCard: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   @State private var flipped: Bool = false
   private let cornerRadius: CGFloat = 20
@@ -43,7 +43,7 @@ struct AccountCard: View {
   }
 
   struct Front: View {
-    let store: Store<AppState.Overview, AppAction.Overview>
+    let store: Store<Overview.State, Overview.Action>
     let onFlip: () -> Void
 
     var body: some View {
@@ -96,7 +96,7 @@ struct AccountCard: View {
   }
 
   struct Back: View {
-    let store: Store<AppState.Overview, AppAction.Overview>
+    let store: Store<Overview.State, Overview.Action>
     let onFlip: () -> Void
 
     var body: some View {

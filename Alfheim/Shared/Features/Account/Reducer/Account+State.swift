@@ -9,8 +9,8 @@
 import Foundation
 import Domain
 
-extension AppState {
-  struct Account: Equatable {
+extension Account {
+  struct State: Equatable {
     var accounts: [Domain.Account] = []
 
     var periods: [String: Period] = [:]
@@ -18,7 +18,7 @@ extension AppState {
   }
 }
 
-extension AppState {
+extension Account.State {
   /// Transaction period
   enum Period {
     case weekly
