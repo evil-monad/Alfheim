@@ -9,8 +9,8 @@
 import Foundation
 import Domain
 
-extension AppAction {
-  enum Transaction {
+extension Transaction {
+  enum Action {
     case editTransaction(Domain.Transaction)
     case didEditTransaction
 
@@ -19,6 +19,6 @@ extension AppAction {
     case showStatistics([Domain.Transaction], interval: DateInterval)
     case dimissStatistics
 
-    case filter(selection: AppState.Transaction.Filter)
+    case filter(selection: Transaction.State.Filter)
   }
 }

@@ -8,10 +8,11 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
-extension AppState {
+extension Overview {
   /// Overview view state
-  struct Overview: Equatable, Identifiable {
+  struct State: Equatable, Identifiable {
     var isEditorPresented: Bool = false
     var isStatisticsPresented: Bool = false
     var selectedTransaction: Domain.Transaction?
@@ -22,8 +23,8 @@ extension AppState {
 
     var isTransactionListActive = false
 
-    var editor: Editor
-    var transactions: AppState.Transaction
+    var editor: Editor.State
+    var transactions: Transaction.State
     var timeInterval: DateInterval?
 
     var id: UUID
@@ -33,7 +34,7 @@ extension AppState {
       print("init \(account.name)")
       self.account = account
       self.id = account.id
-      self.editor = Editor(target: account.summary)
+      self.editor = Editor.State(target: account.summary)
       let interval: DateInterval?
       switch account.group {
       case .income, .expenses:
@@ -43,7 +44,7 @@ extension AppState {
         interval = nil
       }
       self.timeInterval = interval
-      self.transactions = Transaction(source: .accounted(account: account, interval: interval))
+      self.transactions = Transaction.State(source: .accounted(account: account, interval: interval))
     }
 
     private var allTransactions: [Domain.Transaction] {
@@ -83,7 +84,7 @@ extension AppState {
 }
 
 // Recent transaction
-extension AppState.Overview {
+extension Overview.State {
   var showRecentTransactionsSection: Bool {
     return !recentTransactions.isEmpty
   }
@@ -94,7 +95,7 @@ extension AppState.Overview {
   }
 }
 
-extension AppState.Overview {
+extension Overview.State {
   struct ContentState: Equatable {
     var accountName: String
     var isRootAccount: Bool
@@ -121,7 +122,7 @@ extension AppState.Overview {
   }
 }
 
-extension AppState.Overview {
+extension Overview.State {
   struct TransactionState: Equatable {
     var recentTransactions: [Domain.Transaction]
     var account: Domain.Account
@@ -139,7 +140,7 @@ extension AppState.Overview {
 }
 
 // Stat
-extension AppState.Overview {
+extension Overview.State {
   var showStatisticsSection: Bool {
     return showTrendStatistics || showCompositonStatistics
   }
@@ -154,7 +155,7 @@ extension AppState.Overview {
       return []
     }
 
-    let transfer: Account.Transfer
+    let transfer: Domain.Account.Transfer
     if account.group == .expenses {
       transfer = .deposit
     } else if account.group == .income {

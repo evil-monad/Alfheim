@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension AppState {
+extension Settings {
   /// Settings view state
-  struct Settings: Equatable {
+  struct State: Equatable {
     var isPresented: Bool = false
 
     var appIcon: AppIcon = .primary

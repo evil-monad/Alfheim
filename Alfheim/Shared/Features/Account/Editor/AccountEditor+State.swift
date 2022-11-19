@@ -10,9 +10,9 @@ import Foundation
 import SwiftUI
 import Domain
 
-extension AppState {
+extension AccountEdit {
   /// Composer, editor state
-  struct AccountEditor: Equatable {
+  struct State: Equatable {
     enum Mode: Equatable {
       case new
       case edit(Domain.Account)
@@ -51,7 +51,7 @@ extension AppState {
   }
 }
 
-extension AppState.AccountEditor {
+extension AccountEdit.State {
   mutating func reset(_ mode: Mode) {
     switch mode {
     case .new:
@@ -75,7 +75,7 @@ extension AppState.AccountEditor {
   }
 }
 
-extension AppState.AccountEditor {
+extension AccountEdit.State {
   func makeAccount() -> Domain.Account {
     switch mode {
     case .new:

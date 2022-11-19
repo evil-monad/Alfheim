@@ -11,19 +11,19 @@ import ComposableArchitecture
 
 struct ComposerView: View {
   @Environment(\.dismiss) var dismiss
-  let store: Store<AppState.Editor, AppAction.Editor>
+  let store: Store<Editor.State, Editor.Action>
 
   let mode: EditorView.Mode
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       NavigationView {
         EditorView(store: store)
           .navigationTitle(vs.isNew ? " New Transaction" : "Edit Transaction")
           .toolbar {
             ToolbarItem(placement: .confirmationAction) {
               Button {
-                let action = AppAction.Editor.save(vs.transaction, mode: vs.isNew ? .new : .update)
+                let action = Editor.Action.save(vs.transaction, mode: vs.isNew ? .new : .update)
                 vs.send(action)
                 dismiss()
               } label: {

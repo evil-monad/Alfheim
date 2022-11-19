@@ -11,21 +11,23 @@ import IdentifiedCollections
 import ComposableArchitecture
 import Domain
 
-struct AppState: Equatable {
-  var overviews: IdentifiedArrayOf<Overview> = []
-  var selection: Identified<Overview.ID, Overview?>?
-  //var editor = Editor()
+extension RealWorld {
+  struct State: Equatable {
+    var overviews: IdentifiedArrayOf<Overview.State> = []
+    var selection: Identified<Overview.State.ID, Overview.State?>?
+    //var editor = Editor()
 
-  var sidebar: Sidebar = Sidebar()
+    var sidebar: Sidebar = Sidebar()
 
-  var settings = Settings()
+    var settings = Settings.State()
 
-  var isAddingAccount: Bool = false
-  var accountEditor = AccountEditor()
-  var isEditingAccount: Bool = false
+    var isAddingAccount: Bool = false
+    var accountEditor = AccountEdit.State()
+    var isEditingAccount: Bool = false
+  }
 }
 
-extension AppState {
+extension RealWorld.State {
   var accounts: [Domain.Account] {
     overviews.map { $0.account }
   }
@@ -35,7 +37,7 @@ extension AppState {
   }
 }
 
-extension AppState {
+extension RealWorld.State {
   enum QuickFilter: Int, Hashable, Identifiable {
     case all, uncleared, repeating, flagged
     var id: Int { rawValue }
@@ -61,7 +63,7 @@ extension AppState {
 
     var accounts: [Domain.Account]
     var menus: IdentifiedArrayOf<MenuItem>
-    var selection: Identified<MenuItem.ID, Transaction?>?
+    var selection: Identified<MenuItem.ID, Transaction.State?>?
 
     init(accounts: [Domain.Account] = [], selectionMenu: MenuItem.ID? = nil) {
       self.accounts = accounts
@@ -70,9 +72,9 @@ extension AppState {
         $0.transactions(.only)
       }
 
-      if let id = selectionMenu, let filter = AppState.QuickFilter(rawValue: id) {
+      if let id = selectionMenu, let filter = RealWorld.State.QuickFilter(rawValue: id) {
         let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
-        let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+        let transaction = Transaction.State(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
         self.selection = Identified(transaction, id: id)
       } else {
         self.selection = nil
@@ -97,7 +99,7 @@ extension AppState {
   }
 }
 
-extension AppState.QuickFilter {
+extension RealWorld.State.QuickFilter {
   var symbol: String {
     switch self {
     case .all: return "tray.circle.fill"

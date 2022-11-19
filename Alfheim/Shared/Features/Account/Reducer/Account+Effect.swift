@@ -13,10 +13,10 @@ import CoreData
 import Database
 import Domain
 
-extension AppEffects {
-  enum Account {
-    static func load(environment: AppEnvironment) -> Effect<AppAction, Never> {
-      guard let context = environment.context else {
+extension Account {
+  enum Effects {
+    static func load(context: AppContext?) -> Effect<RealWorld.Action, Never> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -30,8 +30,8 @@ extension AppEffects {
         .eraseToEffect()
     }
 
-    static func fetchAll(environment: AppEnvironment) -> Effect<AppAction, Never> {
-      guard let context = environment.context else {
+    static func fetchAll(context: AppContext?, on queue: AnySchedulerOf<DispatchQueue>) -> Effect<App.Action, Never> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -43,13 +43,13 @@ extension AppEffects {
         }
         return accounts
       }
-      .receive(on: environment.mainQueue)
+      .receive(on: queue)
       .eraseToEffect()
-      .map { AppAction.accountDidFetch(Domain.Account.mapAccounts($0)) }
+      .map { App.Action.accountDidFetch(Domain.Account.mapAccounts($0)) }
     }
 
-    static func delete(accounts: [Domain.Account], environment: AppEnvironment) -> Effect<Bool, NSError> {
-      guard let context = environment.context else {
+    static func delete(accounts: [Domain.Account], context: AppContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -73,8 +73,8 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func create(snapshot: Domain.Account, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
-      guard let context = environment.context else {
+    static func create(snapshot: Domain.Account, context: AppContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -84,15 +84,15 @@ extension AppEffects {
       return create(account: object, context: context)
     }
 
-    static func create(account: Database.Account, environment: AppEnvironment) -> Effect<Bool, NSError> {
-      guard let context = environment.context else {
+    static func create(account: Database.Account, context: AppContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
         return Effect.none
       }
 
       return create(account: account, context: context)
     }
 
-    static func create(account: Database.Account, context: NSManagedObjectContext) -> Effect<Bool, NSError> {
+    static func create(account: Database.Account, context: AppContext) -> Effect<Bool, NSError> {
       let persistence = Persistences.Account(context: context)
 
       return Future { promise in
@@ -107,8 +107,8 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func update(snapshot: Domain.Account, environment: AppEnvironment.Account) -> Effect<Bool, NSError> {
-      guard let context = environment.context else {
+    static func update(snapshot: Domain.Account, context: AppContext?) -> Effect<Bool, NSError> {
+      guard let context = context else {
         return Effect.none
       }
 
@@ -134,8 +134,8 @@ extension AppEffects {
       .eraseToEffect()
     }
 
-    static func loadAccounts(environment: AppEnvironment.Account) -> Effect<AppAction.AccountEditor, Never> {
-      guard let context = environment.context else {
+    static func loadAccounts(context: AppContext?) -> Effect<AccountEdit.Action, Never> {
+      guard let context = context else {
         return Effect.none
       }
 

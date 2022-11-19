@@ -6,11 +6,13 @@
 //  Copyright © 2021 blessingsoft. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 import ComposableArchitecture
 
-struct AppEnvironment {
+typealias AppContext = NSManagedObjectContext
+
+final class AppEnvironment {
   let decoder = JSONDecoder()
   let encoder = JSONEncoder()
   let file = FileManager.default
@@ -25,3 +27,14 @@ extension AppEnvironment {
 }
 
 enum AppEnvironments {}
+
+extension DependencyValues {
+  var context: NSManagedObjectContext {
+    get { self[ContextKey.self] }
+    set { self[ContextKey.self] = newValue }
+  }
+
+  private enum ContextKey: DependencyKey {
+    static let liveValue: NSManagedObjectContext = AppEnvironment.default.context!
+  }
+}

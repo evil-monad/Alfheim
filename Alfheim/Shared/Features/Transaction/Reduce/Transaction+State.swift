@@ -12,10 +12,15 @@ import Combine
 import IdentifiedCollections
 import SwiftUI // LocalizedStringKey
 import Domain
+import ComposableArchitecture
 
-extension AppState {
+struct Transaction: ReducerProtocol {
+  @Dependency(\.context) var context
+}
+
+extension Transaction {
   /// Transaction list view state
-  struct Transaction: Equatable, Identifiable {
+  struct State: Equatable, Identifiable {
     private(set) var source: Transactions.Source
 
     let id: String
@@ -77,7 +82,7 @@ extension AppState {
 
       let sections = Dictionary(grouping: filteredTransactions) { transaction in
         return transaction.date.start(of: .day)
-      }.map { AppState.Transaction.SectionedTransaction(date: $0, transactions: $1) }
+      }.map { Transaction.State.SectionedTransaction(date: $0, transactions: $1) }
       .sorted(by: { $0.date > $1.date })
 
       return IdentifiedArray(uniqueElements: sections)
@@ -133,7 +138,7 @@ enum Transactions {
   }
 }
 
-extension AppState.Transaction {
+extension Transaction.State {
   enum Filter: LocalizedStringKey, CaseIterable, Hashable {
     case none = "None"
     case week = "This Week"

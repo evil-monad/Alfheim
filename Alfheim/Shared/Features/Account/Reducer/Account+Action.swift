@@ -9,8 +9,8 @@
 import Foundation
 import Domain
 
-extension AppAction {
-  enum Account {
+extension Account {
+  enum Action {
     case update(Domain.Account)
   }
 }

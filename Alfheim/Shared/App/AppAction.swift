@@ -9,45 +9,47 @@
 import Foundation
 import Domain
 
-enum AppAction {
-  case lifecycle(SceneLifecycleEvent)
-  //case overview(index: Int, action: Overview)
-  case overview(Overview)
-  case selectAccount(id: UUID?)
-  //case editor(Editor)
-//  case settings(Settings)
-//  case transactions(Transactions)
-//  case payment(Payment)
-//  case catemoji(Catemoji)
+extension RealWorld {
+  enum Action {
+    case lifecycle(SceneLifecycleEvent)
+    //case overview(index: Int, action: Overview)
+    case overview(Overview.Action)
+    case selectAccount(id: UUID?)
+    //case editor(Editor)
+    //  case settings(Settings)
+    //  case transactions(Transactions)
+    //  case payment(Payment)
+    //  case catemoji(Catemoji)
 
-//  case startImport
-//  case finishImport
+    //  case startImport
+    //  case finishImport
 
-  // Account
-  case loadAll
-  case accountDidChange([Domain.Account])
-  case fetchAccounts
-  case accountDidFetch([Domain.Account])
-  case cleanup
+    // Account
+    case loadAll
+    case accountDidChange([Domain.Account])
+    case fetchAccounts
+    case accountDidFetch([Domain.Account])
+    case cleanup
 
-  // Transaction
-  case transactionDidChange([Domain.Transaction])
+    // Transaction
+    case transactionDidChange([Domain.Transaction])
 
-  case addAccount(presenting: Bool)
-  case editAccount(presenting: Bool, Domain.Account?)
-  case deleteAccount(Domain.Account)
+    case addAccount(presenting: Bool)
+    case editAccount(presenting: Bool, Domain.Account?)
+    case deleteAccount(Domain.Account)
 
-  case newTransaction
-  case accountEditor(AccountEditor)
+    case newTransaction
+    case accountEditor(AccountEdit.Action)
 
-  case selectMenu(selection: Int?)
-  case transaction(Transaction)
+    case selectMenu(selection: Int?)
+    case transaction(Transaction.Action)
 
-  // settings
-  case settings(Settings)
+    // settings
+    case settings(Settings.Action)
+  }
 }
 
-extension AppAction {
+extension RealWorld.Action {
   enum EditMode {
     case new
     case update

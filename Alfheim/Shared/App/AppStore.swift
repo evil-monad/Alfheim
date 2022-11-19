@@ -9,4 +9,4 @@
 import Foundation
 import ComposableArchitecture
 
-typealias AppStore = Store<AppState, AppAction>
+typealias AppStore = Store<App.State, App.Action>

@@ -13,9 +13,14 @@ import ComposableArchitecture
 import Domain
 import Database
 
-extension AppState {
+struct Editor: ReducerProtocol {
+  @Dependency(\.context) var context
+  @Dependency(\.validator) var validator
+}
+
+extension Editor {
   /// Composer, editor state
-  struct Editor: Equatable {
+  struct State: Equatable {
     enum Mode: Equatable {
       case new
       case edit(Domain.Transaction)
@@ -64,7 +69,7 @@ extension AppState {
   }
 }
 
-extension AppState.Editor {
+extension Editor.State {
   mutating func reset(_ mode: Mode) {
     switch mode {
     case .new:
@@ -96,7 +101,7 @@ extension AppState.Editor {
   }
 }
 
-extension AppState.Editor {
+extension Editor.State {
   var transaction: Domain.Transaction {
     switch mode {
     case .new:

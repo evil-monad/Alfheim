@@ -11,8 +11,8 @@ import ComposableArchitecture
 import Domain
 
 struct EditorView: View {
-  let store: Store<AppState.Editor, AppAction.Editor>
-  @FocusState private var focus: AppState.Editor.FocusField?
+  let store: Store<Editor.State, Editor.Action>
+  @FocusState private var focus: Editor.State.FocusField?
 
   enum Mode {
     case new
@@ -20,7 +20,7 @@ struct EditorView: View {
   }
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       List {
         Section {
           HStack {
