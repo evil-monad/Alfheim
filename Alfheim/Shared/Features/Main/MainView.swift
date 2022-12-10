@@ -90,7 +90,7 @@ struct ListNavigation: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    NavigationStack {
+    NavigationView {
       WithViewStore(store.stateless) { viewStore in
         ContentView(store: store)
           .task {
