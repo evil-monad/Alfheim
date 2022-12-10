@@ -1,6 +1,6 @@
 //
-//  AccountEditor.swift
-//  AccountEditor
+//  EditAccountForm.swift
+//  Alfheim
 //
 //  Created by alex.huo on 2021/8/15.
 //  Copyright © 2021 blessingsoft. All rights reserved.
@@ -11,14 +11,9 @@ import ComposableArchitecture
 import Database
 import Domain
 
-struct AccountEditor: View {
-  let store: Store<AccountEdit.State, AccountEdit.Action>
-  @FocusState private var focus: AccountEdit.State.FocusField?
-
-  enum Mode {
-    case new
-    case edit
-  }
+struct EditAccountForm: View {
+  let store: Store<EditAccount.State, EditAccount.Action>
+  @FocusState private var focus: EditAccount.State.FocusField?
   
   var body: some View {
     WithViewStore(store) { vs in
@@ -76,7 +71,7 @@ struct AccountEditor: View {
 }
 
 //
-//struct AccountEditor_Previews: PreviewProvider {
+//struct EditAccountView_Previews: PreviewProvider {
 //  static var previews: some View {
 //    AccountEditor()
 //  }

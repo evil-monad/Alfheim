@@ -30,7 +30,7 @@ struct RealWorld: ReducerProtocol {
             Transaction.Effects.fetch(context: context)
           )
       case .accountDidChange(let accounts):
-        state.sidebar = App.State.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
+        state.home = Home.State(accounts: accounts, selectionMenu: state.home.selection?.id)
         state.overviews = IdentifiedArray(uniqueElements: accounts.map { Overview.State(account: $0) })
         if let id = state.selection?.id, let overview = state.overviews[id: id] {
           state.selection = Identified(overview, id: id)
@@ -48,16 +48,16 @@ struct RealWorld: ReducerProtocol {
           .eraseToEffect()
           .fireAndForget()
       case .addAccount(let presenting):
-        state.accountEditor.reset(.new)
+        state.editAccount.reset(.new)
         state.isAddingAccount = presenting
         return .none
-      case let .editAccount(presenting, account):
+      case let .account(presenting, account):
         if let account = account {
-          state.accountEditor.reset(.edit(account))
+          state.editAccount.reset(.edit(account))
         } else {
-          state.accountEditor.reset(.new)
+          state.editAccount.reset(.new)
         }
-        state.isEditingAccount = presenting
+        state.isAccountSelected = presenting
         return .none
       case .deleteAccount(let account):
         if !account.canDelete {
@@ -69,20 +69,21 @@ struct RealWorld: ReducerProtocol {
           .eraseToEffect()
           .fireAndForget()
       case .selectMenu(selection: let item):
-        if let id = item, let filter = App.State.QuickFilter(rawValue: id) {
-          let allTransactions = state.sidebar.accounts.flatMap {
+        if let id = item, let filter = QuickFilter(rawValue: id) {
+          let allTransactions = state.home.accounts.flatMap {
             $0.transactions(.only)
           }
           let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
           let transaction = Transaction.State(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
-          state.sidebar.selection = Identified(transaction, id: id)
+          state.home.selection = Identified(transaction, id: id)
         } else {
-          state.sidebar.selection = nil
+          state.home.selection = nil
           return .cancel(id: CancelId())
         }
         return .none
 
       case let .selectAccount(id: id):
+        print("select account: \(id)")
         if let id = id, let overview = state.overviews[id: id] {
           state.selection = Identified(overview, id: id)
         } else {
@@ -91,11 +92,11 @@ struct RealWorld: ReducerProtocol {
         return .none
       case .transactionDidChange(let transactions):
         // TODO: find changed transaction, and update account
-        if let selection = state.sidebar.selection {
+        if let selection = state.home.selection {
           return Effect(value: .selectMenu(selection: selection.id))
         }
-        if let selection = state.selection, let overview = selection.value {
-          state.overviews[id: selection.id] = Overview.State(account: overview.account)
+        if let selection = state.selection {
+          state.overviews[id: selection.id] = Overview.State(account: selection.value.account)
         }
         return .none
 
@@ -103,21 +104,26 @@ struct RealWorld: ReducerProtocol {
         return .none
       }
     }
-    .ifLet(\App.State.selection, action: /App.Action.overview) {
-      EmptyReducer()
-        .ifLet(\Identified<Overview.State.ID, Overview.State?>.value, action: .self) {
-          Overview()
-        }
+    .ifLet(\App.State.selection, action: /Action.overview) {
+      Scope(state: \Identified<Overview.State.ID, Overview.State>.value, action: /.self) {
+        Overview()
+      }
     }
-    .ifLet(\App.State.sidebar.selection, action: /App.Action.transaction) {
+//    .ifLet(\App.State.selection, action: /App.Action.overview) {
+//      EmptyReducer()
+//        .ifLet(\Identified<Overview.State.ID, Overview.State?>.value, action: .self) {
+//          Overview()
+//        }
+//    }
+    .ifLet(\App.State.home.selection, action: /App.Action.transaction) {
       EmptyReducer()
-        .ifLet(\Identified<App.State.Sidebar.MenuItem.ID, Transaction.State?>.value, action: .self) {
+        .ifLet(\Identified<Home.MenuItem.ID, Transaction.State?>.value, action: .self) {
           Transaction()
         }
     }
 
-    Scope(state: \.accountEditor, action: /App.Action.accountEditor) {
-      AccountEdit()
+    Scope(state: \.editAccount, action: /App.Action.editAccount) {
+      EditAccount()
     }
 
     Scope(state: \.settings, action: /App.Action.settings) {

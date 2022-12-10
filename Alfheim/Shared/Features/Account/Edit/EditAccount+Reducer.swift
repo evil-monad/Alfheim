@@ -1,6 +1,6 @@
 //
-//  AccountEditor+Reducer.swift
-//  AccountEditor+Reducer
+//  EditAccount+Reducer.swift
+//  Alfheim
 //
 //  Created by alex.huo on 2021/8/15.
 //  Copyright © 2021 blessingsoft. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct AccountEdit: ReducerProtocol {
+struct EditAccount: ReducerProtocol {
   @Dependency(\.context) var context
   @Dependency(\.account) var env
 

@@ -1,6 +1,6 @@
 //
-//  AccountEditor+State.swift
-//  AccountEditor+State
+//  EditAccount+State.swift
+//  Alfheim
 //
 //  Created by alex.huo on 2021/8/15.
 //  Copyright © 2021 blessingsoft. All rights reserved.
@@ -10,7 +10,12 @@ import Foundation
 import SwiftUI
 import Domain
 
-extension AccountEdit {
+extension EditAccount {
+  enum Mode {
+    case new
+    case edit
+  }
+
   /// Composer, editor state
   struct State: Equatable {
     enum Mode: Equatable {
@@ -51,7 +56,7 @@ extension AccountEdit {
   }
 }
 
-extension AccountEdit.State {
+extension EditAccount.State {
   mutating func reset(_ mode: Mode) {
     switch mode {
     case .new:
@@ -75,7 +80,7 @@ extension AccountEdit.State {
   }
 }
 
-extension AccountEdit.State {
+extension EditAccount.State {
   func makeAccount() -> Domain.Account {
     switch mode {
     case .new:

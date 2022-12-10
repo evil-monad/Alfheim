@@ -36,9 +36,7 @@ extension Account {
       }
 
       return Effect<[Database.Account], Never>.task {
-        guard let accounts = try? await Persistences.Account(context: context)
-          .fetchAll()
-        else {
+        guard let accounts = try? await Persistences.Account(context: context) .fetchAll() else {
           return []
         }
         return accounts
@@ -134,7 +132,7 @@ extension Account {
       .eraseToEffect()
     }
 
-    static func loadAccounts(context: AppContext?) -> Effect<AccountEdit.Action, Never> {
+    static func loadAccounts(context: AppContext?) -> Effect<EditAccount.Action, Never> {
       guard let context = context else {
         return Effect.none
       }

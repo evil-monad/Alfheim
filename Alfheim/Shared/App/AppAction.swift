@@ -24,6 +24,9 @@ extension RealWorld {
     //  case startImport
     //  case finishImport
 
+    // home
+    case home(Home.Action)
+
     // Account
     case loadAll
     case accountDidChange([Domain.Account])
@@ -35,11 +38,11 @@ extension RealWorld {
     case transactionDidChange([Domain.Transaction])
 
     case addAccount(presenting: Bool)
-    case editAccount(presenting: Bool, Domain.Account?)
+    case account(presenting: Bool, Domain.Account?)
     case deleteAccount(Domain.Account)
 
     case newTransaction
-    case accountEditor(AccountEdit.Action)
+    case editAccount(EditAccount.Action)
 
     case selectMenu(selection: Int?)
     case transaction(Transaction.Action)

@@ -16,7 +16,7 @@ struct AccountEnvironment: DependencyKey {
 }
 
 final class AccountValidator {
-  func validate(state: AccountEdit.State) -> Bool {
+  func validate(state: EditAccount.State) -> Bool {
     guard !state.name.isEmpty, state.parent != nil else {
       return false
     }

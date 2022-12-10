@@ -13,6 +13,10 @@ import Domain
 struct OverviewView: View {
   let store: Store<Overview.State, Overview.Action>
 
+  init(store: Store<Overview.State, Overview.Action>) {
+    self.store = store
+  }
+
   var body: some View {
     WithViewStore(store.scope(state: \.contentState)) { vs in
       List {

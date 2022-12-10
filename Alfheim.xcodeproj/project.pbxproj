@@ -70,13 +70,13 @@
 		FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2426BFD4A500369350 /* CompositionView.swift */; };
 		FA020B2726BFD50D00369350 /* TrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2626BFD50D00369350 /* TrendView.swift */; };
 		FA020B2926C8D8E600369350 /* Persistences+Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2826C8D8E600369350 /* Persistences+Cloud.swift */; };
-		FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2B26C8DBA700369350 /* AccountEditor.swift */; };
-		FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */; };
+		FA020B2C26C8DBA700369350 /* EditAccount+Form.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2B26C8DBA700369350 /* EditAccount+Form.swift */; };
+		FA020B2E26C8DC9600369350 /* EditAccount+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2D26C8DC9600369350 /* EditAccount+State.swift */; };
 		FA020B3026C8E1AF00369350 /* Set+Alfheim.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */; };
 		FA020B3226C8E67C00369350 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3126C8E67C00369350 /* Snapshot.swift */; };
-		FA020B3426C8E82600369350 /* AccountEditor+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3326C8E82600369350 /* AccountEditor+Action.swift */; };
-		FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3726C8F0C800369350 /* AccountComposer.swift */; };
-		FA020B3A26C8F30300369350 /* AccountEditor+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */; };
+		FA020B3426C8E82600369350 /* EditAccount+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3326C8E82600369350 /* EditAccount+Action.swift */; };
+		FA020B3826C8F0C800369350 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3726C8F0C800369350 /* EditAccountView.swift */; };
+		FA020B3A26C8F30300369350 /* EditAccount+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3926C8F30300369350 /* EditAccount+Reducer.swift */; };
 		FA020B3E26C90BAE00369350 /* Account+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3D26C90BAE00369350 /* Account+Environment.swift */; };
 		FA020B4026D1F4B500369350 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3F26D1F4B300369350 /* Navigation.swift */; };
 		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
@@ -163,6 +163,8 @@
 		FAF380392414BA2400C592D4 /* Persistences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF380382414BA2400C592D4 /* Persistences.swift */; };
 		FAF3803B2414C5D600C592D4 /* Publishers+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF3803A2414C5D600C592D4 /* Publishers+CoreData.swift */; };
 		FAF3803D24152EED00C592D4 /* Persistences+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF3803C24152EED00C592D4 /* Persistences+Transaction.swift */; };
+		FAF5EC52293E37A80092D833 /* Home+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5EC51293E37A70092D833 /* Home+State.swift */; };
+		FAF5EC54293E47300092D833 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5EC53293E47300092D833 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -255,13 +257,13 @@
 		FA020B2426BFD4A500369350 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		FA020B2626BFD50D00369350 /* TrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendView.swift; sourceTree = "<group>"; };
 		FA020B2826C8D8E600369350 /* Persistences+Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Cloud.swift"; sourceTree = "<group>"; };
-		FA020B2B26C8DBA700369350 /* AccountEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditor.swift; sourceTree = "<group>"; };
-		FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+State.swift"; sourceTree = "<group>"; };
+		FA020B2B26C8DBA700369350 /* EditAccount+Form.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAccount+Form.swift"; sourceTree = "<group>"; };
+		FA020B2D26C8DC9600369350 /* EditAccount+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAccount+State.swift"; sourceTree = "<group>"; };
 		FA020B2F26C8E1AF00369350 /* Set+Alfheim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+Alfheim.swift"; sourceTree = "<group>"; };
 		FA020B3126C8E67C00369350 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
-		FA020B3326C8E82600369350 /* AccountEditor+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+Action.swift"; sourceTree = "<group>"; };
-		FA020B3726C8F0C800369350 /* AccountComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountComposer.swift; sourceTree = "<group>"; };
-		FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountEditor+Reducer.swift"; sourceTree = "<group>"; };
+		FA020B3326C8E82600369350 /* EditAccount+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAccount+Action.swift"; sourceTree = "<group>"; };
+		FA020B3726C8F0C800369350 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		FA020B3926C8F30300369350 /* EditAccount+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAccount+Reducer.swift"; sourceTree = "<group>"; };
 		FA020B3D26C90BAE00369350 /* Account+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Environment.swift"; sourceTree = "<group>"; };
 		FA020B3F26D1F4B300369350 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
@@ -348,6 +350,8 @@
 		FAF380382414BA2400C592D4 /* Persistences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistences.swift; sourceTree = "<group>"; };
 		FAF3803A2414C5D600C592D4 /* Publishers+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+CoreData.swift"; sourceTree = "<group>"; };
 		FAF3803C24152EED00C592D4 /* Persistences+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Persistences+Transaction.swift"; sourceTree = "<group>"; };
+		FAF5EC51293E37A70092D833 /* Home+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+State.swift"; sourceTree = "<group>"; };
+		FAF5EC53293E47300092D833 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -567,16 +571,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		FA020B2A26C8DB7B00369350 /* Editor */ = {
+		FA020B2A26C8DB7B00369350 /* Edit */ = {
 			isa = PBXGroup;
 			children = (
-				FA020B3726C8F0C800369350 /* AccountComposer.swift */,
-				FA020B2B26C8DBA700369350 /* AccountEditor.swift */,
-				FA020B2D26C8DC9600369350 /* AccountEditor+State.swift */,
-				FA020B3326C8E82600369350 /* AccountEditor+Action.swift */,
-				FA020B3926C8F30300369350 /* AccountEditor+Reducer.swift */,
+				FA020B3726C8F0C800369350 /* EditAccountView.swift */,
+				FA020B2B26C8DBA700369350 /* EditAccount+Form.swift */,
+				FA020B2D26C8DC9600369350 /* EditAccount+State.swift */,
+				FA020B3326C8E82600369350 /* EditAccount+Action.swift */,
+				FA020B3926C8F30300369350 /* EditAccount+Reducer.swift */,
 			);
-			path = Editor;
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		FA26F4052691A01B006BDBF0 /* Reducer */ = {
@@ -709,6 +713,8 @@
 				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				1F45EBD824235F130058AEDC /* MainView.swift */,
 				FA8E94C5276E056F0020DB47 /* Main+State.swift */,
+				FAF5EC53293E47300092D833 /* HomeView.swift */,
+				FAF5EC51293E37A70092D833 /* Home+State.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -729,7 +735,7 @@
 			isa = PBXGroup;
 			children = (
 				FA020B3D26C90BAE00369350 /* Account+Environment.swift */,
-				FA020B2A26C8DB7B00369350 /* Editor */,
+				FA020B2A26C8DB7B00369350 /* Edit */,
 				FA26F4052691A01B006BDBF0 /* Reducer */,
 				782403F723F83A6600478338 /* AccountDetail.swift */,
 				FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */,
@@ -1026,7 +1032,7 @@
 				FAF380372414BA1700C592D4 /* Persistences+Account.swift in Sources */,
 				787444E62480E6EB006EA297 /* Serializer.swift in Sources */,
 				1F3998FB23D6958700E6BBD9 /* AppDelegate.swift in Sources */,
-				FA020B3A26C8F30300369350 /* AccountEditor+Reducer.swift in Sources */,
+				FA020B3A26C8F30300369350 /* EditAccount+Reducer.swift in Sources */,
 				FAEABD4E25CE2D7C003D866E /* AppState.swift in Sources */,
 				FAE84B3825B3F8730027E215 /* FlipView.swift in Sources */,
 				1F8AC4932411FE6D006D9551 /* Transaction+Bridge.swift in Sources */,
@@ -1039,7 +1045,7 @@
 				FAEABD3B25C67ED5003D866E /* Scheme.swift in Sources */,
 				783793D325D128F000ECD0D4 /* Editor+Reduce.swift in Sources */,
 				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
-				FA020B2C26C8DBA700369350 /* AccountEditor.swift in Sources */,
+				FA020B2C26C8DBA700369350 /* EditAccount+Form.swift in Sources */,
 				FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */,
 				1F8AC4872411EF95006D9551 /* Account+Bridge.swift in Sources */,
 				1F45EBD924235F130058AEDC /* MainView.swift in Sources */,
@@ -1056,7 +1062,7 @@
 				1F8AC49924122619006D9551 /* CurrencyFormatter.swift in Sources */,
 				FABEBB82245D4C9500637226 /* Persistences+Emoji.swift in Sources */,
 				FAEABD5B25CE3005003D866E /* AppAction.swift in Sources */,
-				FA020B3426C8E82600369350 /* AccountEditor+Action.swift in Sources */,
+				FA020B3426C8E82600369350 /* EditAccount+Action.swift in Sources */,
 				FA9D20842748AEED00413E6E /* SceneLifeCycle.swift in Sources */,
 				789E8E6C23E810A6006D180B /* Account.swift in Sources */,
 				FAEABD6325CE3011003D866E /* AppStore.swift in Sources */,
@@ -1066,7 +1072,7 @@
 				783793D425D128F000ECD0D4 /* Editor+State.swift in Sources */,
 				783793D525D128F000ECD0D4 /* Editor+Action.swift in Sources */,
 				FABEBB7F245D4A6300637226 /* Emoji+CoreData.swift in Sources */,
-				FA020B2E26C8DC9600369350 /* AccountEditor+State.swift in Sources */,
+				FA020B2E26C8DC9600369350 /* EditAccount+State.swift in Sources */,
 				FAA6413B272E64C300B36DDF /* CloudView.swift in Sources */,
 				FAEABD4525CE2B41003D866E /* Effect.swift in Sources */,
 				1F91C9F12419DF1F00B552E7 /* Publishers+FetchRequest.swift in Sources */,
@@ -1091,6 +1097,7 @@
 				FA014086240B8F7100F6FE92 /* AccountViewModel.swift in Sources */,
 				FABAA8EA26ABF8C400D7006C /* Persistences+Preview.swift in Sources */,
 				FAC88CD026FEFFF2005177BA /* DisclosureRow.swift in Sources */,
+				FAF5EC54293E47300092D833 /* HomeView.swift in Sources */,
 				FAEAA0412461278F003C6799 /* Emojis.swift in Sources */,
 				782403F823F83A6600478338 /* AccountDetail.swift in Sources */,
 				1F39995C23D7FCF500E6BBD9 /* Sector.swift in Sources */,
@@ -1108,7 +1115,7 @@
 				FAC88CD226FF0EE7005177BA /* AccessoryView.swift in Sources */,
 				FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */,
 				FAA64132272E530F00B36DDF /* AboutView.swift in Sources */,
-				FA020B3826C8F0C800369350 /* AccountComposer.swift in Sources */,
+				FA020B3826C8F0C800369350 /* EditAccountView.swift in Sources */,
 				FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */,
 				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
 				FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */,
@@ -1131,6 +1138,7 @@
 				FAF2AA37241DF75900EE40AA /* Transaction+Reducer.swift in Sources */,
 				1F91CA02241A4CE000B552E7 /* Transaction+State.swift in Sources */,
 				1F39995723D7F34E00E6BBD9 /* Pie.swift in Sources */,
+				FAF5EC52293E37A80092D833 /* Home+State.swift in Sources */,
 				1F91CA04241A4CEE00B552E7 /* Transaction+Action.swift in Sources */,
 				FA9D20862748B22600413E6E /* Redux+Publisher.swift in Sources */,
 				FA527AC924095C9800CEC549 /* Date+Alfheim.swift in Sources */,

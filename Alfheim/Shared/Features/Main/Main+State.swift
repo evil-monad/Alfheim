@@ -32,15 +32,15 @@ extension RealWorld.State {
 extension RealWorld.State {
   struct HomeState: Equatable {
     var rootAccounts: [Domain.Account]
-    var isEditingAccount: Bool
+    var selectAccount: Bool
   }
 
   var homeState: HomeState {
     get {
-      HomeState(rootAccounts: rootAccounts, isEditingAccount: isEditingAccount)
+      HomeState(rootAccounts: rootAccounts, selectAccount: isAccountSelected)
     }
     set {
-      isEditingAccount = newValue.isEditingAccount
+      isAccountSelected = newValue.selectAccount
     }
   }
 }

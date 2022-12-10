@@ -1,6 +1,6 @@
 //
-//  AccountEditor+Action.swift
-//  AccountEditor+Action
+//  EditAccount+Action.swift
+//  Alfheim
 //
 //  Created by alex.huo on 2021/8/15.
 //  Copyright © 2021 blessingsoft. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import Domain
 
-extension AccountEdit {
+extension EditAccount {
   enum Action {
     case save(Domain.Account, mode: App.Action.EditMode)
     case edit(Domain.Account)
