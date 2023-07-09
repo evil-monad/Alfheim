@@ -36,12 +36,10 @@ struct SidebarNavigation: View {
 
   var body: some View {
     NavigationView {
-      WithViewStore(store.stateless) { viewStore in
-        Sidebar(store: store)
-          .task {
-            viewStore.send(.loadAll)
-          }
-      }
+      Sidebar(store: store)
+        .task {
+          ViewStore(store).send(.loadAll)
+        }
       // detail view in iPad
       Text("Sidebar navigation")
     }
@@ -52,36 +50,34 @@ struct Sidebar: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store.stateless) { vs in
-      HomeView(store: store)
-        .listStyle(.insetGrouped)
-        .navigationBarTitle("Clic")
-        .toolbar {
-          ToolbarItem(placement: .primaryAction) {
-            Button {
-              vs.send(.newTransaction)
-            } label: {
-              Image(systemName: "plus.circle")
-            }
+    HomeView(store: store)
+      .listStyle(.insetGrouped)
+      .navigationBarTitle("Clic")
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Button {
+            ViewStore(store).send(.newTransaction)
+          } label: {
+            Image(systemName: "plus.circle")
           }
-          ToolbarItemGroup(placement: .bottomBar) {
-            HStack {
-              Button {
-                //vs.send(.cleanup)
-                vs.send(.settings(.sheet(isPresented: true)))
-              } label: {
-                Image(systemName: "gear")
-              }
-              Spacer()
-              Button {
-                vs.send(.addAccount(presenting: true))
-              } label: {
-                Text("Add Account")
-              }
+        }
+        ToolbarItemGroup(placement: .bottomBar) {
+          HStack {
+            Button {
+              //vs.send(.cleanup)
+              ViewStore(store).send(.settings(.sheet(isPresented: true)))
+            } label: {
+              Image(systemName: "gear")
+            }
+            Spacer()
+            Button {
+              ViewStore(store).send(.addAccount(presenting: true))
+            } label: {
+              Text("Add Account")
             }
           }
         }
-    }
+      }
   }
 }
 

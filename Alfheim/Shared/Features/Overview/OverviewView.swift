@@ -18,7 +18,7 @@ struct OverviewView: View {
   }
 
   var body: some View {
-    WithViewStore(store.scope(state: \.contentState)) { vs in
+    WithViewStore(store.scope(state: \.contentState, action: { $0 })) { vs in
       List {
         Section {
           AccountCard(store: store)

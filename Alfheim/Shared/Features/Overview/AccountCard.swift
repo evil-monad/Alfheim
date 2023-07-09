@@ -16,30 +16,28 @@ struct AccountCard: View {
   private let cornerRadius: CGFloat = 20
 
   var body: some View {
-    WithViewStore(store.stateless) { viewStore in
-      FlipView(visibleSide: flipped ? .back : .front) {
-        Front(store: store, onFlip: { flip(true) })
-          .background(
-            RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(LinearGradient(
-              gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
-              startPoint: .top,
-              endPoint: .bottom
-            ))
-          )
-      } back: {
-        Back(store: store, onFlip: { flip(false) })
-          .background(
-            RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(LinearGradient(
-              gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
-              startPoint: .top,
-              endPoint: .bottom
-            ))
-          )
-      }
-      .animation(Animation.spring(response: 0.35, dampingFraction: 0.7), value: flipped)
+    FlipView(visibleSide: flipped ? .back : .front) {
+      Front(store: store, onFlip: { flip(true) })
+        .background(
+          RoundedRectangle(cornerRadius: cornerRadius)
+          .fill(LinearGradient(
+            gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
+            startPoint: .top,
+            endPoint: .bottom
+          ))
+        )
+    } back: {
+      Back(store: store, onFlip: { flip(false) })
+        .background(
+          RoundedRectangle(cornerRadius: cornerRadius)
+          .fill(LinearGradient(
+            gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
+            startPoint: .top,
+            endPoint: .bottom
+          ))
+        )
     }
+    .animation(Animation.spring(response: 0.35, dampingFraction: 0.7), value: flipped)
   }
 
   struct Front: View {
