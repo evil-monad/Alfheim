@@ -14,10 +14,10 @@ struct HomeView: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store.scope(state: \.homeState)) { vs in
+    WithViewStore(store.scope(state: \.homeState, action: { $0 })) { vs in
       List {
         Section {
-          GridMenu(store: store)
+          QuickMenu(store: store)
             .listRowBackground(Color(.systemGroupedBackground))
             .buttonStyle(.plain)
             .onTapGesture {}
@@ -87,22 +87,8 @@ private struct AccountRow: View {
         Text("\(account.emoji ?? "") \(account.name)")
         Spacer()
       }
-      WithViewStore(store.scope(state: \.rowState)) { vs in
-        NavigationLink(
-          tag: account.id,
-          selection: vs.binding(
-            get: \.selectionID,
-            send: App.Action.selectAccount(id:)
-          )
-        ) {
-          IfLetStore(
-            store.scope(
-              state: \.selection?.value,
-              action: App.Action.overview
-            ),
-            then: OverviewView.init(store:)
-          )
-        } label: {
+      WithViewStore(store, observe: { $0 }) { vs in
+        NavigationLink(state: App.Path.State.overview(Overview.State(account: account))) {
           EmptyView()
         }
         .buttonStyle(.plain)
@@ -114,68 +100,23 @@ private struct AccountRow: View {
 
 struct QuickMenu: View {
   let store: Store<App.State, App.Action>
-  @State private var selection: Int? = nil
-  private var columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
-
-  init(store: Store<App.State, App.Action>) {
-    self.store = store
-    self.columns = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
-  }
-
-  var body: some View {
-    WithViewStore(store.scope(state: \.home)) { vs in
-      LazyVGrid(columns: columns, spacing: 18) {
-        ForEach(vs.menus) { item in
-          Button {
-            selection = item.id
-          } label: {
-            MenuRow(item: item, isSelected: selection == item.id)
-          }
-          .background(
-            NavigationLink(tag: item.id, selection: $selection, destination: {
-              Text(item.name)
-            }, label: {
-              EmptyView()
-            })
-          )
-        }
-      }
-      .onLongPressGesture {}
-    }
-  }
-}
-
-struct GridMenu: View {
-  let store: Store<App.State, App.Action>
   private let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
 
   var body: some View {
-    WithViewStore(store.scope(state: \.home)) { vs in
+    WithViewStore(store, observe: { $0.home }) { vs in
       LazyVGrid(columns: columns, spacing: 18) {
         ForEach(vs.menus) { item in
-          NavigationRow(
-            tag: item.id,
-            selection: vs.binding(get: \.selection?.id, send: { App.Action.selectMenu(selection: $0) })) {
-              IfLetStore(
-               store.scope(
-                state: \.home.selection?.value,
-                action: App.Action.transaction
-               ),
-               then: TransactionList.init(store:)
-              )
-          } label: {
-            MenuRow(item: item, isSelected: vs.selection?.id == item.id)
-              .onTapGesture {
-                vs.send(.selectMenu(selection: item.id))
-              }
-          }
+          MenuRow(item: item, isSelected: vs.selection?.id == item.id)
+            .onTapGesture {
+              vs.send(.selectMenu(item))
+            }
         }
       }
       .onLongPressGesture {}
       .onAppear {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) {
           // selection = nil
-          vs.send(.selectMenu(selection: nil))
+          vs.send(.selectMenu(nil))
         }
       }
     }
@@ -218,15 +159,6 @@ extension Home.MenuItem {
 }
 
 #if DEBUG
-//struct AccountMenu_Previews: PreviewProvider {
-//  static var previews: some View {
-//    VStack {
-//      AccountMenu()
-//    }
-//    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//    .background(.secondary)
-//  }
-//}
 
 struct Home_Previews: PreviewProvider {
   static var previews: some View {

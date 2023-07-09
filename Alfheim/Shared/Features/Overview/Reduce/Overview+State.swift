@@ -21,8 +21,6 @@ extension Overview {
     var isSettingsPresented: Bool = false
     var isOnboardingPresented: Bool = false
 
-    var isTransactionListActive = false
-
     var editor: Editor.State
     var transactions: Transaction.State
     var timeInterval: DateInterval?
@@ -126,15 +124,13 @@ extension Overview.State {
   struct TransactionState: Equatable {
     var recentTransactions: [Domain.Transaction]
     var account: Domain.Account
-    var isTransactionListActive: Bool
   }
 
   var transactionState: TransactionState {
     get {
-      TransactionState(recentTransactions: recentTransactions, account: account, isTransactionListActive: isTransactionListActive)
+      TransactionState(recentTransactions: recentTransactions, account: account)
     }
     set {
-      isTransactionListActive = newValue.isTransactionListActive
     }
   }
 }

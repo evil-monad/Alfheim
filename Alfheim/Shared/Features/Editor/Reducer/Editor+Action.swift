@@ -10,7 +10,7 @@ import Foundation
 import Domain
 
 extension Editor {
-  enum Action {
+  enum Action: Equatable {
     case save(Domain.Transaction, mode: App.Action.EditMode)
     case edit(Domain.Transaction)
     case new
@@ -19,7 +19,7 @@ extension Editor {
     case didLoadAccounts([Domain.Account])
     case focused(Editor.State.FocusField?)
 
-    enum Field {
+    enum Field: Equatable {
       case amount(String)
       case currency(Currency)
       case source(Domain.Account.Summary?)

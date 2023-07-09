@@ -170,7 +170,7 @@ extension Transaction {
         .replaceError(with: [])
         .map { transactions in
           App.Action.fetchAccounts // refresh accounts
-          //AppAction.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
+          //App.Action.transactionDidChange(transactions.compactMap(Domain.Transaction.init))
         }
         .eraseToEffect()
     }

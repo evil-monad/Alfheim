@@ -8,13 +8,13 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension RealWorld {
   enum Action {
     case lifecycle(SceneLifecycleEvent)
     //case overview(index: Int, action: Overview)
     case overview(Overview.Action)
-    case selectAccount(id: UUID?)
     //case editor(Editor)
     //  case settings(Settings)
     //  case transactions(Transactions)
@@ -44,16 +44,19 @@ extension RealWorld {
     case newTransaction
     case editAccount(EditAccount.Action)
 
-    case selectMenu(selection: Int?)
+    case selectMenu(Home.MenuItem?)
     case transaction(Transaction.Action)
 
     // settings
     case settings(Settings.Action)
+
+    // navigation path
+    case path(StackAction<Path.State, Path.Action>)
   }
 }
 
 extension RealWorld.Action {
-  enum EditMode {
+  enum EditMode: Equatable {
     case new
     case update
     case delete

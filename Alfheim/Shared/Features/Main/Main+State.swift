@@ -44,13 +44,3 @@ extension RealWorld.State {
     }
   }
 }
-
-extension RealWorld.State {
-  struct RowState: Equatable {
-    var selectionID: UUID?
-  }
-
-  var rowState: RowState {
-    RowState(selectionID: selection?.id)
-  }
-}

@@ -10,7 +10,7 @@ import Foundation
 import Domain
 
 extension Transaction {
-  enum Action {
+  enum Action: Equatable {
     case editTransaction(Domain.Transaction)
     case didEditTransaction
 

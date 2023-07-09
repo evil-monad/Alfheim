@@ -47,21 +47,13 @@ extension Home {
   struct State: Equatable {
     var accounts: [Domain.Account]
     var menus: IdentifiedArrayOf<MenuItem>
-    var selection: Identified<MenuItem.ID, Transaction.State?>?
+    var selection: MenuItem?
 
-    init(accounts: [Domain.Account] = [], selectionMenu: MenuItem.ID? = nil) {
+    init(accounts: [Domain.Account] = [], selection: MenuItem? = nil) {
       self.accounts = accounts
 
       let allTransactions = accounts.flatMap {
         $0.transactions(.only)
-      }
-
-      if let id = selectionMenu, let filter = QuickFilter(rawValue: id) {
-        let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
-        let transaction = Transaction.State(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
-        self.selection = Identified(transaction, id: id)
-      } else {
-        self.selection = nil
       }
 
       var uniqueTransactions: [Domain.Transaction] = []

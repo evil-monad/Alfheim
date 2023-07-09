@@ -10,7 +10,7 @@ import Foundation
 import Domain
 
 extension Overview {
-  enum Action {
+  enum Action: Equatable {
     case toggleNewTransaction(presenting: Bool)
     case editTransaction(Domain.Transaction)
     case editTransactionDone
@@ -22,7 +22,5 @@ extension Overview {
 
     case editor(Editor.Action)
     case transaction(Transaction.Action)
-
-    case showTrasactions(Bool)
   }
 }

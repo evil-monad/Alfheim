@@ -62,41 +62,19 @@ private struct TransactionSection: View {
   let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store.scope(state: \.transactionState)) { vs in
+    WithViewStore(store, observe: { $0.transactionState }) { vs in
       Section {
         ForEach(vs.recentTransactions) { transaction in
           TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.summary.isAncestor(of: transaction.target)))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
-        NavigationLink(
-          isActive: vs.binding(get: \.isTransactionListActive, send: Overview.Action.showTrasactions),
-          destination: {
-            TransactionList(
-              store: store.scope(
-                state: \.transactions,
-                action: Overview.Action.transaction
-              )
-            )
-          }, label: {
+        WithViewStore(store, observe: { $0 }) { vs in
+          NavigationLink(state: App.Path.State.transation(vs.transactions)) {
             Header("Transactions")
           }
-        )
-        .listRowInsets(.headerInsets)
-
-        /*
-        NavigationLink(
-          destination: TransactionList(
-            store: store.scope(
-              state: \.transactions,
-              action: AppAction.Overview.transaction
-            )
-          )
-        ) {
-          Header("Transactions")
+          .listRowInsets(.headerInsets)
         }
-        .listRowInsets(.headerInsets)
-         */
       }
     }
   }

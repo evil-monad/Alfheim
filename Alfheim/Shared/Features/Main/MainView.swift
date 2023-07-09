@@ -90,12 +90,25 @@ struct ListNavigation: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    NavigationView {
-      WithViewStore(store.stateless) { viewStore in
-        ContentView(store: store)
-          .task {
-            viewStore.send(.loadAll)
-          }
+    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
+      ContentView(store: store)
+        .task {
+          store.send(.loadAll)
+        }
+    } destination: {
+      switch $0 {
+      case .overview:
+        CaseLet(
+          state: /App.Path.State.overview,
+          action: App.Path.Action.overview,
+          then: OverviewView.init(store:)
+        )
+      case .transation:
+        CaseLet(
+          state: /App.Path.State.transation,
+          action: App.Path.Action.transation,
+          then: TransactionList.init(store:)
+        )
       }
     }
   }
@@ -105,7 +118,7 @@ struct ContentView: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store.scope(state: \.contentState)) { vs in
+    WithViewStore(store, observe: { $0.contentState }) { vs in
       HomeView(store: store)
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")

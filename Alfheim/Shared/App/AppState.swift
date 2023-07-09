@@ -14,7 +14,6 @@ import Domain
 extension RealWorld {
   struct State: Equatable {
     var overviews: IdentifiedArrayOf<Overview.State> = []
-    var selection: Identified<Overview.State.ID, Overview.State>?
     //var editor = Editor()
 
     var home = Home.State()
@@ -24,6 +23,29 @@ extension RealWorld {
     var isAddingAccount: Bool = false
     var editAccount = EditAccount.State()
     var isAccountSelected: Bool = false
+
+    var path = StackState<Path.State>()
+  }
+
+  struct Path: ReducerProtocol {
+    enum State: Equatable {
+      case overview(Overview.State)
+      case transation(Transaction.State)
+    }
+
+    enum Action: Equatable {
+      case overview(Overview.Action)
+      case transation(Transaction.Action)
+    }
+
+    var body: some ReducerProtocol<State, Action> {
+      Scope(state: /State.overview, action: /Action.overview) {
+        Overview()
+      }
+      Scope(state: /State.transation, action: /Action.transation) {
+        Transaction()
+      }
+    }
   }
 }
 
