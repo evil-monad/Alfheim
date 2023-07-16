@@ -97,7 +97,7 @@ struct AccountPicker<Label>: View where Label: View {
       } label: {
         HStack {
           Group {
-            if let selection = selection, selection.wrappedValue == account.summary {
+            if selection.wrappedValue == account.summary {
               Image(systemName: "checkmark").foregroundColor(.blue)
             } else {
               Text("\(account.emoji ?? "")")

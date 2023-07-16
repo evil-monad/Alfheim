@@ -14,7 +14,7 @@ struct HomeView: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store.scope(state: \.homeState, action: { $0 })) { vs in
+    WithViewStore(store, observe: { $0.homeState }) { vs in
       List {
         Section {
           QuickMenu(store: store)
