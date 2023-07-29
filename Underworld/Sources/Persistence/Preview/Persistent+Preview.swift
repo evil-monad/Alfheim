@@ -9,9 +9,9 @@
 import Foundation
 import CoreData
 
-public struct Preview {
+public final class PreviewPersistent: Persistent {
   let store: MemoryStore
-  public let context: NSManagedObjectContext
+  public let context: NSManagedObjectContext?
 
   public init() {
     store = MemoryStore()
@@ -22,5 +22,9 @@ public struct Preview {
 
   public func save() {
     store.saveContext()
+  }
+
+  public func reload() {
+
   }
 }

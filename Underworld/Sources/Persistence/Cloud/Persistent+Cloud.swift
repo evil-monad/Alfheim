@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-public struct Cloud {
+public final class CloudPersistent: Persistent {
   let store: CloudStore
   public private(set) var context: NSManagedObjectContext?
 
@@ -23,7 +23,7 @@ public struct Cloud {
     store.saveContext()
   }
 
-  public mutating func reloadContainer() {
+  public func reload() {
     store.reloadContainer()
     context = store.persistentContainer?.viewContext
   }

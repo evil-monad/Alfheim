@@ -11,16 +11,18 @@ import SwiftUI
 import CoreData
 import Persistence
 import ComposableArchitecture
+import Dependencies
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
-  lazy var cloud = Cloud()
+
+  @Dependency(\.persistent) var persistent
 
   private var environment: AppEnvironment?
   private lazy var store: AppStore = {
     let environment = AppEnvironment.default
-    environment.context = cloud.context
+    environment.context = persistent.context
     let state = App.State()
     let realWorld = RealWorld()
     return AppStore(initialState: state, reducer: realWorld)
@@ -32,11 +34,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Get the managed object context from the shared persistent container.
     // Create app store
 
-//    if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
-//      state.settings.appIcon = icon
-//    }
+    //if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
+    //  state.settings.appIcon = icon
+    //}
 
-    guard let context = cloud.context else {
+    guard let context = persistent.context else {
       return
     }
 
@@ -128,7 +130,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     sceneStore.send(.lifecycle(.didEnterBackground))
 
     // Save changes in the application's managed object context when the application transitions to the background.
-    cloud.save()
+    persistent.save()
   }
 
 
@@ -137,7 +139,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 extension PreviewProvider {
   static var viewContext: NSManagedObjectContext {
-    return Preview().context
+    return PreviewPersistent().context!
   }
 }
 
