@@ -7,17 +7,18 @@
 //
 
 import SwiftUI
+import Alne
 
 struct CatemojiPicker<Label>: View where Label: View {
 
-  @State private var selectedCategory: Category
+  @State private var selectedCategory: Alne.Category
   @State private var isContentActive: Bool = false
   private let selection: Binding<Alne.Catemoji>
   private let label: Label
 
-  private let catemojis: [Category: [Catemoji]]
+  private let catemojis: [Alne.Category: [Catemoji]]
 
-  init(_ catemojis: [Category: [Catemoji]], selection: Binding<Catemoji>, label: Label) {
+  init(_ catemojis: [Alne.Category: [Catemoji]], selection: Binding<Catemoji>, label: Label) {
     self.catemojis = catemojis
     self.selection = selection
     self.label = label
@@ -78,7 +79,7 @@ struct CatemojiPicker<Label>: View where Label: View {
     .padding(EdgeInsets(top: 12, leading: 4, bottom: 0, trailing: 4))
   }
 
-  private func emojis(in category: Category) -> [String] {
+  private func emojis(in category: Alne.Category) -> [String] {
     catemojis[category]?.compactMap { $0.emoji } ?? []
   }
 }
@@ -163,12 +164,12 @@ struct TabButton: View {
   }
 }
 
-#if DEBUG
-struct CatemojiPicker_Previews: PreviewProvider {
-  static var previews: some View {
-    CatemojiPicker([.transportation: Alne.Transportation.catemojis], selection: .constant(Alne.Catemoji(category: .food, emoji: "")), label: Text("Emoji"))
-  }
-}
+//#if DEBUG
+//struct CatemojiPicker_Previews: PreviewProvider {
+//  static var previews: some View {
+//    CatemojiPicker([.transportation: Alne.Transportation.catemojis], selection: .constant(Catemoji(category: .food, emoji: "")), label: Text("Emoji"))
+//  }
+//}
 
 struct EmojiSection_Previews: PreviewProvider {
   static var previews: some View {
@@ -186,4 +187,4 @@ struct EmojiSection_Previews: PreviewProvider {
     }
   }
 }
-#endif
+//#endif

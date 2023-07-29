@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import CoreData
+import Persistence
 import ComposableArchitecture
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -65,7 +66,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       case .success(let empty):
         if empty {
           do {
-            try Persistences.Bootstrap(context: context).start()
+            try Persistence.Bootstrap(context: context).start()
           } catch {
             print("Bootstrap starting failed: \(error)")
           }

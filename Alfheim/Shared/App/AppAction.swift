@@ -18,7 +18,6 @@ extension RealWorld {
     //case editor(Editor)
     //  case settings(Settings)
     //  case transactions(Transactions)
-    //  case payment(Payment)
     //  case catemoji(Catemoji)
 
     //  case startImport
