@@ -9,23 +9,22 @@
 import Foundation
 import CoreData
 
-public extension Persistences {
-  struct Cloud {
-    let store: CloudStore
-    private(set) var context: NSManagedObjectContext?
+public struct Cloud {
+  let store: CloudStore
+  public private(set) var context: NSManagedObjectContext?
 
-    init() {
-      store = CloudStore()
-      context = store.persistentContainer?.viewContext
-    }
+  public init() {
+    store = CloudStore()
+    store.reloadContainer()
+    context = store.persistentContainer?.viewContext
+  }
 
-    func save() {
-      store.saveContext()
-    }
+  public func save() {
+    store.saveContext()
+  }
 
-    mutating func reloadContainer() {
-      store.reloadContainer()
-      context = store.persistentContainer?.viewContext
-    }
+  public mutating func reloadContainer() {
+    store.reloadContainer()
+    context = store.persistentContainer?.viewContext
   }
 }

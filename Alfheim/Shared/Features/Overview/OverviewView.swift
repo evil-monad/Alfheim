@@ -9,6 +9,7 @@
 import SwiftUI
 import ComposableArchitecture
 import Domain
+import Charts
 
 struct OverviewView: View {
   let store: Store<Overview.State, Overview.Action>

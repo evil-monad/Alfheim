@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Kit
 import ComposableArchitecture
 
 struct AccountCard: View {
@@ -83,11 +84,11 @@ struct AccountCard: View {
       } label: {
         Text(period)
           .font(.footnote)
-          .foregroundColor(Color.ah00)
+          .foregroundColor(Color("AH00"))
           .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
           .overlay(
             RoundedRectangle(cornerRadius: 20)
-              .stroke(Color.ah00, lineWidth: 1)
+              .stroke(Color("AH00"), lineWidth: 1)
           )
       }
     }

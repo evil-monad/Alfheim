@@ -93,7 +93,7 @@ public struct LineChart: View {
           }
           Spacer()
           GeometryReader { geometry in
-            Line(histogram: histogram, frame: .constant(geometry.frame(in: .local)), touchLocation: $touchLocation, showsIndicator: $showsIndicator)
+            Line(histogram: histogram, frame: geometry.frame(in: .local), touchLocation: touchLocation, showsIndicator: showsIndicator)
           }
           .offset(x: 0, y: 0)
           .gesture(DragGesture()

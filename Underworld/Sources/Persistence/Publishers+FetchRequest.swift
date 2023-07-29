@@ -10,20 +10,20 @@ import Foundation
 import Combine
 import CoreData
 
-extension Publishers {
+public extension Publishers {
   struct FetchRequest<Result>: Publisher where Result: NSFetchRequestResult {
-    typealias Output = [Result]
-    typealias Failure = NSError
+    public typealias Output = [Result]
+    public typealias Failure = NSError
 
     private let fetchRequest: NSFetchRequest<Result>
     private let context: NSManagedObjectContext
 
-    init(fetchRequest: NSFetchRequest<Result>, context: NSManagedObjectContext) {
+    public init(fetchRequest: NSFetchRequest<Result>, context: NSManagedObjectContext) {
       self.fetchRequest = fetchRequest
       self.context = context
     }
 
-    func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+    public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
       let subscription = FetchRequestSubscription(subscriber: subscriber, request: fetchRequest, context: context)
       subscriber.receive(subscription: subscription)
     }

@@ -11,6 +11,7 @@ import Combine
 import ComposableArchitecture
 import CoreData
 import Database
+import Persistence
 import Domain
 
 extension Account {
@@ -20,7 +21,7 @@ extension Account {
         return Effect.none
       }
 
-      return Persistences.Account(context: context)
+      return Persistence.Account(context: context)
         .publisher
         .fetchAll()
         .replaceError(with: [])
@@ -36,7 +37,7 @@ extension Account {
       }
 
       return Effect<[Database.Account], Never>.task {
-        guard let accounts = try? await Persistences.Account(context: context) .fetchAll() else {
+        guard let accounts = try? await Persistence.Account(context: context) .fetchAll() else {
           return []
         }
         return accounts
@@ -51,7 +52,7 @@ extension Account {
         return Effect.none
       }
 
-      let persistence = Persistences.Account(context: context)
+      let persistence = Persistence.Account(context: context)
       for account in accounts {
         if let object = persistence.account(withID: account.id) {
           persistence.delete(object)
@@ -91,7 +92,7 @@ extension Account {
     }
 
     static func create(account: Database.Account, context: AppContext) -> Effect<Bool, NSError> {
-      let persistence = Persistences.Account(context: context)
+      let persistence = Persistence.Account(context: context)
 
       return Future { promise in
         do {
@@ -110,7 +111,7 @@ extension Account {
         return Effect.none
       }
 
-      let persistence = Persistences.Account(context: context)
+      let persistence = Persistence.Account(context: context)
       if let object = persistence.account(withID: snapshot.id) {
         object.fill(snapshot)
         if let id = snapshot.parent?.id, let parent = persistence.account(withID: id) {
@@ -137,7 +138,7 @@ extension Account {
         return Effect.none
       }
 
-      return Persistences.Account(context: context)
+      return Persistence.Account(context: context)
         .publisher
         .fetchAll()
         .replaceError(with: [])

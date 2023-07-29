@@ -76,7 +76,7 @@ public struct LabeledUnit: Unit {
 }
 
 public class Histogram<UnitType>: ObservableObject where UnitType: Unit {
-  @Published var units: [UnitType] = []
+  @Published public var units: [UnitType] = []
 
   public var isNamed: Bool {
     !units.allSatisfy { $0.symbol.isEmpty }

@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import ComposableArchitecture
 import CoreData
+import Persistence
 import Database
 import Domain
 
@@ -20,11 +21,11 @@ extension Transaction {
         return Effect.none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
       let entity = Database.Transaction(context: context)
       entity.fill(model)
 
-      let controller = Persistences.Account(context: context)
+      let controller = Persistence.Account(context: context)
       if let target = controller.account(withID: model.target.id) {
         entity.fill(target: target)
       }
@@ -49,11 +50,11 @@ extension Transaction {
         return Effect.none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
       if let entity = persistence.transaction(withID: model.id) {
         entity.fill(model)
 
-        let controller = Persistences.Account(context: context)
+        let controller = Persistence.Account(context: context)
         if let target = controller.account(withID: model.target.id) {
           entity.fill(target: target)
         }
@@ -81,7 +82,7 @@ extension Transaction {
         return Effect.none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
       if let object = persistence.transaction(withID: id) {
         object.flagged = flag
       } else {
@@ -105,7 +106,7 @@ extension Transaction {
         return Effect.none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
       let transactions = ids.compactMap { persistence.transaction(withID: $0) }
 
       return delete(transactions: transactions, in: context)
@@ -120,7 +121,7 @@ extension Transaction {
         return .none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
 
       for transaction in transactions {
         if let object = persistence.transaction(withID: transaction.id) {
@@ -147,7 +148,7 @@ extension Transaction {
         return Effect.none
       }
 
-      let persistence = Persistences.Transaction(context: context)
+      let persistence = Persistence.Transaction(context: context)
       return Future { promise in
         do {
           try persistence.save()
@@ -165,7 +166,7 @@ extension Transaction {
         return Effect.none
       }
 
-      return Persistences.Transaction(context: context)
+      return Persistence.Transaction(context: context)
         .fetchAllPublisher()
         .replaceError(with: [])
         .map { transactions in

@@ -11,6 +11,10 @@ import SwiftUI
 public struct Pie: View {
   @ObservedObject var histogram: Histogram<PieUnit>
 
+  public init(histogram: Histogram<PieUnit>) {
+    self.histogram = histogram
+  }
+
   private var slices: [Slice.Data] {
     var slices: [Slice.Data] = []
     var degrees: Double = 0

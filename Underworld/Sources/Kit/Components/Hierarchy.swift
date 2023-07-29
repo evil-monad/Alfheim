@@ -22,7 +22,7 @@ public struct HierarchyList<Data, RowContent>: View where Data: RandomAccessColl
   }
 }
 
-struct RecursiveView<Data, RowContent>: View where Data: RandomAccessCollection, Data.Element: Identifiable, RowContent: View {
+public struct RecursiveView<Data, RowContent>: View where Data: RandomAccessCollection, Data.Element: Identifiable, RowContent: View {
   let data: Data
   let children: KeyPath<Data.Element, Data?>
   let rowContent: (Data.Element) -> RowContent
@@ -33,7 +33,7 @@ struct RecursiveView<Data, RowContent>: View where Data: RandomAccessCollection,
     self.rowContent = rowContent
   }
 
-  var body: some View {
+  public var body: some View {
     ForEach(data) { child in
       if let subChildren = child[keyPath: children] {
         DefaultExpandedDisclosureGroup() {

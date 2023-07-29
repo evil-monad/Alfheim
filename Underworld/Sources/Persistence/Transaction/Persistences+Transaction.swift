@@ -13,9 +13,9 @@ import Database
 import Domain
 
 public struct Transaction {
-  let context: NSManagedObjectContext
+  public let context: NSManagedObjectContext
 
-  typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Transaction>
+  public typealias FetchRequestPublisher = Publishers.FetchRequest<Database.Transaction>
 
   public init(context: NSManagedObjectContext) {
     self.context = context
@@ -25,7 +25,7 @@ public struct Transaction {
 
   /// Save if has changes, should use in context.perform(_:) block if you need to update results, if not, update notification won't be send to
   /// subscriber, NSFetchedResultsController for example.
-  func save() throws {
+  public func save() throws {
     guard context.hasChanges else {
       return
     }
@@ -33,11 +33,11 @@ public struct Transaction {
   }
 
   /// Delete, without save.
-  func delete(_ object: NSManagedObject) {
+  public func delete(_ object: NSManagedObject) {
     context.delete(object)
   }
 
-  func transaction(withID id: UUID) -> Database.Transaction? {
+  public func transaction(withID id: UUID) -> Database.Transaction? {
     let predicate = NSPredicate(format: "id == %@", id as CVarArg)
     guard let object = context.registeredObjects(Database.Transaction.self, with: predicate).first else {
       return nil
@@ -47,7 +47,7 @@ public struct Transaction {
 
   // MARK: - Publishes
 
-  func fetchRequestPublisher(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "date", ascending: false)],
+  public func fetchRequestPublisher(sortDescriptors: [NSSortDescriptor] = [NSSortDescriptor(key: "date", ascending: false)],
                              predicate: NSPredicate? = nil) -> FetchRequestPublisher {
     let fetchRequest: NSFetchRequest<Database.Transaction> = Database.Transaction.fetchRequest()
     fetchRequest.sortDescriptors = sortDescriptors
@@ -55,34 +55,34 @@ public struct Transaction {
     return Publishers.FetchRequest(fetchRequest: fetchRequest, context: context)
   }
 
-  func fetchAllPublisher() -> AnyPublisher<[Database.Transaction], NSError> {
+  public func fetchAllPublisher() -> AnyPublisher<[Database.Transaction], NSError> {
     fetchRequestPublisher()
       .eraseToAnyPublisher()
   }
 
-  func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Database.Transaction], NSError> {
+  public func fetchPublisher(with predicate: NSPredicate) -> AnyPublisher<[Database.Transaction], NSError> {
     fetchRequestPublisher(predicate: predicate)
       .eraseToAnyPublisher()
   }
 
-  func fetchPublisher(withName name: String) -> AnyPublisher<Database.Transaction, NSError> {
+  public func fetchPublisher(withName name: String) -> AnyPublisher<Database.Transaction, NSError> {
     let predicate = NSPredicate(format: "name == %@", name)
     return fetchPublisher(with: predicate).compactMap { $0.first }
       .eraseToAnyPublisher()
   }
 
-  func fetchPublisher(withID id: UUID) -> AnyPublisher<Database.Transaction, NSError> {
+  public func fetchPublisher(withID id: UUID) -> AnyPublisher<Database.Transaction, NSError> {
     let predicate = NSPredicate(format: "id == %@", id as CVarArg)
     return fetchPublisher(with: predicate).compactMap { $0.first }
       .eraseToAnyPublisher()
   }
 
-  func fetchPublisher(from start: Date, closedTo end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
+  public func fetchPublisher(from start: Date, closedTo end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
     let predicate = NSPredicate(format: "date >= %@ AND date <= %@", start as NSDate, end as NSDate)
     return fetchPublisher(with: predicate)
   }
 
-  func fetchPublisher(from start: Date, to end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
+  public func fetchPublisher(from start: Date, to end: Date = Date()) -> AnyPublisher<[Database.Transaction], NSError> {
     let predicate = NSPredicate(format: "date >= %@ AND date < %@", start as NSDate, end as NSDate)
     return fetchPublisher(with: predicate)
   }

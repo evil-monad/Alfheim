@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Domain
+import Kit
 
 /// A type that specifies the appearance and interaction of all account pickers
 /// within a view hierarchy.

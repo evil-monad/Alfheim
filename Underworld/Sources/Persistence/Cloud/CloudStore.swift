@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import Database
 import CloudKit
 import StoreKit
 import SwiftUI
@@ -27,7 +28,13 @@ public final class CloudStore {
      application to it. This property is optional since there are legitimate
      error conditions that could cause the creation of the store to fail.
     */
-    let container = NSPersistentCloudKitContainer(name: "Alfheim")
+
+    guard let url = Bundle.database.url(forResource: "Alfheim", withExtension: "momd"),
+          let model = NSManagedObjectModel(contentsOf: url) else {
+      fatalError("Can't find coredata model")
+    }
+
+    let container = NSPersistentCloudKitContainer(name: "Alfheim", managedObjectModel: model)
 
     container.persistentStoreDescriptions.forEach { description in
       description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)

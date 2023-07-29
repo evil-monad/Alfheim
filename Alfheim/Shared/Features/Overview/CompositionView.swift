@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Charts
 
 struct CompositionView: View {
   var histogram: Histogram<PieUnit>

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,6 +82,7 @@
 		FAA6413B272E64C300B36DDF /* CloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6413A272E64C300B36DDF /* CloudView.swift */; };
 		FABEBB7A245C0B4C00637226 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB79245C0B4C00637226 /* Grid.swift */; };
 		FABEBB8C245D826300637226 /* TextAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABEBB8B245D826300637226 /* TextAlert.swift */; };
+		FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = FABFB2EC2A74E90B0023FF0E /* Charts */; };
 		FAC2BC2125CE379100169800 /* FeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC1E25CE379100169800 /* FeatureView.swift */; };
 		FAC2BC2225CE379100169800 /* ImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC1F25CE379100169800 /* ImportView.swift */; };
 		FAC2BC2325CE379100169800 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC2025CE379100169800 /* OnboardingView.swift */; };
@@ -247,6 +248,7 @@
 			files = (
 				FA9D207B273FE96100413E6E /* Domain in Frameworks */,
 				FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */,
+				FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */,
 				FA267C2F2A741B6200CC68DF /* Alne in Frameworks */,
 				FA9D207D2740090200413E6E /* Database in Frameworks */,
 				FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */,
@@ -637,6 +639,7 @@
 				FA9D207C2740090200413E6E /* Database */,
 				FA267C2C2A741B5D00CC68DF /* Persistence */,
 				FA267C2E2A741B6200CC68DF /* Alne */,
+				FABFB2EC2A74E90B0023FF0E /* Charts */,
 			);
 			productName = Alfheim;
 			productReference = 1F3998F723D6958700E6BBD9 /* Alfheim.app */;
@@ -1131,6 +1134,10 @@
 		FA9D207C2740090200413E6E /* Database */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Database;
+		};
+		FABFB2EC2A74E90B0023FF0E /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

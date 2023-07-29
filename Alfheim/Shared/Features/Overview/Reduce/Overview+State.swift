@@ -8,6 +8,8 @@
 
 import Foundation
 import Domain
+import Alne
+import Persistence
 import ComposableArchitecture
 
 extension Overview {
@@ -188,7 +190,7 @@ extension Overview.State {
 
       let transactions = allTransactions
         .filter { $0.date >= start && $0.date <= end }
-      let balances = balances(account: account, transactions: transactions)
+      let balances = Persistence.balances(account: account, transactions: transactions)
       let name = start.formatted(.dateTime.month())
       return (name: name, value: balances)
     }

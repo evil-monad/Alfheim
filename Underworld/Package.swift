@@ -44,7 +44,8 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Database",
-            dependencies: []),
+            dependencies: [],
+            resources: [.copy("Resources/Alfheim.xcdatamodeld")]),
         .target(
             name: "Domain",
             dependencies: []),

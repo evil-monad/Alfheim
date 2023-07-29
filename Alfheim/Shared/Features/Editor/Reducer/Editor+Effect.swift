@@ -9,8 +9,8 @@
 import Foundation
 import Combine
 import ComposableArchitecture
-import Database
 import Domain
+import Persistence
 
 extension Editor {
   enum Effects {
@@ -19,7 +19,7 @@ extension Editor {
         return .none
       }
 
-      return Persistences.Account(context: context)
+      return Persistence.Account(context: context)
         .publisher
         .fetchAll()
         .replaceError(with: [])
@@ -34,7 +34,7 @@ extension Editor {
         return Effect.none
       }
 
-      let persistence = Persistences.Account(context: context)
+      let persistence = Persistence.Account(context: context)
       for account in accounts {
         if let object = persistence.account(withID: account.id) {
           persistence.delete(object)

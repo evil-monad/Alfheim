@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-extension Text {
+public extension Text {
   func gradient(_ overlay: LinearGradient) -> some View {
     self.overlay(overlay).mask(self)
   }

@@ -9,20 +9,18 @@
 import Foundation
 import CoreData
 
-public extension Persistences {
-  struct Preview {
-    let store: MemoryStore
-    let context: NSManagedObjectContext
+public struct Preview {
+  let store: MemoryStore
+  public let context: NSManagedObjectContext
 
-    init() {
-      store = MemoryStore()
-      context = store.persistentContainer.viewContext
+  public init() {
+    store = MemoryStore()
+    context = store.persistentContainer.viewContext
 
-      // preview memory data
-    }
+    // preview memory data
+  }
 
-    func save() {
-      store.saveContext()
-    }
+  public func save() {
+    store.saveContext()
   }
 }

@@ -15,12 +15,12 @@ import ComposableArchitecture
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
+  lazy var cloud = Cloud()
 
   private var environment: AppEnvironment?
   private lazy var store: AppStore = {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let environment = AppEnvironment.default
-    environment.context = context
+    environment.context = cloud.context
     let state = App.State()
     let realWorld = RealWorld()
     return AppStore(initialState: state, reducer: realWorld)
@@ -30,12 +30,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Get the managed object context from the shared persistent container.
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     // Create app store
 
 //    if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
 //      state.settings.appIcon = icon
 //    }
+
+    guard let context = cloud.context else {
+      return
+    }
 
     // Start app story
     startAppStory(scene: scene, store: store, context: context)
@@ -61,7 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   private func bootstrap(context: NSManagedObjectContext) {
-    Persistences.Account(context: context).empty { result in
+    Persistence.Account(context: context).empty { result in
       switch result {
       case .success(let empty):
         if empty {
@@ -125,7 +128,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     sceneStore.send(.lifecycle(.didEnterBackground))
 
     // Save changes in the application's managed object context when the application transitions to the background.
-    (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+    cloud.save()
   }
 
 
@@ -134,7 +137,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 extension PreviewProvider {
   static var viewContext: NSManagedObjectContext {
-    return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    return Preview().context
   }
 }
 

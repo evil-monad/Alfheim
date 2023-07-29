@@ -10,12 +10,28 @@ import SwiftUI
 
 public struct Line: View {
   @ObservedObject var histogram: Histogram<Dimension>
-  @Binding var frame: CGRect
-  @Binding var touchLocation: CGPoint
-  @Binding var showsIndicator: Bool
+  var frame: CGRect
+  var touchLocation: CGPoint
+  var showsIndicator: Bool
   @State private var fill: Bool = false
   @State private var showsBackground: Bool = true
   @State private var padding: CGFloat = 4
+
+  public init(histogram: Histogram<Dimension>,
+              frame: CGRect,
+              touchLocation: CGPoint,
+              showsIndicator: Bool,
+              fill: Bool = false,
+              showsBackground: Bool = true,
+              padding: CGFloat = 4) {
+    self.histogram = histogram
+    self.frame = frame
+    self.touchLocation = touchLocation
+    self.showsIndicator = showsIndicator
+    self.fill = fill
+    self.showsBackground = showsBackground
+    self.padding = padding
+  }
 
   private var stepWidth: CGFloat {
     if histogram.units.count < 2 {
@@ -102,7 +118,7 @@ extension Color {
 struct Line_Previews: PreviewProvider {
   static var previews: some View {
     GeometryReader { geometry in
-      Line(histogram: Histogram(points: [20, 6, 4, 2, 4, 6, 0]), frame: .constant(geometry.frame(in: .local)), touchLocation: .constant(CGPoint(x: 10, y: 12)), showsIndicator: .constant(true))
+      Line(histogram: Histogram(points: [20, 6, 4, 2, 4, 6, 0]), frame: geometry.frame(in: .local), touchLocation: CGPoint(x: 10, y: 12), showsIndicator: true)
     }
     .frame(width: 320, height: 460)
     .environment(\.colorScheme, .dark)

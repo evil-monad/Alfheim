@@ -14,3 +14,7 @@ import CoreData
 public enum Schema {
 
 }
+
+public extension Bundle {
+  static let database = Bundle.module
+}

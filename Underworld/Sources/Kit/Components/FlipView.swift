@@ -8,18 +8,18 @@
 
 import SwiftUI
 
-struct FlipView<Front: View, Back: View>: View {
+public struct FlipView<Front: View, Back: View>: View {
   var visibleSide: FlipViewSide
   var front: Front
   var back: Back
 
-  init(visibleSide: FlipViewSide = .front, @ViewBuilder front: () -> Front, @ViewBuilder back: () -> Back) {
+  public init(visibleSide: FlipViewSide = .front, @ViewBuilder front: () -> Front, @ViewBuilder back: () -> Back) {
     self.visibleSide = visibleSide
     self.front = front()
     self.back = back()
   }
 
-  var body: some View {
+  public var body: some View {
     ZStack {
       front
         .modifier(FlipModifier(side: .front, visibleSide: visibleSide))
@@ -29,7 +29,7 @@ struct FlipView<Front: View, Back: View>: View {
   }
 }
 
-enum FlipViewSide {
+public enum FlipViewSide {
   case front
   case back
 
