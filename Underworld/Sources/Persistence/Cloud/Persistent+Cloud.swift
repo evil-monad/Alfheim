@@ -29,20 +29,13 @@ public final class CloudPersistent: Persistent {
     store.reloadContainer()
   }
 
-  public func fetch<T>(_ request: Request<T>) async throws -> [T] where T : FetchedResult {
+  public func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]> where T : FetchedResult {
     let fetchRequest = request.makeFetchRequest()
-    let fetchedRequest = FetchedRequest(fetchRequest: fetchRequest, context: context)
-    let results = fetchedRequest.fetchedResults.compactMap { T.init(from: $0) }
-    return results
-  }
-
-  public func observe<T>(_ request: Request<T>) -> AsyncStream<[T]> where T : FetchedResult {
-    let fetchRequest = request.makeFetchRequest()
-    let fetchedRequest = FetchedRequest(fetchRequest: fetchRequest, context: context)
+    let observer = FetchRequestObserver(fetchRequest: fetchRequest, context: context)
     return AsyncStream<[T]> { continuation in
       Task.detached {
-        let observe = await fetchedRequest.observe().map { T.map($0) }
-        fetchedRequest.fetch()
+        let observe = await observer.observe().map { T.map($0) }
+        observer.fetch()
         for await result in observe {
           continuation.yield(result)
         }
@@ -51,19 +44,62 @@ public final class CloudPersistent: Persistent {
     }
   }
 
-  public func asyncObserve<T>(_ request: Request<T>) async -> AsyncStream<[T]> where T : FetchedResult {
+  public func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]> where T : FetchedResult {
     let fetchRequest = request.makeFetchRequest()
-    let fetchedRequest = FetchedRequest(fetchRequest: fetchRequest, context: context)
-    let observe = await fetchedRequest.observe().map { T.map($0) }
-    fetchedRequest.fetch()
+    let observer = FetchRequestObserver(fetchRequest: fetchRequest, context: context)
+    let observe = await observer.observe().map { T.map($0) }
+    observer.fetch()
     return observe.eraseToStream()
   }
 
+  public func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T] where T : FetchedResult {
+    try await store.schedule { context in
+      try context.fetch(request).compactMap { T.init(from: $0) }
+    }
+  }
+
+  public func update<T: FetchedResult>(_ item: T) async throws -> Bool {
+    try await store.schedule { context in
+      let predicate = NSPredicate(format: "id == %@", item.id as! CVarArg)
+      if let object = try context.fetchOne(T.all.filter(predicate)) {
+        try object.update(item)
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
   public func insert<T: FetchedResult>(_ item: T) async throws {
-    let context = store.newBackgroundContext()
-    let object = item.encode(to: context)
-    try await context.perform(schedule: .immediate) {
-      try context.save()
+    try await store.schedule { context in
+      let _ = item.encode(to: context)
+    }
+  }
+
+  public func sync<T: FetchedResult, R: FetchedResult>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType>, to relation: R) async throws -> Bool {
+    try await store.schedule { context in
+      if var result = try context.fetchOne(T.all.filter(NSPredicate(format: "id == %@", item.id as! CVarArg))),
+         let value = try context.fetchOne(R.all.filter(NSPredicate(format: "id == %@", relation.id as! CVarArg))) {
+        result[keyPath: keyPath] = value
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
+  public func sync<T: FetchedResult, R: FetchedResult>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, to relation: R?) async throws -> Bool {
+    try await store.schedule { context in
+      if var result = try context.fetchOne(T.all.where(T.identifier == item.id)) {
+        if let relation = relation, let value = try context.fetchOne(R.all.filter(R.identifier == relation.id)) {
+          result[keyPath: keyPath] = value
+        } else {
+          result[keyPath: keyPath] = nil
+        }
+        return true
+      } else {
+        return false
+      }
     }
   }
 }

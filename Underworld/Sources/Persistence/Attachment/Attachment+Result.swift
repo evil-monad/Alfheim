@@ -12,6 +12,8 @@ import Database
 import CoreData
 
 extension Domain.Attachment: FetchedResult {
+  public static var identifier: KeyPath<Domain.Attachment, UUID> = \Domain.Attachment.id
+
   public static func fetchRequest() -> NSFetchRequest<Database.Attachment> {
     Database.Attachment.fetchRequest()
   }
@@ -39,12 +41,15 @@ extension Domain.Attachment {
   }
 
   public func encode(to context: NSManagedObjectContext) -> Database.Attachment {
-    let object = Database.Attachment(context: context)
-    object.fill(self)
-    return object
+    let entity = Database.Attachment(context: context)
+    entity.fill(self)
+    return entity
+  }
+
+  public func encode(to entity: Database.Attachment) {
+    entity.fill(self)
   }
 }
-
 
 public extension Database.Attachment {
   func fill(_ model: Domain.Attachment) {

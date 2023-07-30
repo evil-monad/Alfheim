@@ -9,8 +9,9 @@
 import CoreData
 import Database
 
-public protocol FetchedResult {
+public protocol FetchedResult: Identifiable {
   associatedtype ResultType: NSFetchRequestResult
+  static var identifier: KeyPath<Self, ID> { get }
   static func fetchRequest() -> NSFetchRequest<ResultType>
 
   static func map(_ entities: [ResultType]) -> [Self]
@@ -20,10 +21,17 @@ public protocol FetchedResult {
   static func decode(from entity: ResultType) -> Self?
   // encode
   func encode(to context: NSManagedObjectContext) -> ResultType
+  func encode(to entity: ResultType)
 }
 
 public extension FetchedResult {
-  static var all: Request<Self> {
+  static var all: FetchedRequest<Self> {
     .init()
+  }
+}
+
+extension NSFetchRequestResult {
+  func update<T: FetchedResult>(_ item: T) throws where Self == T.ResultType {
+    item.encode(to: self)
   }
 }

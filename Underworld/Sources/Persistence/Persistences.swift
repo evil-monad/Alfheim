@@ -15,13 +15,3 @@ public enum Usage {
   case extensions
 }
 
-public extension NSManagedObjectContext {
-  func registeredObjects(with predicate: NSPredicate) -> Set<NSManagedObject> {
-    registeredObjects.filter { predicate.evaluate(with: $0) }
-  }
-
-  func registeredObjects<T>(_ type: T.Type, with predicate: NSPredicate) -> [T] {
-    (registeredObjects.compactMap { $0 as? T }).filter { predicate.evaluate(with: $0) }
-  }
-}
-

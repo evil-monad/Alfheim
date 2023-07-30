@@ -126,6 +126,14 @@ public final class CloudStore {
     }
   }
 
+  public func schedule<T>(_ action: @Sendable @escaping (NSManagedObjectContext) throws -> T) async throws -> T {
+    try Task.checkCancellation()
+    let context = newBackgroundContext()
+    return try await context.perform(schedule: .immediate) {
+      try context.execute(action)
+    }
+  }
+
   public func newBackgroundContext() -> NSManagedObjectContext {
     container.newBackgroundContext()
   }

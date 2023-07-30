@@ -14,6 +14,8 @@ import Domain
 import CoreData
 
 extension Domain.Account: FetchedResult {
+  public static var identifier: KeyPath<Domain.Account, UUID> = \Domain.Account.id
+
   public static func fetchRequest() -> NSFetchRequest<Database.Account> {
     Database.Account.fetchRequest()
   }
@@ -59,6 +61,8 @@ extension Domain.Account {
       }
     }
 
+    // FIXME: 超过2层时，第2层多出来了第3层多内容。
+
     return makeAccounts(accounts: Set(entities.filter { $0.parent == nil }), parent: nil)
   }
 
@@ -66,6 +70,10 @@ extension Domain.Account {
     let object = Database.Account(context: context)
     object.fill(self)
     return object
+  }
+
+  public func encode(to entity: Database.Account) {
+    entity.fill(self)
   }
 }
 

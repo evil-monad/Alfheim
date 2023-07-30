@@ -25,11 +25,10 @@ struct EditAccount: ReducerProtocol {
     case let .save(snapshot, mode):
       switch mode {
       case .new:
-        return Account.Effects.create(snapshot: snapshot, context: persistent.context)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
+        return .run { _ in
+          try await persistent.insert(snapshot)
+          try await persistent.sync(item: snapshot, keyPath: \.parent, to: snapshot.parent)
+        }
       case .update:
         return Account.Effects.update(snapshot: snapshot, context: persistent.context)
           .replaceError(with: false)

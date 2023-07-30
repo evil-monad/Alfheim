@@ -12,6 +12,8 @@ import Domain
 import CoreData
 
 extension Domain.Transaction: FetchedResult {
+  public static var identifier: KeyPath<Domain.Transaction, UUID> = \Domain.Transaction.id
+
   public static func fetchRequest() -> NSFetchRequest<Database.Transaction> {
     Database.Transaction.fetchRequest()
   }
@@ -52,6 +54,10 @@ extension Domain.Transaction {
     let object = Database.Transaction(context: context)
     object.fill(self)
     return object
+  }
+
+  public func encode(to entity: Database.Transaction) {
+    entity.fill(self)
   }
 }
 

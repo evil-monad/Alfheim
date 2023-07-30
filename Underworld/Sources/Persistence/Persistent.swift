@@ -14,12 +14,21 @@ import Database
 /// Persistent client
 public protocol Persistent {
   var context: NSManagedObjectContext { get }
-  func fetch<T>(_ request: Request<T>) async throws -> [T]
-  func observe<T>(_ request: Request<T>) -> AsyncStream<[T]>
-  func asyncObserve<T>(_ request: Request<T>) async -> AsyncStream<[T]>
 
-//  func update<T>(_ request: Request<T>) async throws -> Bool
+  func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]>
+  func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]>
+
+  func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T]
+
+  @discardableResult
+  func update<T: FetchedResult>(_ item: T) async throws -> Bool
+
   func insert<T: FetchedResult>(_ item: T) async throws
+
+  @discardableResult
+  func sync<T: FetchedResult, R: FetchedResult>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType>, to relation: R) async throws -> Bool
+  @discardableResult
+  func sync<T: FetchedResult, R: FetchedResult>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, to relation: R?) async throws -> Bool
 
   func reload()
   func save()

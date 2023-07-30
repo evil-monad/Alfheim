@@ -10,26 +10,44 @@ import Foundation
 import CoreData
 
 public final class PreviewPersistent: Persistent {
-  public func fetch<T>(_ request: Request<T>) async throws -> [T] where T : FetchedResult {
-    return []
-  }
 
-  public func observe<T>(_ request: Request<T>) -> AsyncStream<[T]> where T : FetchedResult {
+  public func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]> where T : FetchedResult {
     return .init {
       $0.yield([])
       $0.finish()
     }
   }
 
-  public func asyncObserve<T>(_ request: Request<T>) async -> AsyncStream<[T]> where T : FetchedResult {
+  public func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]> where T : FetchedResult {
     observe(request)
   }
 
+  public func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T] where T : FetchedResult {
+    try context.fetch(request).compactMap { T.init(from: $0) }
+  }
+
+  public func update<T>(_ item: T) async throws -> Bool where T : FetchedResult {
+    let predicate = NSPredicate(format: "id == %@", item.id as! CVarArg)
+    if let object = context.registeredObjects(T.ResultType.self, with: predicate).first {
+      try object.update(item)
+      return true
+    }
+    return false
+  }
+
   public func insert<T>(_ item: T) async throws where T : FetchedResult {
-    let object = item.encode(to: context)
+    let _ = item.encode(to: context)
     try await context.perform(schedule: .immediate) { [unowned self] in
       try self.context.save()
     }
+  }
+
+  public func sync<T, R>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType>, to relation: R) async throws -> Bool where T : FetchedResult, R : FetchedResult {
+    return false
+  }
+
+  public func sync<T, R>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, to relation: R?) async throws -> Bool where T : FetchedResult, R : FetchedResult {
+    return false
   }
 
   let store: MemoryStore
