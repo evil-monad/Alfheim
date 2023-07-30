@@ -24,7 +24,7 @@ extension Editor {
         .fetchAll()
         .replaceError(with: [])
         .map {
-          .didLoadAccounts(Domain.Account.mapAccounts($0))
+          .didLoadAccounts(Domain.Account.map($0))
         }
         .eraseToEffect()
     }

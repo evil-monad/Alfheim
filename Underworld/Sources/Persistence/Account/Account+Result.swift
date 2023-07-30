@@ -11,9 +11,17 @@ import Kit
 import Alne
 import Database
 import Domain
+import CoreData
 
+extension Domain.Account: FetchedResult {
+  public static func fetchRequest() -> NSFetchRequest<Database.Account> {
+    Database.Account.fetchRequest()
+  }
+}
+
+// MARK: decode
 extension Domain.Account {
-  public init(_ entity: Database.Account) {
+  public init?(from entity: Database.Account) {
     let targets = entity.targets?.compactMap(Domain.Transaction.init)
     let sources = entity.sources?.compactMap(Domain.Transaction.init)
     self.init(
@@ -29,14 +37,20 @@ extension Domain.Account {
     )
   }
 
-  public static func mapAccounts(_ accounts: [Database.Account]) -> [Domain.Account] {
+  public static func decode(from entity: Database.Account) -> Domain.Account? {
+    self.init(from: entity)
+  }
+
+  public static func map(_ entities: [Database.Account]) -> [Domain.Account] {
     func makeAccounts(accounts: Set<Database.Account>?, parent: Domain.Account?) -> [Domain.Account] {
       guard let accounts = accounts else {
         return []
       }
 
       return Array(accounts.sorted(by: { $0.name < $1.name })).flatMap { ele -> [Domain.Account] in
-        var model = Domain.Account(ele)
+        guard var model = Domain.Account(from: ele) else {
+          return []
+        }
         model.parents = parent.map { [$0] }
         let children = makeAccounts(accounts: ele.children, parent: model)
         model.children = children.optional
@@ -45,10 +59,17 @@ extension Domain.Account {
       }
     }
 
-    return makeAccounts(accounts: Set(accounts.filter { $0.parent == nil }), parent: nil)
+    return makeAccounts(accounts: Set(entities.filter { $0.parent == nil }), parent: nil)
+  }
+
+  public func encode(to context: NSManagedObjectContext) -> Database.Account {
+    let object = Database.Account(context: context)
+    object.fill(self)
+    return object
   }
 }
 
+// MARK: encode
 public extension Database.Account {
   func fill(_ model: Domain.Account) {
     id = model.id

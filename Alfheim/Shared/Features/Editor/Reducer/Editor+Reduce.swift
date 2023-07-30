@@ -21,13 +21,13 @@ extension Editor {
     case let .save(model, mode):
       switch mode {
       case .new:
-        return Transaction.Effects.create(model: model, context: context)
+        return Transaction.Effects.create(model: model, context: persistent.context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
           .fireAndForget()
       case .update:
-        return Transaction.Effects.update(model: model, context: context)
+        return Transaction.Effects.update(model: model, context: persistent.context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
@@ -36,7 +36,7 @@ extension Editor {
         fatalError("Editor can't delete")
       }
     case .loadAccounts:
-      return Effects.loadAccounts(context: context)
+      return Effects.loadAccounts(context: persistent.context)
     case .didLoadAccounts(let accounts):
       state.accounts = accounts
       break

@@ -26,7 +26,7 @@ extension Account {
         .fetchAll()
         .replaceError(with: [])
         .map { accounts in
-          .accountDidChange(Domain.Account.mapAccounts(accounts))
+          .accountDidChange(Domain.Account.map(accounts))
         }
         .eraseToEffect()
     }
@@ -44,7 +44,7 @@ extension Account {
       }
       .receive(on: queue)
       .eraseToEffect()
-      .map { App.Action.accountDidFetch(Domain.Account.mapAccounts($0)) }
+      .map { App.Action.accountDidFetch(Domain.Account.map($0)) }
     }
 
     static func delete(accounts: [Domain.Account], context: AppContext?) -> Effect<Bool, NSError> {
@@ -143,7 +143,7 @@ extension Account {
         .fetchAll()
         .replaceError(with: [])
         .map {
-          .didLoadAccounts(Domain.Account.mapAccounts($0))
+          .didLoadAccounts(Domain.Account.map($0))
         }
         .eraseToEffect()
     }

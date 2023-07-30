@@ -1,5 +1,5 @@
 //
-//  FetchRequest.swift
+//  FetchedRequest.swift
 //  Alfheim
 //
 //  Created by alex.huo on 2023/7/29.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-public final class FetchRequest<Result> where Result: NSFetchRequestResult {
+public final class FetchedRequest<Result> where Result: NSFetchRequestResult {
   private let delegate: Delegate<Result>
 
   var fetchedResults: [Result] {

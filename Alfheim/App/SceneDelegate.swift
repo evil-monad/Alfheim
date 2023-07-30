@@ -19,10 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   @Dependency(\.persistent) var persistent
 
-  private var environment: AppEnvironment?
   private lazy var store: AppStore = {
-    let environment = AppEnvironment.default
-    environment.context = persistent.context
     let state = App.State()
     let realWorld = RealWorld()
     return AppStore(initialState: state, reducer: realWorld)
@@ -38,12 +35,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     //  state.settings.appIcon = icon
     //}
 
-    guard let context = persistent.context else {
-      return
-    }
-
     // Start app story
-    startAppStory(scene: scene, store: store, context: context)
+    startAppStory(scene: scene, store: store, context: persistent.context)
 
     sceneStore.send(.lifecycle(.willConnect))
   }
@@ -139,7 +132,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 extension PreviewProvider {
   static var viewContext: NSManagedObjectContext {
-    return PreviewPersistent().context!
+    return PreviewPersistent().context
   }
 }
 

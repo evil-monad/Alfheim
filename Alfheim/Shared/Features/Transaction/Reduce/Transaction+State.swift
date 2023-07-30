@@ -14,9 +14,10 @@ import SwiftUI // LocalizedStringKey
 import Domain
 import ComposableArchitecture
 import Alne
+import Persistence
 
 struct Transaction: ReducerProtocol {
-  @Dependency(\.context) var context
+  @Dependency(\.persistent) var persistent
 }
 
 extension Transaction {

@@ -97,7 +97,6 @@
 		FAEAA03F24612645003C6799 /* emojis.json in Resources */ = {isa = PBXBuildFile; fileRef = FAEAA03E24612644003C6799 /* emojis.json */; };
 		FAEAA0412461278F003C6799 /* Emojis.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEAA0402461278F003C6799 /* Emojis.swift */; };
 		FAEABD4E25CE2D7C003D866E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEABD4D25CE2D7C003D866E /* AppState.swift */; };
-		FAEABD5725CE2FFE003D866E /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEABD5625CE2FFE003D866E /* AppEnvironment.swift */; };
 		FAEABD5B25CE3005003D866E /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEABD5A25CE3005003D866E /* AppAction.swift */; };
 		FAEABD5F25CE300C003D866E /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEABD5E25CE300C003D866E /* AppReducer.swift */; };
 		FAEABD6325CE3011003D866E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEABD6225CE3011003D866E /* AppStore.swift */; };
@@ -225,7 +224,6 @@
 		FAEAA03E24612644003C6799 /* emojis.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emojis.json; sourceTree = "<group>"; };
 		FAEAA0402461278F003C6799 /* Emojis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emojis.swift; sourceTree = "<group>"; };
 		FAEABD4D25CE2D7C003D866E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		FAEABD5625CE2FFE003D866E /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		FAEABD5A25CE3005003D866E /* AppAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAction.swift; sourceTree = "<group>"; };
 		FAEABD5E25CE300C003D866E /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
 		FAEABD6225CE3011003D866E /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
@@ -601,7 +599,6 @@
 				FAEABD4D25CE2D7C003D866E /* AppState.swift */,
 				FAEABD5A25CE3005003D866E /* AppAction.swift */,
 				FAEABD5E25CE300C003D866E /* AppReducer.swift */,
-				FAEABD5625CE2FFE003D866E /* AppEnvironment.swift */,
 				FAEABD6A25CE302C003D866E /* AppEffect.swift */,
 				FAEABD7025CE30BE003D866E /* AppError.swift */,
 			);
@@ -784,7 +781,6 @@
 				FAF5EC54293E47300092D833 /* HomeView.swift in Sources */,
 				FAEAA0412461278F003C6799 /* Emojis.swift in Sources */,
 				782403F823F83A6600478338 /* AccountDetail.swift in Sources */,
-				FAEABD5725CE2FFE003D866E /* AppEnvironment.swift in Sources */,
 				FAC2BC2325CE379100169800 /* OnboardingView.swift in Sources */,
 				FA83858E24A47A5A0011E0D7 /* AppIcon.swift in Sources */,
 				783793DE25D12D9D00ECD0D4 /* Editor+Environment.swift in Sources */,

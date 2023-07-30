@@ -12,12 +12,13 @@ import ComposableArchitecture
 import IdentifiedCollections
 import Database
 import Domain
+import Persistence
 
 typealias App = RealWorld
 
 struct RealWorld: ReducerProtocol {
 
-  @Dependency(\.context) var context
+  @Dependency(\.persistent) var persistent
   
   var body: some ReducerProtocol<State, Action> {
     Reduce { state, action in
@@ -25,11 +26,17 @@ struct RealWorld: ReducerProtocol {
 
       switch action {
       case .loadAll:
-        return Effect
-          .merge(
-            Account.Effects.load(context: context),
-            Transaction.Effects.fetch(context: context)
-          )
+        return .run { send in
+          let stream: AsyncStream<[Domain.Account]> = persistent.observe(Domain.Account.all.sort("name", ascending: true))
+          for try await accounts in stream {
+            await send(.accountDidChange(accounts))
+          }
+        }
+//        return Effect
+//          .merge(
+//            Account.Effects.load(context: persistent.context),
+//            Transaction.Effects.fetch(context: persistent.context)
+//          )
 
       case .accountDidChange(let accounts):
         state.home = Home.State(accounts: accounts, selection: state.home.selection)
@@ -37,14 +44,14 @@ struct RealWorld: ReducerProtocol {
         return .none
 
       case .fetchAccounts:
-        return Account.Effects.fetchAll(context: context, on: .main)
+        return Account.Effects.fetchAll(context: persistent.context, on: .main)
           .cancellable(id: CancelId(), cancelInFlight: true)
 
       case .accountDidFetch(let accounts):
         return Effect(value: .accountDidChange(accounts))
 
       case .cleanup:
-        return Account.Effects.delete(accounts: state.accounts, context: context)
+        return Account.Effects.delete(accounts: state.accounts, context: persistent.context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()
@@ -68,7 +75,7 @@ struct RealWorld: ReducerProtocol {
         if !account.canDelete {
           return .none
         }
-        return Account.Effects.delete(accounts: [account], context: context)
+        return Account.Effects.delete(accounts: [account], context: persistent.context)
           .replaceError(with: false)
           .ignoreOutput()
           .eraseToEffect()

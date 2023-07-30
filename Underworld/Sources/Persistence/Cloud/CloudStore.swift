@@ -14,27 +14,28 @@ import StoreKit
 import SwiftUI
 
 public final class CloudStore {
-  private(set) var persistentContainer: NSPersistentCloudKitContainer?
+  private(set) var container: NSPersistentCloudKitContainer
+
+  init() {
+    guard let url = Bundle.database.url(forResource: "Alfheim", withExtension: "momd"),
+          let model = NSManagedObjectModel(contentsOf: url) else {
+      fatalError("Can't find coredata model")
+    }
+    self.container = NSPersistentCloudKitContainer(name: "Alfheim", managedObjectModel: model)
+  }
 
   public func reloadContainer() {
     let persistent = UserDefaults.standard.bool(forKey: "com.alfheim.cloudkit.enabled")
-    persistentContainer = initializeContainer(persistent: persistent)
+    setupContainer(persistent: persistent)
   }
 
-  public func initializeContainer(persistent: Bool) -> NSPersistentCloudKitContainer {
+  public func setupContainer(persistent: Bool) {
     /*
      The persistent container for the application. This implementation
      creates and returns a container, having loaded the store for the
      application to it. This property is optional since there are legitimate
      error conditions that could cause the creation of the store to fail.
     */
-
-    guard let url = Bundle.database.url(forResource: "Alfheim", withExtension: "momd"),
-          let model = NSManagedObjectModel(contentsOf: url) else {
-      fatalError("Can't find coredata model")
-    }
-
-    let container = NSPersistentCloudKitContainer(name: "Alfheim", managedObjectModel: model)
 
     container.persistentStoreDescriptions.forEach { description in
       description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
@@ -99,6 +100,8 @@ public final class CloudStore {
     }
 
     // Observe Core Data remote change notifications.
+    NotificationCenter.default.removeObserver(self)
+
     NotificationCenter.default.addObserver(
       self, selector: #selector(CloudStore.storeRemoteChange(_:)),
       name: .NSPersistentStoreRemoteChange,
@@ -110,29 +113,31 @@ public final class CloudStore {
       name: NSPersistentCloudKitContainer.eventChangedNotification,
       object: container
     )
-
-    return container
   }
 
   public func initializeScheme() {
     do {
       // let id = "iCloud.com.xspyhack.Alfheim"
       // let options = NSPersistentCloudKitContainerOptions(containerIdentifier: id)
-      try persistentContainer?.initializeCloudKitSchema(options: .printSchema)
+      try container.initializeCloudKitSchema(options: .printSchema)
     } catch {
       print("Initialize the CloudKit scheme failed: \(error)")
       assertionFailure(error.localizedDescription)
     }
   }
 
+  public func newBackgroundContext() -> NSManagedObjectContext {
+    container.newBackgroundContext()
+  }
+
   // MARK: - Core Data Saving support
-  public func saveContext () {
-    guard let context = persistentContainer?.viewContext, context.hasChanges else {
+  public func saveContext() {
+    guard container.viewContext.hasChanges else {
       return
     }
 
     do {
-      try context.save()
+      try container.viewContext.save()
     } catch {
       // Replace this implementation with code to handle the error appropriately.
       // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.

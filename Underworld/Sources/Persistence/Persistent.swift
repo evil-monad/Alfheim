@@ -9,10 +9,18 @@
 import Foundation
 import CoreData
 import Dependencies
+import Database
 
 /// Persistent client
 public protocol Persistent {
-  var context: NSManagedObjectContext? { get }
+  var context: NSManagedObjectContext { get }
+  func fetch<T>(_ request: Request<T>) async throws -> [T]
+  func observe<T>(_ request: Request<T>) -> AsyncStream<[T]>
+  func asyncObserve<T>(_ request: Request<T>) async -> AsyncStream<[T]>
+
+//  func update<T>(_ request: Request<T>) async throws -> Bool
+  func insert<T: FetchedResult>(_ item: T) async throws
+
   func reload()
   func save()
 }

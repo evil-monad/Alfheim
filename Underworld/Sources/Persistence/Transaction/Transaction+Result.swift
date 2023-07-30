@@ -9,9 +9,16 @@
 import Foundation
 import Database
 import Domain
+import CoreData
+
+extension Domain.Transaction: FetchedResult {
+  public static func fetchRequest() -> NSFetchRequest<Database.Transaction> {
+    Database.Transaction.fetchRequest()
+  }
+}
 
 extension Domain.Transaction {
-  public init?(_ entity: Database.Transaction) {
+  public init?(from entity: Database.Transaction) {
     guard let target = entity.target, let source = entity.source else {
       return nil
     }
@@ -31,6 +38,20 @@ extension Domain.Transaction {
       source: Domain.Account.Summary(source),
       attachments: attachments
     )
+  }
+
+  public static func decode(from entity: Database.Transaction) -> Domain.Transaction? {
+    self.init(from: entity)
+  }
+
+  public static func map(_ entities: [Database.Transaction]) -> [Domain.Transaction] {
+    entities.compactMap(Domain.Transaction.init)
+  }
+
+  public func encode(to context: NSManagedObjectContext) -> Database.Transaction {
+    let object = Database.Transaction(context: context)
+    object.fill(self)
+    return object
   }
 }
 

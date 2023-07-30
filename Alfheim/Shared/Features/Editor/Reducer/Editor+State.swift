@@ -12,9 +12,10 @@ import CoreData
 import ComposableArchitecture
 import Domain
 import Database
+import Persistence
 
 struct Editor: ReducerProtocol {
-  @Dependency(\.context) var context
+  @Dependency(\.persistent) var persistent
   @Dependency(\.validator) var validator
 }
 

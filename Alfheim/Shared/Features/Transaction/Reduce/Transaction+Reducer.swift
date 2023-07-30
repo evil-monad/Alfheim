@@ -15,12 +15,12 @@ extension Transaction {
 
     switch action {
     case let .toggleFlag(flag, id):
-      return Transaction.Effects.updateFlag(flag, with: id, context: context)
+      return Transaction.Effects.updateFlag(flag, with: id, context: persistent.context)
         .replaceError(with: false)
         .ignoreOutput()
         .fireAndForget()
     case .delete(let id):
-      return Transaction.Effects.delete(with: [id], in: context)
+      return Transaction.Effects.delete(with: [id], in: persistent.context)
         .replaceError(with: false)
         .ignoreOutput()
         .fireAndForget()
