@@ -9,57 +9,60 @@
 import Foundation
 import ComposableArchitecture
 import Persistence
+import Domain
 
-struct EditAccount: ReducerProtocol {
+struct EditAccount: Reducer {
   @Dependency(\.persistent) var persistent
   @Dependency(\.account) var env
 
-  func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-    struct ValidationId: Hashable {}
+  var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      struct ValidationId: Hashable {}
 
-    switch action {
-    case .new:
-      state.reset(.new)
-    case .edit(let account):
-      state.reset(.edit(account))
-    case let .save(snapshot, mode):
-      switch mode {
+      switch action {
       case .new:
-        return .run { _ in
-          try await persistent.insert(snapshot)
-          try await persistent.sync(item: snapshot, keyPath: \.parent, to: snapshot.parent)
+        state.reset(.new)
+      case .edit(let account):
+        state.reset(.edit(account))
+      case let .save(snapshot, mode):
+        switch mode {
+        case .new:
+          return .run { _ in
+            try await persistent.insert(snapshot, relationships: [(keyPath: \.parent, value: snapshot.parent)])
+          }
+        case .update:
+          return .run { _ in
+            try await persistent.update(snapshot, relationships: [(keyPath: \.parent, value: snapshot.parent)])
+          }
+        case .delete:
+          fatalError("Editor can't delete")
         }
-      case .update:
-        return Account.Effects.update(snapshot: snapshot, context: persistent.context)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
-      case .delete:
-        fatalError("Editor can't delete")
+      case .loadAccounts:
+        return .run { send in
+          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.map($0) }
+          await send(.didLoadAccounts(accounts))
+        }
+      case .didLoadAccounts(let accounts):
+        state.accounts = accounts
+      case .changed(let field):
+        switch field {
+        case .name(let value):
+          state.name = value
+        case .introduction(let value):
+          state.introduction = value
+        case .currency(let value):
+          state.currency = value
+        case .tag(let value):
+          state.tag = value
+        case .emoji(let value):
+          state.emoji = value
+        case .parent(let value):
+          state.parent = value
+          state.group = value?.group.rawValue ?? ""
+        }
+        state.isValid = env.validator.validate(state: state)
       }
-    case .loadAccounts:
-      return Account.Effects.loadAccounts(context: persistent.context)
-    case .didLoadAccounts(let accounts):
-      state.accounts = accounts
-    case .changed(let field):
-      switch field {
-      case .name(let value):
-        state.name = value
-      case .introduction(let value):
-        state.introduction = value
-      case .currency(let value):
-        state.currency = value
-      case .tag(let value):
-        state.tag = value
-      case .emoji(let value):
-        state.emoji = value
-      case .parent(let value):
-        state.parent = value
-        state.group = value?.group.rawValue ?? ""
-      }
-      state.isValid = env.validator.validate(state: state)
+      return .none
     }
-    return .none
   }
 }

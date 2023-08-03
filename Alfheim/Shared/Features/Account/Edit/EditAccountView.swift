@@ -16,8 +16,8 @@ struct EditAccountView: View {
   let mode: EditAccount.Mode
 
   var body: some View {
-    WithViewStore(store) { vs in
-      NavigationView {
+    NavigationView {
+      WithViewStore(store, observe: { $0 }) { vs in
         EditAccountForm(store: store)
           .navigationTitle(vs.isNew ? "New Account" : "Edit Account")
           .toolbar {
@@ -40,10 +40,10 @@ struct EditAccountView: View {
             }
           }
       }
-      .navigationViewStyle(.stack)
-      .task {
-        vs.send(.loadAccounts)
-      }
+    }
+    .navigationViewStyle(.stack)
+    .task {
+      store.send(.loadAccounts)
     }
   }
 }

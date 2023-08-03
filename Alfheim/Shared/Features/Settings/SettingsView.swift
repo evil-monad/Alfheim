@@ -14,7 +14,7 @@ struct SettingsView: View {
   @Environment(\.dismiss) var dismiss
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       NavigationView {
         List {
           Section {
@@ -80,10 +80,10 @@ struct SettingsView_Previews: PreviewProvider {
   static var previews: some View {
     SettingsView(
       store: Store(
-        initialState: Settings.State(isPresented: false, appIcon: .primary),
-        reducer: Settings()
+        initialState: Settings.State(isPresented: false, appIcon: .primary)) {
+          Settings()
+        }
       )
-    )
   }
 }
 #endif

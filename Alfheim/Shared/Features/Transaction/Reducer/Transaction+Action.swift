@@ -14,7 +14,7 @@ extension Transaction {
     case editTransaction(Domain.Transaction)
     case didEditTransaction
 
-    case delete(id: UUID)
+    case delete(Domain.Transaction)
     case toggleFlag(flag: Bool, id: UUID)
     case showStatistics([Domain.Transaction], interval: DateInterval)
     case dimissStatistics

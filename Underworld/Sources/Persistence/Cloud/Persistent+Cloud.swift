@@ -58,6 +58,12 @@ public final class CloudPersistent: Persistent {
     }
   }
 
+  public func fetch<T>(_ request: FetchedRequest<T>, transform: @escaping ([T.ResultType]) -> [T]) async throws -> [T] {
+    try await store.schedule { context in
+      transform(try context.fetch(request))
+    }
+  }
+
   public func update<T: FetchedResult>(_ item: T) async throws -> Bool {
     try await store.schedule { context in
       let predicate = NSPredicate(format: "id == %@", item.id as! CVarArg)
@@ -70,9 +76,73 @@ public final class CloudPersistent: Persistent {
     }
   }
 
+  public func update<T: FetchedResult, V>(_ item: T, keyPath: WritableKeyPath<T.ResultType, V>, value: V) async throws -> Bool {
+    try await store.schedule { context in
+      guard var object = try context.fetchOne(T.all.where(T.identifier == item.id)) else {
+        return false
+      }
+      object[keyPath: keyPath] = value
+      return true
+    }
+  }
+
+  public func update<T: FetchedResult, V>(_ id: T.ID, keyPath: WritableKeyPath<T.ResultType, V>, value: V) async throws -> T {
+    try await store.schedule { context in
+      guard var object = try context.fetchOne(T.all.where(T.identifier == id)) else {
+        throw FetchedError.notFound
+      }
+
+      object[keyPath: keyPath] = value
+
+      if let item = T.decode(from: object) {
+        return item
+      }
+      throw FetchedError.decode(String(describing: id))
+    }
+  }
+
+  public func update<T: FetchedResult, R: FetchedResult>(_ item: T, relationships: [(keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, value: R?)]) async throws -> Bool {
+    try await store.schedule { context in
+      guard var object = try context.fetchOne(T.all.where(T.identifier == item[keyPath: T.identifier])) else {
+        return false
+      }
+
+      try object.update(item)
+
+      for relationship in relationships {
+        if let value = relationship.value, let toValue = try context.fetchOne(R.all.where(R.identifier == value[keyPath: R.identifier])) {
+          object[keyPath: relationship.keyPath] = toValue
+        } else {
+          object[keyPath: relationship.keyPath] = nil
+        }
+      }
+
+      return true
+    }
+  }
+
   public func insert<T: FetchedResult>(_ item: T) async throws {
     try await store.schedule { context in
       let _ = item.encode(to: context)
+    }
+  }
+
+  public func insert<T: FetchedResult, R: FetchedResult>(_ item: T, relationships: [(keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, value: R?)]) async throws {
+    try await store.schedule { context in
+      var result = item.encode(to: context)
+      for relationship in relationships {
+        if let value = relationship.value, let toValue = try context.fetchOne(R.all.where(R.identifier == value[keyPath: R.identifier])) {
+          result[keyPath: relationship.keyPath] = toValue
+        } else {
+          result[keyPath: relationship.keyPath] = nil
+        }
+      }
+    }
+  }
+
+  public func delete<T: FetchedResult>(_ item: T) async throws {
+    try await store.schedule { context in
+      try context.delete(T.all.where(T.identifier == item[keyPath: T.identifier]))
     }
   }
 

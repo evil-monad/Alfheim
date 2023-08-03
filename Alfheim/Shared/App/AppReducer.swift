@@ -16,11 +16,11 @@ import Persistence
 
 typealias App = RealWorld
 
-struct RealWorld: ReducerProtocol {
+struct RealWorld: Reducer {
 
   @Dependency(\.persistent) var persistent
   
-  var body: some ReducerProtocol<State, Action> {
+  var body: some ReducerOf<Self> {
     Reduce { state, action in
       struct CancelId: Hashable {}
 
@@ -32,11 +32,6 @@ struct RealWorld: ReducerProtocol {
             await send(.accountDidChange(accounts))
           }
         }
-//        return Effect
-//          .merge(
-//            Account.Effects.load(context: persistent.context),
-//            Transaction.Effects.fetch(context: persistent.context)
-//          )
 
       case .accountDidChange(let accounts):
         state.home = Home.State(accounts: accounts, selection: state.home.selection)
@@ -44,18 +39,21 @@ struct RealWorld: ReducerProtocol {
         return .none
 
       case .fetchAccounts:
-        return Account.Effects.fetchAll(context: persistent.context, on: .main)
-          .cancellable(id: CancelId(), cancelInFlight: true)
+        return .run { send in
+          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.map($0) }
+          await send(.accountDidFetch(accounts))
+        }
+        .cancellable(id: CancelId())
 
       case .accountDidFetch(let accounts):
-        return Effect(value: .accountDidChange(accounts))
+        return .send(.accountDidChange(accounts))
 
       case .cleanup:
-        return Account.Effects.delete(accounts: state.accounts, context: persistent.context)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
+        return .run { [state] _ in
+          for account in state.accounts {
+            try await persistent.delete(account)
+          }
+        }
 
       case .addAccount(let presenting):
         state.editAccount.reset(.new)
@@ -75,11 +73,9 @@ struct RealWorld: ReducerProtocol {
         if !account.canDelete {
           return .none
         }
-        return Account.Effects.delete(accounts: [account], context: persistent.context)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
+        return .run { _ in
+          try await persistent.delete(account)
+        }
 
       case .selectMenu(let item):
         if let item = item, let filter = QuickFilter(rawValue: item.id) {
@@ -99,7 +95,7 @@ struct RealWorld: ReducerProtocol {
       case .transactionDidChange(let transactions):
         // TODO: find changed transaction, and update account
         if let selection = state.home.selection {
-          return Effect(value: .selectMenu(selection))
+          return .send(.selectMenu(selection))
         }
         return .none
 

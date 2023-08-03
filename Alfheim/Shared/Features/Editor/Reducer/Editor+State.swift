@@ -14,7 +14,7 @@ import Domain
 import Database
 import Persistence
 
-struct Editor: ReducerProtocol {
+struct Editor: Reducer {
   @Dependency(\.persistent) var persistent
   @Dependency(\.validator) var validator
 }

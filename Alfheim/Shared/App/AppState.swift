@@ -27,7 +27,7 @@ extension RealWorld {
     var path = StackState<Path.State>()
   }
 
-  struct Path: ReducerProtocol {
+  struct Path: Reducer {
     enum State: Equatable {
       case overview(Overview.State)
       case transation(Transaction.State)
@@ -38,7 +38,7 @@ extension RealWorld {
       case transation(Transaction.Action)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some ReducerOf<Self> {
       Scope(state: /State.overview, action: /Action.overview) {
         Overview()
       }

@@ -164,7 +164,12 @@ struct Home_Previews: PreviewProvider {
   static var previews: some View {
     List {
       Section(header: EmptyView()) {
-        QuickMenu(store: AppStore(initialState: App.State(), reducer: RealWorld())).listRowBackground(Color.clear)
+        QuickMenu(
+          store: AppStore(initialState: App.State()) {
+            RealWorld()
+          }
+        )
+        .listRowBackground(Color.clear)
       }
       .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())

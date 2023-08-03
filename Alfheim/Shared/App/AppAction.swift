@@ -12,7 +12,7 @@ import ComposableArchitecture
 
 extension RealWorld {
   enum Action {
-    case lifecycle(SceneLifecycleEvent)
+    case lifecycle(SceneLifecycle.Action)
     case overview(Overview.Action)
     //case editor(Editor)
     //  case settings(Settings)

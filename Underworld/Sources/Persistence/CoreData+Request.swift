@@ -17,6 +17,14 @@ public extension NSManagedObjectContext {
   func fetchOne<T>(_ request: FetchedRequest<T>) throws -> T.ResultType? {
     try self.fetch(request.limit(1)).first
   }
+
+  func delete<T>( _ request: FetchedRequest<T>) throws {
+    let items = try self.fetch(request)
+
+    for item in items where item is NSManagedObject {
+      self.delete(item as! NSManagedObject) // .managedObjectResultType
+    }
+  }
 }
 
 public extension NSManagedObjectContext {

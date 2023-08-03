@@ -19,11 +19,21 @@ public protocol Persistent {
   func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]>
 
   func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T]
+  func fetch<T>(_ request: FetchedRequest<T>, transform: @escaping ([T.ResultType]) -> [T]) async throws -> [T]
 
   @discardableResult
   func update<T: FetchedResult>(_ item: T) async throws -> Bool
+  @discardableResult
+  func update<T: FetchedResult, V>(_ item: T, keyPath: WritableKeyPath<T.ResultType, V>, value: V) async throws -> Bool
+  @discardableResult
+  func update<T: FetchedResult, V>(_ item: T.ID, keyPath: WritableKeyPath<T.ResultType, V>, value: V) async throws -> T
+  @discardableResult
+  func update<T: FetchedResult, R: FetchedResult>(_ item: T, relationships: [(keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, value: R?)]) async throws -> Bool
 
   func insert<T: FetchedResult>(_ item: T) async throws
+  func insert<T: FetchedResult, R: FetchedResult>(_ item: T, relationships: [(keyPath: WritableKeyPath<T.ResultType, R.ResultType?>, value: R?)]) async throws
+
+  func delete<T: FetchedResult>(_ item: T) async throws
 
   @discardableResult
   func sync<T: FetchedResult, R: FetchedResult>(item: T, keyPath: WritableKeyPath<T.ResultType, R.ResultType>, to relation: R) async throws -> Bool

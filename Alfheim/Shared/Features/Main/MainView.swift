@@ -38,7 +38,7 @@ struct SidebarNavigation: View {
     NavigationView {
       Sidebar(store: store)
         .task {
-          ViewStore(store).send(.loadAll)
+          store.send(.loadAll)
         }
       // detail view in iPad
       Text("Sidebar navigation")
@@ -56,7 +56,7 @@ struct Sidebar: View {
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Button {
-            ViewStore(store).send(.newTransaction)
+            store.send(.newTransaction)
           } label: {
             Image(systemName: "plus.circle")
           }
@@ -65,13 +65,13 @@ struct Sidebar: View {
           HStack {
             Button {
               //vs.send(.cleanup)
-              ViewStore(store).send(.settings(.sheet(isPresented: true)))
+              store.send(.settings(.sheet(isPresented: true)))
             } label: {
               Image(systemName: "gear")
             }
             Spacer()
             Button {
-              ViewStore(store).send(.addAccount(presenting: true))
+              store.send(.addAccount(presenting: true))
             } label: {
               Text("Add Account")
             }
@@ -95,13 +95,13 @@ struct ListNavigation: View {
       switch $0 {
       case .overview:
         CaseLet(
-          state: /App.Path.State.overview,
+          /App.Path.State.overview,
           action: App.Path.Action.overview,
           then: OverviewView.init(store:)
         )
       case .transation:
         CaseLet(
-          state: /App.Path.State.transation,
+          /App.Path.State.transation,
           action: App.Path.Action.transation,
           then: TransactionList.init(store:)
         )
@@ -168,7 +168,11 @@ struct ContentView: View {
 
 struct MainView_Previews: PreviewProvider {
   static var previews: some View {
-    MainView(store: AppStore(initialState: App.State(), reducer: RealWorld()))
+    MainView(
+      store: AppStore(initialState: App.State()) {
+        RealWorld()
+      }
+    )
   }
 }
 

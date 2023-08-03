@@ -16,8 +16,8 @@ struct ComposerView: View {
   let mode: EditorView.Mode
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      NavigationView {
+    NavigationView {
+      WithViewStore(store, observe: { $0 }) { vs in
         EditorView(store: store)
           .navigationTitle(vs.isNew ? " New Transaction" : "Edit Transaction")
           .toolbar {
@@ -40,12 +40,12 @@ struct ComposerView: View {
             }
           }
       }
-      .navigationViewStyle(.stack)
-      .task {
-        vs.send(.loadAccounts)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-          vs.send(.focused(.amount))
-        }
+    }
+    .navigationViewStyle(.stack)
+    .task {
+      store.send(.loadAccounts)
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+        store.send(.focused(.amount))
       }
     }
   }

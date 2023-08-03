@@ -20,12 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   @Dependency(\.persistent) var persistent
 
   private lazy var store: AppStore = {
-    let state = App.State()
-    let realWorld = RealWorld()
-    return AppStore(initialState: state, reducer: realWorld)
+    return AppStore(initialState: App.State()) {
+      RealWorld()
+    }
   }()
 
-  private lazy var sceneStore: ViewStore<App.State, App.Action> = ViewStore(store)
+  private lazy var sceneStore: ViewStore<App.State, App.Action> = ViewStore(store, observe: { $0 })
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Get the managed object context from the shared persistent container.

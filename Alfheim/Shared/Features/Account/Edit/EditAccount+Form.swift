@@ -16,7 +16,7 @@ struct EditAccountForm: View {
   @FocusState private var focus: EditAccount.State.FocusField?
   
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       List {
         Section {
           TextField(

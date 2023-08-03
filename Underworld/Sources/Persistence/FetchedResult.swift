@@ -9,6 +9,12 @@
 import CoreData
 import Database
 
+public enum FetchedError: Swift.Error {
+  case encode(String)
+  case decode(String)
+  case notFound
+}
+
 public protocol FetchedResult: Identifiable {
   associatedtype ResultType: NSFetchRequestResult
   static var identifier: KeyPath<Self, ID> { get }

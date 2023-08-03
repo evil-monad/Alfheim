@@ -85,7 +85,7 @@ private struct StatisticsSection: View {
   let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       Section {
         if vs.showTrendStatistics {
           TrendView(

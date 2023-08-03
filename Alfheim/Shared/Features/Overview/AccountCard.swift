@@ -46,7 +46,7 @@ struct AccountCard: View {
     let onFlip: () -> Void
 
     var body: some View {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store, observe: { $0 }) { viewStore in
         Card {
           ZStack {
             if viewStore.timeInterval != nil {
@@ -99,7 +99,7 @@ struct AccountCard: View {
     let onFlip: () -> Void
 
     var body: some View {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store, observe: { $0 }) { viewStore in
         Card {
           VStack {
             Spacer()

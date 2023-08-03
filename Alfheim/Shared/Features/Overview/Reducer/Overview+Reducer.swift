@@ -9,8 +9,8 @@
 import Foundation
 import ComposableArchitecture
 
-struct Overview: ReducerProtocol {
-  var body: some ReducerProtocol<State, Action> {
+struct Overview: Reducer {
+  var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .toggleNewTransaction(let presenting):

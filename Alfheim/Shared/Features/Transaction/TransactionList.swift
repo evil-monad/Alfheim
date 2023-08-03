@@ -13,7 +13,7 @@ struct TransactionList: View {
   let store: Store<Transaction.State, Transaction.Action>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       List {
         ForEach(vs.filteredTransactions) { section in
           Section {
@@ -22,7 +22,7 @@ struct TransactionList: View {
                 .disclosure(alignment: .center)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                   Button(role: .destructive) {
-                    vs.send(.delete(id: transaction.id))
+                    vs.send(.delete(transaction.transaction))
                   } label: {
                     Label("Delete", systemImage: "trash")
                   }

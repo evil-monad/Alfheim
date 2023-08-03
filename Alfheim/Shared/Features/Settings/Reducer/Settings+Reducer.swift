@@ -9,14 +9,16 @@
 import Foundation
 import ComposableArchitecture
 
-struct Settings: ReducerProtocol {
-  func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-    switch action {
-    case .sheet(let presented):
-      state.isPresented = presented
-    case .selectAppIcon(let icon):
-      state.appIcon = icon
+struct Settings: Reducer {
+  var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      switch action {
+      case .sheet(let presented):
+        state.isPresented = presented
+      case .selectAppIcon(let icon):
+        state.appIcon = icon
+      }
+      return .none
     }
-    return .none
   }
 }

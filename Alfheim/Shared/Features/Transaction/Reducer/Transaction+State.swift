@@ -16,7 +16,7 @@ import ComposableArchitecture
 import Alne
 import Persistence
 
-struct Transaction: ReducerProtocol {
+struct Transaction: Reducer {
   @Dependency(\.persistent) var persistent
 }
 
