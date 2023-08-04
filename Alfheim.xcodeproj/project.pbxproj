@@ -48,7 +48,7 @@
 		FA020B3A26C8F30300369350 /* EditAccount+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3926C8F30300369350 /* EditAccount+Reducer.swift */; };
 		FA020B3E26C90BAE00369350 /* Account+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3D26C90BAE00369350 /* Account+Environment.swift */; };
 		FA020B4026D1F4B500369350 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA020B3F26D1F4B300369350 /* Navigation.swift */; };
-		FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionViewState.swift */; };
+		FA036810241CD5C50038A26E /* TransactionRow+ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA03680F241CD5C50038A26E /* TransactionRow+ViewState.swift */; };
 		FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2C2A741B5D00CC68DF /* Persistence */; };
 		FA267C2F2A741B6200CC68DF /* Alne in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2E2A741B6200CC68DF /* Alne */; };
 		FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F768524261F7D00277B6E /* InputTextField.swift */; };
@@ -173,7 +173,7 @@
 		FA020B3926C8F30300369350 /* EditAccount+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAccount+Reducer.swift"; sourceTree = "<group>"; };
 		FA020B3D26C90BAE00369350 /* Account+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Environment.swift"; sourceTree = "<group>"; };
 		FA020B3F26D1F4B300369350 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
-		FA03680F241CD5C50038A26E /* TransactionViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewState.swift; sourceTree = "<group>"; };
+		FA03680F241CD5C50038A26E /* TransactionRow+ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionRow+ViewState.swift"; sourceTree = "<group>"; };
 		FA5F768524261F7D00277B6E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		FA66C7D82427B40000462C46 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled40x40@3x.png"; sourceTree = "<group>"; };
@@ -499,7 +499,7 @@
 				FAC7923D263405420037746C /* Reducer */,
 				789E8E6F23EA96FC006D180B /* TransactionList.swift */,
 				782403F323F6D79F00478338 /* TransactionRow.swift */,
-				FA03680F241CD5C50038A26E /* TransactionViewState.swift */,
+				FA03680F241CD5C50038A26E /* TransactionRow+ViewState.swift */,
 				782403F523F6DBAF00478338 /* TransactionsView.swift */,
 			);
 			path = Transaction;
@@ -770,7 +770,7 @@
 				FAA64132272E530F00B36DDF /* AboutView.swift in Sources */,
 				FA020B3826C8F0C800369350 /* EditAccountView.swift in Sources */,
 				FAA2331E26E349CF009C9925 /* Settings+State.swift in Sources */,
-				FA036810241CD5C50038A26E /* TransactionViewState.swift in Sources */,
+				FA036810241CD5C50038A26E /* TransactionRow+ViewState.swift in Sources */,
 				FA5F768624261F7D00277B6E /* InputTextField.swift in Sources */,
 				FABEBB8C245D826300637226 /* TextAlert.swift in Sources */,
 				FA020B4026D1F4B500369350 /* Navigation.swift in Sources */,

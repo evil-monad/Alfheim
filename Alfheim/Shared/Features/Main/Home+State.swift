@@ -53,17 +53,10 @@ extension Home {
       self.accounts = accounts
 
       let allTransactions = accounts.flatMap {
-        $0.transactions(.only)
+        $0.transactions(.current)
       }
 
-      var uniqueTransactions: [Domain.Transaction] = []
-      var filter = Set<UUID>()
-      for transaction in allTransactions {
-        if !filter.contains(transaction.id) {
-          uniqueTransactions.append(transaction)
-          filter.insert(transaction.id)
-        }
-      }
+      var uniqueTransactions: [Domain.Transaction] = allTransactions.uniqued()
 
       self.menus = [
         MenuItem(filter: .all, value: "\(uniqueTransactions.count)"),
@@ -94,19 +87,6 @@ extension QuickFilter {
     }
   }
 
-  func filteredTransactions(_ transations: [Domain.Transaction]) -> [Domain.Transaction] {
-    switch self {
-    case .all:
-      return transations
-    case .uncleared:
-      return transations.filter { !$0.cleared }
-    case .repeating:
-      return transations.filter { $0.repeated > 0 }
-    case .flagged:
-      return transations.filter(\.flagged)
-    }
-  }
-
   static let allCases: [QuickFilter] = [.all, .uncleared, .repeating, .flagged]
 
   static func identified(by id: QuickFilter.ID) -> QuickFilter {
@@ -114,5 +94,16 @@ extension QuickFilter {
       fatalError("Unknown Filter ID: \(id)")
     }
     return result
+  }
+}
+
+extension QuickFilter {
+  var transactionFilter: Domain.Transaction.Filter {
+    switch self {
+    case .all: return .all
+    case .uncleared: return .uncleared
+    case .repeating: return .repeating
+    case .flagged: return .flagged
+    }
   }
 }

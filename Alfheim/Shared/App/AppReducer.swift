@@ -22,16 +22,22 @@ struct RealWorld: Reducer {
   
   var body: some ReducerOf<Self> {
     Reduce { state, action in
-      struct CancelId: Hashable {}
+      enum CancelID: Hashable {
+        case observe
+        case fetch
+      }
 
       switch action {
       case .loadAll:
+        guard !state.hasInitialized else { break }
+        state.hasInitialized = true
         return .run { send in
-          let stream: AsyncStream<[Domain.Account]> = persistent.observe(Domain.Account.all.sort("name", ascending: true))
+          let stream: AsyncStream<[Domain.Account]> = persistent.observe(Domain.Account.all, transform: Domain.Account.makeTree)
           for try await accounts in stream {
             await send(.accountDidChange(accounts))
           }
         }
+        .cancellable(id: CancelID.observe)
 
       case .accountDidChange(let accounts):
         state.home = Home.State(accounts: accounts, selection: state.home.selection)
@@ -43,7 +49,7 @@ struct RealWorld: Reducer {
           let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.map($0) }
           await send(.accountDidFetch(accounts))
         }
-        .cancellable(id: CancelId())
+        .cancellable(id: CancelID.fetch)
 
       case .accountDidFetch(let accounts):
         return .send(.accountDidChange(accounts))
@@ -78,17 +84,17 @@ struct RealWorld: Reducer {
         }
 
       case .selectMenu(let item):
-        if let item = item, let filter = QuickFilter(rawValue: item.id) {
+        if let item = item {
           let allTransactions = state.home.accounts.flatMap {
-            $0.transactions(.only)
+            $0.transactions(.current)
           }
-          let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
-          let transaction = Transaction.State(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
+          let filter = item.filter.transactionFilter
+          let transaction = Transaction.State(source: .list(title: item.filter.name, transactions: allTransactions.uniqued(), filter: filter))
           state.home.selection = item
           state.path.append(.transation(transaction))
         } else {
           state.home.selection = nil
-          return .cancel(id: CancelId())
+          return .concatenate(.cancel(id: CancelID.fetch))
         }
         return .none
 
@@ -102,6 +108,7 @@ struct RealWorld: Reducer {
       default:
         return .none
       }
+      return .none
     }
     .forEach(\.path, action: /Action.path) {
       App.Path()

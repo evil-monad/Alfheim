@@ -15,10 +15,15 @@ extension Transaction {
     case didEditTransaction
 
     case delete(Domain.Transaction)
-    case toggleFlag(flag: Bool, id: UUID)
+    case toggleFlag(Domain.Transaction)
     case showStatistics([Domain.Transaction], interval: DateInterval)
     case dimissStatistics
 
     case filter(selection: Transaction.State.Filter)
+
+    case onAppear
+
+    case transactionsDidChange([Domain.Transaction])
+    case accountDidChange(Domain.Account)
   }
 }

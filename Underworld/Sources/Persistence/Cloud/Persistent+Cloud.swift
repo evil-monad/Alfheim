@@ -29,12 +29,12 @@ public final class CloudPersistent: Persistent {
     store.reloadContainer()
   }
 
-  public func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]> where T : FetchedResult {
+  public func observe<T>(_ request: FetchedRequest<T>, transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]> where T : FetchedResult {
     let fetchRequest = request.makeFetchRequest()
     let observer = FetchRequestObserver(fetchRequest: fetchRequest, context: context)
     return AsyncStream<[T]> { continuation in
       Task.detached {
-        let observe = await observer.observe().map { T.map($0) }
+        let observe = await observer.observe().map(transform)
         observer.fetch()
         for await result in observe {
           continuation.yield(result)
@@ -51,6 +51,23 @@ public final class CloudPersistent: Persistent {
     observer.fetch()
     return observe.eraseToStream()
   }
+
+//  func observeUpdated<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]> {
+//    .init { continuation in
+//      Task.detached { [unowned self] in
+//        let values = try? await self.fetch(request)
+//        continuation.yield(values ?? [])
+//
+//        for await notification in NotificationCenter.default.notifications(named: NSManagedObjectContext.didSaveObjectsNotification) {
+//          guard let objects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> else { return }
+//
+//          objects.forEach { object in
+//            object.changedValues()
+//          }
+//        }
+//      }
+//    }
+//  }
 
   public func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T] where T : FetchedResult {
     try await store.schedule { context in

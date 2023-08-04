@@ -165,7 +165,7 @@ extension Overview.State {
     let ret = children.sorted(by: { $0.amount(transfer: transfer) > $1.amount(transfer: transfer) })
       .map { (name: $0.name, value: abs($0.amount(transfer: transfer)), symbol: $0.emoji.orEmpty, tagit: $0.tagit) }
 
-    let otherAmount = account.amount(.only)
+    let otherAmount = account.amount(.current)
     guard otherAmount > 0 else {
       return ret
     }

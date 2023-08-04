@@ -35,6 +35,8 @@ public final class FetchRequestObserver<Result> where Result: NSFetchRequestResu
   }
 }
 
+/// `NSFetchedResultsController` is only designed to watch one entity at a time.
+/// https://www.avanderlee.com/swift/nsfetchedresultscontroller-observe-relationship-changes/
 final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelegate where Result: NSFetchRequestResult {
   var continuation: AsyncStream<[Result]>.Continuation?
   private var context: NSManagedObjectContext

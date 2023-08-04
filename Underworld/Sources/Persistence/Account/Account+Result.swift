@@ -19,6 +19,10 @@ extension Domain.Account: FetchedResult {
   public static func fetchRequest() -> NSFetchRequest<Database.Account> {
     Database.Account.fetchRequest()
   }
+
+  public static var all: FetchedRequest<Self> {
+    .init().sort("name")
+  }
 }
 
 // MARK: decode
@@ -44,6 +48,11 @@ extension Domain.Account {
   }
 
   public static func map(_ entities: [Database.Account]) -> [Domain.Account] {
+    entities.compactMap(Domain.Account.init)
+  }
+
+  @Sendable
+  public static func makeTree(_ entities: [Database.Account]) -> [Domain.Account] {
     func makeAccounts(accounts: Set<Database.Account>?, parent: Domain.Account?) -> [Domain.Account] {
       guard let accounts = accounts else {
         return []
@@ -108,21 +117,21 @@ public extension Database.Account {
 
 public extension Domain.Account {
   enum Strategy {
-    case only
-    case with
+    case current // transactions only current account, not includes children
+    case depth // all transactions, current level + children level
   }
 
-  func transactions(_ strategy: Strategy = .with) -> [Domain.Transaction] {
+  func transactions(_ strategy: Strategy = .depth) -> [Domain.Transaction] {
     switch strategy {
-    case .only:
+    case .current:
       return sources + targets
-    case .with:
+    case .depth:
       if let children = children {
-        let with: [Domain.Transaction] = children.flatMap { $0.transactions(.with) }
-        let only = transactions(.only)
+        let with: [Domain.Transaction] = children.flatMap { $0.transactions(.depth) }
+        let only = transactions(.current)
         return with + only
       } else {
-        return transactions(.only)
+        return transactions(.current)
       }
     }
   }
@@ -178,7 +187,7 @@ public extension Domain.Account {
     return amount()
   }
 
-  func amount(_ strategy: Strategy = .with, transfer: Transfer = .all) -> Double {
+  func amount(_ strategy: Strategy = .depth, transfer: Transfer = .all) -> Double {
     let deposits = transactions(strategy)
       .filter { (summary.isAncestor(of: $0.target) && $0.amount < 0) || (summary.isAncestor(of: $0.source) && $0.amount >= 0) }
       .map { abs($0.amount) }
@@ -227,7 +236,7 @@ public extension Domain.Account {
   }
 
   var canDelete: Bool {
-    children.nilOrEmtpy && transactions(.only).isEmpty
+    children.nilOrEmtpy && transactions(.current).isEmpty
   }
 }
 

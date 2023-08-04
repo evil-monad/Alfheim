@@ -20,6 +20,7 @@ public protocol FetchedResult: Identifiable {
   static var identifier: KeyPath<Self, ID> { get }
   static func fetchRequest() -> NSFetchRequest<ResultType>
 
+  @Sendable
   static func map(_ entities: [ResultType]) -> [Self]
 
   // decode
@@ -28,11 +29,17 @@ public protocol FetchedResult: Identifiable {
   // encode
   func encode(to context: NSManagedObjectContext) -> ResultType
   func encode(to entity: ResultType)
+
+  static var all: FetchedRequest<Self> { get }
 }
 
 public extension FetchedResult {
   static var all: FetchedRequest<Self> {
     .init()
+  }
+
+  static func all(sortBy name: String?, ascending: Bool = true) -> FetchedRequest<Self> {
+    .init().sort(name, ascending: ascending)
   }
 }
 

@@ -15,7 +15,7 @@ import Database
 public protocol Persistent {
   var context: NSManagedObjectContext { get }
 
-  func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]>
+  func observe<T>(_ request: FetchedRequest<T>, transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]>
   func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]>
 
   func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T]
@@ -43,6 +43,13 @@ public protocol Persistent {
   func reload()
   func save()
 }
+
+public extension Persistent {
+  func observe<T>(_ request: FetchedRequest<T>) -> AsyncStream<[T]> {
+    observe(request, transform: T.map)
+  }
+}
+
 
 enum PersistencesKey: DependencyKey {
   static let liveValue: Persistent = CloudPersistent()

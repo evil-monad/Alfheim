@@ -13,6 +13,7 @@ import Domain
 
 extension RealWorld {
   struct State: Equatable {
+    var hasInitialized: Bool = false
     var overviews: IdentifiedArrayOf<Overview.State> = []
     //var editor = Editor()
 

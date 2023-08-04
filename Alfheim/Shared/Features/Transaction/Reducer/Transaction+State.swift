@@ -23,7 +23,7 @@ struct Transaction: Reducer {
 extension Transaction {
   /// Transaction list view state
   struct State: Equatable, Identifiable {
-    private(set) var source: Transactions.Source
+    var source: Transactions.Source
 
     let id: String
     var filter: Filter = .none
@@ -34,7 +34,7 @@ extension Transaction {
       switch source {
       case .none:
         id = UUID().uuidString
-      case .list(title: let title, _):
+      case .list(let title, _, _):
         id = title
       case .accounted(account: let account, _):
         id = account.id.uuidString
@@ -44,7 +44,7 @@ extension Transaction {
     var title: String {
       switch source {
       case .none: return ""
-      case .list(let title, _):
+      case .list(let title, _, _):
         return title
       case let .accounted(_, interval):
         if let interval = interval {
@@ -108,21 +108,21 @@ extension Transaction {
 enum Transactions {
   enum Source: Equatable {
     case none
-    case list(title: String, transactions: [Domain.Transaction])
+    case list(title: String, transactions: [Domain.Transaction], filter: Domain.Transaction.Filter = .all)
     case accounted(account: Domain.Account, interval: DateInterval?)
 
     var filteredTransactions: [Domain.Transaction] {
       switch self {
       case .none:
         return []
-      case let .list(_, transactions):
-        return transactions
+      case let .list(_, transactions, filter):
+        return transactions.filtered(by: filter)
       case let .accounted(account, interval):
         if let interval = interval {
-          return account.transactions(.with)
+          return account.transactions(.depth)
             .filter { interval.contains($0.date) }
         } else {
-          return account.transactions(.with)
+          return account.transactions(.depth)
         }
       }
     }
@@ -131,10 +131,10 @@ enum Transactions {
       switch self {
       case .none:
         return []
-      case let .list(_, transactions):
-        return transactions
+      case let .list(_, transactions, filter):
+        return transactions.filtered(by: filter)
       case let .accounted(account, _):
-        return account.transactions(.with)
+        return account.transactions(.depth)
       }
     }
   }

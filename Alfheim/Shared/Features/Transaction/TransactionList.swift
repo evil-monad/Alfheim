@@ -8,6 +8,8 @@
 
 import SwiftUI
 import ComposableArchitecture
+import Domain
+import Alne
 
 struct TransactionList: View {
   let store: Store<Transaction.State, Transaction.Action>
@@ -17,23 +19,23 @@ struct TransactionList: View {
       List {
         ForEach(vs.filteredTransactions) { section in
           Section {
-            ForEach(section.viewStates) { transaction in
-              TransactionRow(transaction: transaction)
+            ForEach(section.viewStates) { viewState in
+              TransactionRow(transaction: viewState)
                 .disclosure(alignment: .center)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                   Button(role: .destructive) {
-                    vs.send(.delete(transaction.transaction))
+                    vs.send(.delete(viewState.transaction))
                   } label: {
                     Label("Delete", systemImage: "trash")
                   }
                 }
                 .swipeActions(edge: .leading, allowsFullSwipe: true) {
                   Button {
-                    vs.send(.toggleFlag(flag: !transaction.flagged, id: transaction.id))
+                    vs.send(.toggleFlag(viewState.transaction))
                   } label: {
-                    Label(transaction.flagged ? "Unflag" : "Flag", systemImage: transaction.flagged ? "flag.slash" : "flag.fill")
+                    Label(viewState.flagged ? "Unflag" : "Flag", systemImage: viewState.flagged ? "flag.slash" : "flag.fill")
                   }
-                  .tint(transaction.flagged ? .indigo : .blue)
+                  .tint(viewState.flagged ? .indigo : .blue)
                 }
             }
             .listRowInsets(EdgeInsets.default)
@@ -65,8 +67,64 @@ struct TransactionList: View {
           .disabled(!vs.isFilterEnabled)
         }
       }
+      .onAppear {
+        vs.send(.onAppear)
+      }
     }
   }
+
+  /*
+  @ViewBuilder
+  private func section(
+    _ section: Transaction.State.SectionedTransaction) -> some View {
+      WithViewStore(
+        store,
+        observe: { $0 }
+      ) { vs in
+        Section {
+          ForEach(section.viewStates) { viewState in
+            self.row(viewState.transaction)
+          }
+          .listRowInsets(EdgeInsets.default)
+        } header: {
+          Text("\(section.date.formatted(.dateTime.year().day().month()))")
+            .fontWeight(.medium)
+            .font(.subheadline).foregroundColor(.primary)
+            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0))
+        }
+        .textCase(nil)
+      }
+  }
+
+  @ViewBuilder
+  private func row(
+    _ transaction: Domain.Transaction) -> some View {
+      WithViewStore(
+        store,
+        observe: { _ in
+          Transactions.ViewState(transaction: transaction, tag: Tagit.alfheim, deposit: false, ommitedDate: true)
+        }
+      ) { vs in
+        TransactionRow(transaction: vs.state)
+          .disclosure(alignment: .center)
+          .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+              vs.send(.delete(vs.transaction))
+            } label: {
+              Label("Delete", systemImage: "trash")
+            }
+          }
+          .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+              vs.send(.toggleFlag(flag: !vs.flagged, id: vs.id))
+            } label: {
+              Label(vs.flagged ? "Unflag" : "Flag", systemImage: vs.flagged ? "flag.slash" : "flag.fill")
+            }
+            .tint(vs.flagged ? .indigo : .blue)
+          }
+      }
+  }
+   */
 }
 
 //struct TransactionList: View {

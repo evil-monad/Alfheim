@@ -17,6 +17,10 @@ extension Domain.Transaction: FetchedResult {
   public static func fetchRequest() -> NSFetchRequest<Database.Transaction> {
     Database.Transaction.fetchRequest()
   }
+
+  public static var all: FetchedRequest<Self> {
+    .init().sort("date", ascending: false)
+  }
 }
 
 extension Domain.Transaction {
@@ -46,6 +50,7 @@ extension Domain.Transaction {
     self.init(from: entity)
   }
 
+  @Sendable
   public static func map(_ entities: [Database.Transaction]) -> [Domain.Transaction] {
     entities.compactMap(Domain.Transaction.init)
   }
@@ -99,5 +104,35 @@ public extension Domain.Transaction {
       }
     }
     return uniqueTransactions
+  }
+}
+
+public extension Domain.Transaction {
+  enum Filter: Int, Hashable, Identifiable {
+    case all, uncleared, repeating, flagged
+    public var id: Int { rawValue }
+
+    public func filtered(_ transations: [Domain.Transaction]) -> [Domain.Transaction] {
+      switch self {
+      case .all:
+        return transations
+      case .uncleared:
+        return transations.filter { !$0.cleared }
+      case .repeating:
+        return transations.filter { $0.repeated > 0 }
+      case .flagged:
+        return transations.filter(\.flagged)
+      }
+    }
+  }
+}
+
+extension Array where Element == Domain.Transaction {
+  public func filtered(by filter: Domain.Transaction.Filter) -> Self {
+    filter.filtered(self)
+  }
+
+  public func uniqued() -> Self {
+    Domain.Transaction.uniqued(self)
   }
 }
