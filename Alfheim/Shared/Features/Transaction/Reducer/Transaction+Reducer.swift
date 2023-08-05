@@ -30,7 +30,10 @@ extension Transaction {
         if case let .accounted(account, _) = state.source {
           effects.append(
             .run { send in
-              let stream: AsyncStream<[Domain.Account]> = persistent.observe(Domain.Account.all.where(Domain.Account.identifier == account.id))
+              let stream: AsyncStream<[Domain.Account]> = persistent.observe(
+                Domain.Account.all.where(Domain.Account.identifier == account.id),
+                relationships: Domain.Account.relationships
+              )
               for try await accounts in stream where !accounts.isEmpty {
                 assert(accounts.count == 1 && accounts.first!.id == account.id)
                 if let account = accounts.first {

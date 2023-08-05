@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import Domain
 
 public extension NSManagedObjectContext {
   func fetch<T>(_ request: FetchedRequest<T>) throws -> [T.ResultType] {
@@ -49,26 +50,4 @@ public extension NSManagedObjectContext {
     }
     return value
   }
-}
-
-public protocol Predicate<Root>: NSPredicate {
-    associatedtype Root: FetchedResult
-}
-
-public final class ComparisonPredicate<Root: FetchedResult>: NSComparisonPredicate, Predicate {}
-
-extension ComparisonPredicate {
-  convenience init(
-    _ keyPath: KeyPath<Root, Root.ID>,
-    _ op: NSComparisonPredicate.Operator,
-    _ id: Root.ID
-  ) {
-    let lhs = NSExpression(forKeyPath: "id") // NSExpression(forKeyPath: keyPath)
-    let rhs = NSExpression(forConstantValue: id)
-    self.init(leftExpression: lhs, rightExpression: rhs, modifier: .direct, type: op)
-  }
-}
-
-public func == <Root> (keyPath: KeyPath<Root, Root.ID>, id: Root.ID) -> ComparisonPredicate<Root> {
-  ComparisonPredicate(keyPath, .equalTo, id)
 }

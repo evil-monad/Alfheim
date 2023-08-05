@@ -136,3 +136,9 @@ extension Array where Element == Domain.Transaction {
     Domain.Transaction.uniqued(self)
   }
 }
+//
+//extension Optional: RelationshipValue where Wrapped == Set<Domain.> {
+//}
+
+//extension Optional: RelationshipValue where Wrapped == Set<Database.Transaction> {
+//}

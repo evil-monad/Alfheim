@@ -10,18 +10,29 @@ import Foundation
 import CoreData
 
 public final class FetchRequestObserver<Result> where Result: NSFetchRequestResult {
+  private var controller: NSFetchedResultsController<Result>
   private let delegate: Delegate<Result>
+  private let observer: Observer<Result>
 
   var fetchedResults: [Result] {
-    delegate.controller?.fetchedObjects ?? []
+    delegate.controller.fetchedObjects ?? []
   }
   
   public init(fetchRequest: NSFetchRequest<Result>, context: NSManagedObjectContext) {
-    self.delegate = Delegate(request: fetchRequest, context: context)
+    let controller = NSFetchedResultsController(
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil)
+
+    self.controller = controller
+    self.delegate = Delegate(controller: controller)
+    self.observer = Observer(controller: controller)
   }
 
-  func observe() async -> AsyncStream<[Result]> {
-    AsyncStream<[Result]> { continuation in
+  func observe(relationships: [Relationship] = []) async -> AsyncStream<[Result]> {
+    observer.observe(relationships: relationships)
+    return AsyncStream<[Result]> { continuation in
       self.delegate.continuation = continuation
     }
   }
@@ -32,6 +43,71 @@ public final class FetchRequestObserver<Result> where Result: NSFetchRequestResu
 
   func cancel() {
     delegate.cancel()
+    observer.cancel()
+  }
+}
+
+final private class Observer<Result>: NSObject where Result: NSFetchRequestResult {
+  unowned let controller: NSFetchedResultsController<Result>
+  var relationships: [Relationship] = []
+
+  var updatedObjects: Set<NSManagedObjectID> = []
+
+  init(controller: NSFetchedResultsController<Result>) {
+    self.controller = controller
+    super.init()
+  }
+
+  func observe(relationships: [Relationship] = []) {
+    guard !relationships.isEmpty else {
+      return
+    }
+    self.relationships = relationships
+    NotificationCenter.default.addObserver(self, selector: #selector(contextDidChange(_:)), name: NSManagedObjectContext.didChangeObjectsNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(contextDidSave(_:)), name: NSManagedObjectContext.didSaveObjectsNotification, object: nil)
+  }
+
+  func cancel() {
+    NotificationCenter.default.removeObserver(self)
+  }
+
+  @objc
+  private func contextDidChange(_ notification: NSNotification) {
+    guard let fetchedObjects = controller.fetchedObjects as? [NSManagedObject] else { return }
+    guard let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> else { return }
+
+    for fetched in fetchedObjects {
+      var observedObjects: Set<NSManagedObjectID> = []
+      for relationship in relationships {
+        //let value = fetched[keyPath: relationship.keyPath]
+        let value = fetched.value(forKeyPath: relationship.name)
+        if let toManyObjects = value as? Set<NSManagedObject> {
+          toManyObjects.forEach {
+            observedObjects.insert($0.objectID)
+          }
+        } else if let toOneObject = value as? NSManagedObject {
+          observedObjects.insert(toOneObject.objectID)
+        } else {
+          assertionFailure("Invalid relationship observed for keyPath: \(relationship.keyPath)")
+          return
+        }
+      }
+      if !observedObjects.intersection(updatedObjects.map(\.objectID)).isEmpty {
+        self.updatedObjects.insert(fetched.objectID)
+      }
+    }
+  }
+
+  @objc
+  private func contextDidSave(_ notification: NSNotification) {
+    guard !updatedObjects.isEmpty else { return }
+    guard let fetchedObjects = controller.fetchedObjects as? [NSManagedObject], !fetchedObjects.isEmpty else { return }
+
+    fetchedObjects.forEach { object in
+        guard updatedObjects.contains(object.objectID) else { return }
+        controller.managedObjectContext.refresh(object, mergeChanges: true)
+    }
+    updatedObjects.removeAll()
   }
 }
 
@@ -39,13 +115,11 @@ public final class FetchRequestObserver<Result> where Result: NSFetchRequestResu
 /// https://www.avanderlee.com/swift/nsfetchedresultscontroller-observe-relationship-changes/
 final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelegate where Result: NSFetchRequestResult {
   var continuation: AsyncStream<[Result]>.Continuation?
-  private var context: NSManagedObjectContext
-  private var request: NSFetchRequest<Result>
-  var controller: NSFetchedResultsController<Result>?
+  unowned let controller: NSFetchedResultsController<Result>
 
-  init(request: NSFetchRequest<Result>, context: NSManagedObjectContext) {
-    self.request = request
-    self.context = context
+  init(controller: NSFetchedResultsController<Result>) {
+    self.controller = controller
+    super.init()
   }
 
   deinit {
@@ -57,14 +131,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
       return
     }
 
-    let controller = NSFetchedResultsController(
-      fetchRequest: request,
-      managedObjectContext: context,
-      sectionNameKeyPath: nil,
-      cacheName: nil)
-
     controller.delegate = self
-    self.controller = controller
 
     do {
       try controller.performFetch()
@@ -80,15 +147,10 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
 
   func cancel() {
     continuation?.finish()
-    controller = nil
   }
 
   public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    guard self.controller == controller else {
-      return
-    }
-
-    guard let continuation = continuation, let objects = self.controller?.fetchedObjects else {
+    guard let continuation = continuation, let objects = self.controller.fetchedObjects else {
       return
     }
 
