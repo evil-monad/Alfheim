@@ -12,121 +12,121 @@ import ComposableArchitecture
 import IdentifiedCollections
 import Database
 import Domain
+import Persistence
 
-enum AppReducers {
-  static let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
-    Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
-      struct CancelId: Hashable {}
+typealias App = RealWorld
+
+struct RealWorld: Reducer {
+
+  @Dependency(\.persistent) var persistent
+  
+  var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      enum CancelID: Hashable {
+        case observe
+        case fetch
+      }
+
       switch action {
       case .loadAll:
-        return Effect
-          .merge(
-            AppEffects.Account.load(environment: environment),
-            AppEffects.Transaction.fetch(environment: environment)
+        guard !state.hasInitialized else { break }
+        state.hasInitialized = true
+        return .run { send in
+          let stream: AsyncStream<[Domain.Account]> = persistent.observe(
+            Domain.Account.all,
+            relationships: Domain.Account.relationships,
+            transform: Domain.Account.makeTree
           )
-      case .accountDidChange(let accounts):
-        state.sidebar = AppState.Sidebar(accounts: accounts, selectionMenu: state.sidebar.selection?.id)
-        state.overviews = IdentifiedArray(uniqueElements: accounts.map { AppState.Overview(account: $0) })
-        if let id = state.selection?.id, let overview = state.overviews[id: id] {
-          state.selection = Identified(overview, id: id)
+          for try await accounts in stream {
+            await send(.accountDidChange(accounts))
+          }
         }
+        .cancellable(id: CancelID.observe)
+
+      case .accountDidChange(let accounts):
+        state.home = Home.State(accounts: accounts, selection: state.home.selection)
+        state.overviews = IdentifiedArray(uniqueElements: accounts.map { Overview.State(account: $0) })
         return .none
+
       case .fetchAccounts:
-        return AppEffects.Account.fetchAll(environment: environment)
-          .cancellable(id: CancelId(), cancelInFlight: true)
+        return .run { send in
+          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.map($0) }
+          await send(.accountDidFetch(accounts))
+        }
+        .cancellable(id: CancelID.fetch)
+
       case .accountDidFetch(let accounts):
-        return Effect(value: .accountDidChange(accounts))
+        return .send(.accountDidChange(accounts))
+
       case .cleanup:
-        return AppEffects.Account.delete(accounts: state.accounts, environment: environment)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
+        return .run { [state] _ in
+          for account in state.accounts {
+            try await persistent.delete(account)
+          }
+        }
+
       case .addAccount(let presenting):
-        state.accountEditor.reset(.new)
+        state.editAccount.reset(.new)
         state.isAddingAccount = presenting
         return .none
-      case let .editAccount(presenting, account):
+
+      case let .account(presenting, account):
         if let account = account {
-          state.accountEditor.reset(.edit(account))
+          state.editAccount.reset(.edit(account))
         } else {
-          state.accountEditor.reset(.new)
+          state.editAccount.reset(.new)
         }
-        state.isEditingAccount = presenting
+        state.isAccountSelected = presenting
         return .none
+
       case .deleteAccount(let account):
         if !account.canDelete {
           return .none
         }
-        return AppEffects.Account.delete(accounts: [account], environment: environment)
-          .replaceError(with: false)
-          .ignoreOutput()
-          .eraseToEffect()
-          .fireAndForget()
-      case .selectMenu(selection: let item):
-        if let id = item, let filter = AppState.QuickFilter(rawValue: id) {
-          let allTransactions = state.sidebar.accounts.flatMap {
-            $0.transactions(.only)
+        return .run { _ in
+          try await persistent.delete(account)
+        }
+
+      case .selectMenu(let item):
+        if let item = item {
+          let allTransactions = state.home.accounts.flatMap {
+            $0.transactions(.current)
           }
-          let uniqueTransactions = Domain.Transaction.uniqued(allTransactions)
-          let transaction = AppState.Transaction(source: .list(title: filter.name, transactions: filter.filteredTransactions(uniqueTransactions)))
-          state.sidebar.selection = Identified(transaction, id: id)
+          let filter = item.filter.transactionFilter
+          let transaction = Transaction.State(source: .list(title: item.filter.name, transactions: allTransactions.uniqued(), filter: filter))
+          state.home.selection = item
+          state.path.append(.transation(transaction))
         } else {
-          state.sidebar.selection = nil
-          return .cancel(id: CancelId())
+          state.home.selection = nil
+          return .concatenate(.cancel(id: CancelID.fetch))
         }
         return .none
 
-      case let .selectAccount(id: id):
-        if let id = id, let overview = state.overviews[id: id] {
-          state.selection = Identified(overview, id: id)
-        } else {
-          state.selection = nil
-        }
-        return .none
       case .transactionDidChange(let transactions):
         // TODO: find changed transaction, and update account
-        if let selection = state.sidebar.selection {
-          return Effect(value: .selectMenu(selection: selection.id))
-        }
-        if let selection = state.selection, let overview = selection.value {
-          state.overviews[id: selection.id] = AppState.Overview(account: overview.account)
+        if let selection = state.home.selection {
+          return .send(.selectMenu(selection))
         }
         return .none
 
       default:
         return .none
       }
-    },
-    AppReducers.Overview.reducer
-      .optional()
-      .pullback(state: \Identified.value, action: .self, environment: { $0 })
-      .optional()
-      .pullback(
-        state: \AppState.selection,
-        action: /AppAction.overview,
-        environment: { $0 }
-      ),
-    AppReducers.AccountEditor.reducer.pullback(
-      state: \AppState.accountEditor,
-      action: /AppAction.accountEditor,
-      environment: { AppEnvironment.Account(validator: AccountValidator(), context: $0.context) }
-    ),
-    AppReducers.Transaction.reducer
-      .optional()
-      .pullback(state: \Identified.value, action: .self, environment: { $0 })
-      .optional()
-      .pullback(
-        state: \AppState.sidebar.selection,
-        action: /AppAction.transaction,
-        environment: { $0 }
-    ),
-    AppReducers.Settings.reducer.pullback(
-      state: \AppState.settings,
-      action: /AppAction.settings,
-      environment: { $0 }
-    ),
-    Reducer { state, action, environment in
+      return .none
+    }
+    .forEach(\.path, action: /Action.path) {
+      App.Path()
+    }
+
+    Scope(state: \.editAccount, action: /App.Action.editAccount) {
+      EditAccount()
+    }
+
+    Scope(state: \.settings, action: /App.Action.settings) {
+      Settings()
+    }
+
+    Reduce { state, action in
       switch action {
       case .lifecycle(.willConnect):
         // TODO: load all data
@@ -143,21 +143,5 @@ enum AppReducers {
         return .none
       }
     }
-//    AppReducers.Overview.reducer.forEach(
-//      state: \AppState.overviews,
-//      action: /AppAction.overview(id:action:),
-//      environment: { $0 }
-//    ),
-//    AppReducers.Transaction.reducer.pullback(
-//      state: \AppState.transaction,
-//      action: /AppAction.transaction,
-//      environment: { $0 }
-//    ),
-//    AppReducers.Editor.reducer
-//      .pullback(
-//        state: \.editor,
-//        action: /AppAction.editor,
-//        environment: { _ in AppEnvironment.Editor(validator: Validator()) }
-//      )	
-  )
+  }
 }

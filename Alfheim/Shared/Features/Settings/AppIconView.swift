@@ -10,10 +10,10 @@ import SwiftUI
 import ComposableArchitecture
 
 struct AppIconView: View {
-  let store: Store<AppState.Settings, AppAction.Settings>
+  let store: Store<Settings.State, Settings.Action>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       List(AppIcon.allCases) { icon in
         HStack(spacing: 10) {
           Image(uiImage: UIImage(named: icon.icon) ?? UIImage())
@@ -47,11 +47,10 @@ struct AppIconView_Previews: PreviewProvider {
   static var previews: some View {
     AppIconView(
       store: Store(
-        initialState: AppState.Settings(isPresented: false, appIcon: .primary),
-        reducer: AppReducers.Settings.reducer,
-        environment: AppEnvironment.default
+        initialState: Settings.State(isPresented: false, appIcon: .primary)) {
+          Settings()
+        }
       )
-    )
   }
 }
 #endif

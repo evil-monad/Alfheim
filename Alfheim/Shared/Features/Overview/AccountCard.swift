@@ -7,47 +7,46 @@
 //
 
 import SwiftUI
+import Kit
 import ComposableArchitecture
 
 struct AccountCard: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   @State private var flipped: Bool = false
   private let cornerRadius: CGFloat = 20
 
   var body: some View {
-    WithViewStore(store.stateless) { viewStore in
-      FlipView(visibleSide: flipped ? .back : .front) {
-        Front(store: store, onFlip: { flip(true) })
-          .background(
-            RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(LinearGradient(
-              gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
-              startPoint: .top,
-              endPoint: .bottom
-            ))
-          )
-      } back: {
-        Back(store: store, onFlip: { flip(false) })
-          .background(
-            RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(LinearGradient(
-              gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
-              startPoint: .top,
-              endPoint: .bottom
-            ))
-          )
-      }
-      .animation(Animation.spring(response: 0.35, dampingFraction: 0.7), value: flipped)
+    FlipView(visibleSide: flipped ? .back : .front) {
+      Front(store: store, onFlip: { flip(true) })
+        .background(
+          RoundedRectangle(cornerRadius: cornerRadius)
+          .fill(LinearGradient(
+            gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
+            startPoint: .top,
+            endPoint: .bottom
+          ))
+        )
+    } back: {
+      Back(store: store, onFlip: { flip(false) })
+        .background(
+          RoundedRectangle(cornerRadius: cornerRadius)
+          .fill(LinearGradient(
+            gradient: Gradient(colors: [Color("AH03"), Color("Blue60")]),
+            startPoint: .top,
+            endPoint: .bottom
+          ))
+        )
     }
+    .animation(Animation.spring(response: 0.35, dampingFraction: 0.7), value: flipped)
   }
 
   struct Front: View {
-    let store: Store<AppState.Overview, AppAction.Overview>
+    let store: Store<Overview.State, Overview.Action>
     let onFlip: () -> Void
 
     var body: some View {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store, observe: { $0 }) { viewStore in
         Card {
           ZStack {
             if viewStore.timeInterval != nil {
@@ -85,22 +84,22 @@ struct AccountCard: View {
       } label: {
         Text(period)
           .font(.footnote)
-          .foregroundColor(Color.ah00)
+          .foregroundColor(Color("AH00"))
           .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
           .overlay(
             RoundedRectangle(cornerRadius: 20)
-              .stroke(Color.ah00, lineWidth: 1)
+              .stroke(Color("AH00"), lineWidth: 1)
           )
       }
     }
   }
 
   struct Back: View {
-    let store: Store<AppState.Overview, AppAction.Overview>
+    let store: Store<Overview.State, Overview.Action>
     let onFlip: () -> Void
 
     var body: some View {
-      WithViewStore(store) { viewStore in
+      WithViewStore(store, observe: { $0 }) { viewStore in
         Card {
           VStack {
             Spacer()

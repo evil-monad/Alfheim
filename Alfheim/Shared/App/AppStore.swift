@@ -8,5 +8,7 @@
 
 import Foundation
 import ComposableArchitecture
+import CoreData
 
-typealias AppStore = Store<AppState, AppAction>
+typealias AppStore = Store<App.State, App.Action>
+typealias AppContext = NSManagedObjectContext

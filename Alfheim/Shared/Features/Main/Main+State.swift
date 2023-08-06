@@ -9,7 +9,7 @@
 import Foundation
 import Domain
 
-extension AppState {
+extension RealWorld.State {
   struct ContentState: Equatable {
     var isAccountComposerPresented: Bool
     var isSettingsPresented: Bool
@@ -29,28 +29,18 @@ extension AppState {
   }
 }
 
-extension AppState {
+extension RealWorld.State {
   struct HomeState: Equatable {
     var rootAccounts: [Domain.Account]
-    var isEditingAccount: Bool
+    var selectAccount: Bool
   }
 
   var homeState: HomeState {
     get {
-      HomeState(rootAccounts: rootAccounts, isEditingAccount: isEditingAccount)
+      HomeState(rootAccounts: rootAccounts, selectAccount: isAccountSelected)
     }
     set {
-      isEditingAccount = newValue.isEditingAccount
+      isAccountSelected = newValue.selectAccount
     }
-  }
-}
-
-extension AppState {
-  struct RowState: Equatable {
-    var selectionID: UUID?
-  }
-
-  var rowState: RowState {
-    RowState(selectionID: selection?.id)
   }
 }

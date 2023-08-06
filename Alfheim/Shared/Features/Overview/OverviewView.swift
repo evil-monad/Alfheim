@@ -9,12 +9,17 @@
 import SwiftUI
 import ComposableArchitecture
 import Domain
+import Charts
 
 struct OverviewView: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
+
+  init(store: Store<Overview.State, Overview.Action>) {
+    self.store = store
+  }
 
   var body: some View {
-    WithViewStore(store.scope(state: \.contentState)) { vs in
+    WithViewStore(store, observe: { $0.contentState }) { vs in
       List {
         Section {
           AccountCard(store: store)
@@ -46,63 +51,44 @@ struct OverviewView: View {
         ComposerView(
           store: store.scope(
             state: \.editor,
-            action: AppAction.Overview.editor),
+            action: Overview.Action.editor),
           mode: .new
         )
+      }
+      .onAppear {
+        vs.send(.onAppear)
       }
     }
   }
 }
 
 private struct TransactionSection: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store.scope(state: \.transactionState)) { vs in
+    WithViewStore(store, observe: { $0.transactionState }) { vs in
       Section {
         ForEach(vs.recentTransactions) { transaction in
           TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.summary.isAncestor(of: transaction.target)))
         }
         .listRowInsets(EdgeInsets.default)
       } header: {
-        NavigationLink(
-          isActive: vs.binding(get: \.isTransactionListActive, send: AppAction.Overview.showTrasactions),
-          destination: {
-            TransactionList(
-              store: store.scope(
-                state: \.transactions,
-                action: AppAction.Overview.transaction
-              )
-            )
-          }, label: {
+        WithViewStore(store, observe: { $0 }) { vs in
+          NavigationLink(state: App.Path.State.transation(vs.transactions)) {
             Header("Transactions")
           }
-        )
-        .listRowInsets(.headerInsets)
-
-        /*
-        NavigationLink(
-          destination: TransactionList(
-            store: store.scope(
-              state: \.transactions,
-              action: AppAction.Overview.transaction
-            )
-          )
-        ) {
-          Header("Transactions")
+          .listRowInsets(.headerInsets)
         }
-        .listRowInsets(.headerInsets)
-         */
       }
     }
   }
 }
 
 private struct StatisticsSection: View {
-  let store: Store<AppState.Overview, AppAction.Overview>
+  let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       Section {
         if vs.showTrendStatistics {
           TrendView(

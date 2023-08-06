@@ -9,17 +9,18 @@
 import SwiftUI
 import CombineSchedulers
 import Domain
+import Charts
 
 struct TrendView: View {
-  var histogram: Histogram<Dimension>
+  var histogram: Histogram<Charts.Dimension>
   let currency: Domain.Currency
 
-  init(units: [Dimension], currency: Domain.Currency) {
+  init(units: [Charts.Dimension], currency: Domain.Currency) {
     self.histogram = Histogram(units: units)
     self.currency = currency
   }
 
-  init(histogram: Histogram<Dimension>, currency: Currency) {
+  init(histogram: Histogram<Charts.Dimension>, currency: Currency) {
     self.histogram = histogram
     self.currency = currency
   }
@@ -34,7 +35,7 @@ struct TrendView: View {
         titleView
 
         GeometryReader { geometry in
-          Line(histogram: histogram, frame: .constant(geometry.frame(in: .local)), touchLocation: $touchLocation, showsIndicator: $showsIndicator)
+          Line(histogram: histogram, frame: geometry.frame(in: .local), touchLocation: touchLocation, showsIndicator: showsIndicator)
         }
         .offset(x: 0, y: 0)
         .gesture(
@@ -83,7 +84,7 @@ struct TrendView: View {
   }
 
   struct LegendView: View {
-    var histogram: Histogram<Dimension>
+    var histogram: Histogram<Charts.Dimension>
 
     var body: some View {
       HStack(alignment: .bottom) {

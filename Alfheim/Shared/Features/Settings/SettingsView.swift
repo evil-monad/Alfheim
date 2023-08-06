@@ -10,11 +10,11 @@ import SwiftUI
 import ComposableArchitecture
 
 struct SettingsView: View {
-  let store: Store<AppState.Settings, AppAction.Settings>
+  let store: Store<Settings.State, Settings.Action>
   @Environment(\.dismiss) var dismiss
 
   var body: some View {
-    WithViewStore(store) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       NavigationView {
         List {
           Section {
@@ -80,11 +80,10 @@ struct SettingsView_Previews: PreviewProvider {
   static var previews: some View {
     SettingsView(
       store: Store(
-        initialState: AppState.Settings(isPresented: false, appIcon: .primary),
-        reducer: AppReducers.Settings.reducer,
-        environment: AppEnvironment.default
+        initialState: Settings.State(isPresented: false, appIcon: .primary)) {
+          Settings()
+        }
       )
-    )
   }
 }
 #endif

@@ -7,22 +7,16 @@
 //
 
 import Foundation
-import CoreData
+import ComposableArchitecture
 
-extension AppEnvironment {
-  struct Account {
-    let validator: AccountValidator
-    var context: NSManagedObjectContext?
+struct AccountEnvironment: DependencyKey {
+  let validator: AccountValidator
 
-    init(validator: AccountValidator, context: NSManagedObjectContext?) {
-      self.validator = validator
-      self.context = context
-    }
-  }
+  static let liveValue = AccountEnvironment(validator: AccountValidator())
 }
 
-class AccountValidator {
-  func validate(state: AppState.AccountEditor) -> Bool {
+final class AccountValidator {
+  func validate(state: EditAccount.State) -> Bool {
     guard !state.name.isEmpty, state.parent != nil else {
       return false
     }
@@ -31,5 +25,12 @@ class AccountValidator {
     let isTagValid = !state.tag.isEmpty
     let isValid = isGroupValid && isIntroductionValid && isTagValid
     return isValid
+  }
+}
+
+extension DependencyValues {
+  var account: AccountEnvironment {
+    get { self[AccountEnvironment.self] }
+    set { self[AccountEnvironment.self] = newValue }
   }
 }

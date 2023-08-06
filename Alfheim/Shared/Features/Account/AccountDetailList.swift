@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Domain
+import Alne
 
 struct AccountDetailList: View {
   @Binding var account: Domain.Account

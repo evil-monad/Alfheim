@@ -8,47 +8,53 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
-enum AppAction {
-  case lifecycle(SceneLifecycleEvent)
-  //case overview(index: Int, action: Overview)
-  case overview(Overview)
-  case selectAccount(id: UUID?)
-  //case editor(Editor)
-//  case settings(Settings)
-//  case transactions(Transactions)
-//  case payment(Payment)
-//  case catemoji(Catemoji)
+extension RealWorld {
+  enum Action {
+    case lifecycle(SceneLifecycle.Action)
+    case overview(Overview.Action)
+    //case editor(Editor)
+    //  case settings(Settings)
+    //  case transactions(Transactions)
+    //  case catemoji(Catemoji)
 
-//  case startImport
-//  case finishImport
+    //  case startImport
+    //  case finishImport
 
-  // Account
-  case loadAll
-  case accountDidChange([Domain.Account])
-  case fetchAccounts
-  case accountDidFetch([Domain.Account])
-  case cleanup
+    // home
+    case home(Home.Action)
 
-  // Transaction
-  case transactionDidChange([Domain.Transaction])
+    // Account
+    case loadAll
+    case accountDidChange([Domain.Account])
+    case fetchAccounts
+    case accountDidFetch([Domain.Account])
+    case cleanup
 
-  case addAccount(presenting: Bool)
-  case editAccount(presenting: Bool, Domain.Account?)
-  case deleteAccount(Domain.Account)
+    // Transaction
+    case transactionDidChange([Domain.Transaction])
 
-  case newTransaction
-  case accountEditor(AccountEditor)
+    case addAccount(presenting: Bool)
+    case account(presenting: Bool, Domain.Account?)
+    case deleteAccount(Domain.Account)
 
-  case selectMenu(selection: Int?)
-  case transaction(Transaction)
+    case newTransaction
+    case editAccount(EditAccount.Action)
 
-  // settings
-  case settings(Settings)
+    case selectMenu(Home.MenuItem?)
+    case transaction(Transaction.Action)
+
+    // settings
+    case settings(Settings.Action)
+
+    // navigation path
+    case path(StackAction<Path.State, Path.Action>)
+  }
 }
 
-extension AppAction {
-  enum EditMode {
+extension RealWorld.Action {
+  enum EditMode: Equatable {
     case new
     case update
     case delete

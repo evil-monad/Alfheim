@@ -9,34 +9,34 @@
 import UIKit
 import SwiftUI
 import CoreData
+import Persistence
 import ComposableArchitecture
+import Dependencies
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
 
-  private var environment: AppEnvironment?
+  @Dependency(\.persistent) var persistent
+
   private lazy var store: AppStore = {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var environment = AppEnvironment.default
-    environment.context = context
-    let state = AppState()
-    return AppStore(initialState: state, reducer: AppReducers.appReducer, environment: environment)
+    return AppStore(initialState: App.State()) {
+      RealWorld()
+    }
   }()
 
-  private lazy var sceneStore: ViewStore<AppState, AppAction> = ViewStore(store)
+  private lazy var sceneStore: ViewStore<App.State, App.Action> = ViewStore(store, observe: { $0 })
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     // Get the managed object context from the shared persistent container.
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     // Create app store
 
-//    if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
-//      state.settings.appIcon = icon
-//    }
+    //if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
+    //  state.settings.appIcon = icon
+    //}
 
     // Start app story
-    startAppStory(scene: scene, store: store, context: context)
+    startAppStory(scene: scene, store: store, context: persistent.context)
 
     sceneStore.send(.lifecycle(.willConnect))
   }
@@ -59,12 +59,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   private func bootstrap(context: NSManagedObjectContext) {
-    Persistences.Account(context: context).empty { result in
+    Persistence.Account(context: context).empty { result in
       switch result {
       case .success(let empty):
         if empty {
           do {
-            try Persistences.Bootstrap(context: context).start()
+            try Persistence.Bootstrap(context: context).start()
           } catch {
             print("Bootstrap starting failed: \(error)")
           }
@@ -123,7 +123,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     sceneStore.send(.lifecycle(.didEnterBackground))
 
     // Save changes in the application's managed object context when the application transitions to the background.
-    (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+    persistent.save()
   }
 
 
@@ -132,7 +132,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 #if DEBUG
 extension PreviewProvider {
   static var viewContext: NSManagedObjectContext {
-    return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    return PreviewPersistent().context
   }
 }
 

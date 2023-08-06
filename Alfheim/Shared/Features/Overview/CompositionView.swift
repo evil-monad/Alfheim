@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Charts
 
 struct CompositionView: View {
   var histogram: Histogram<PieUnit>
@@ -43,7 +44,7 @@ struct CompositionView: View {
 
     var body: some View {
       VStack(alignment: .leading, spacing: 6) {
-        ForEach(0..<histogram.units.count) { index in
+        ForEach(0..<histogram.units.count, id: \.self) { index in
           HStack(spacing: 0) {
             HStack {
               Text(unit(at: index).symbol)
