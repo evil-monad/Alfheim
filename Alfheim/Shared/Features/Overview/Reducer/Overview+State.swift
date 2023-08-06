@@ -15,6 +15,7 @@ import ComposableArchitecture
 extension Overview {
   /// Overview view state
   struct State: Equatable, Identifiable {
+    var hasInitialized: Bool = false
     var isEditorPresented: Bool = false
     var isStatisticsPresented: Bool = false
     var selectedTransaction: Domain.Transaction?

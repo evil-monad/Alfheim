@@ -53,7 +53,7 @@ extension Home {
       self.accounts = accounts
 
       let allTransactions = accounts.flatMap {
-        $0.transactions(.current)
+        $0.transactions(.depth)
       }
 
       var uniqueTransactions: [Domain.Transaction] = allTransactions.uniqued()

@@ -32,7 +32,11 @@ struct RealWorld: Reducer {
         guard !state.hasInitialized else { break }
         state.hasInitialized = true
         return .run { send in
-          let stream: AsyncStream<[Domain.Account]> = persistent.observe(Domain.Account.all, transform: Domain.Account.makeTree)
+          let stream: AsyncStream<[Domain.Account]> = persistent.observe(
+            Domain.Account.all,
+            relationships: Domain.Account.relationships,
+            transform: Domain.Account.makeTree
+          )
           for try await accounts in stream {
             await send(.accountDidChange(accounts))
           }

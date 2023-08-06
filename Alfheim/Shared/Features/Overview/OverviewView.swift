@@ -55,6 +55,9 @@ struct OverviewView: View {
           mode: .new
         )
       }
+      .onAppear {
+        vs.send(.onAppear)
+      }
     }
   }
 }

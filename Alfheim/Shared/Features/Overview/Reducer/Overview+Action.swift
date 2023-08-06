@@ -11,6 +11,7 @@ import Domain
 
 extension Overview {
   enum Action: Equatable {
+    case onAppear
     case toggleNewTransaction(presenting: Bool)
     case editTransaction(Domain.Transaction)
     case editTransactionDone
@@ -20,6 +21,7 @@ extension Overview {
     case toggleSettings(presenting: Bool)
     case onDetailed(Bool)
 
+    case accountDidChange(Domain.Account)
     case editor(Editor.Action)
     case transaction(Transaction.Action)
   }
