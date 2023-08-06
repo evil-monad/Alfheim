@@ -65,12 +65,9 @@ extension Domain.Account {
         model.parents = parent.map { [$0] }
         let children = makeAccounts(accounts: ele.children, parent: model)
         model.children = children.optional
-        let ret = [model] + children
-        return ret
+        return [model]
       }
     }
-
-    // FIXME: 超过2层时，第2层多出来了第3层多内容。
 
     return makeAccounts(accounts: Set(entities.filter { $0.parent == nil }), parent: nil)
   }
