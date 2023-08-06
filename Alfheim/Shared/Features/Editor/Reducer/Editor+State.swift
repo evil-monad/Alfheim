@@ -145,7 +145,7 @@ extension Editor.State {
   }
 
   var rootAccounts: [Domain.Account] {
-    accounts.filter { $0.subroot }
+    accounts.filter { $0.root }.flatMap { $0.children ?? [] }
   }
 }
 

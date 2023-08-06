@@ -39,7 +39,7 @@ struct EditAccount: Reducer {
         }
       case .loadAccounts:
         return .run { send in
-          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.map($0) }
+          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.makeTree($0) }
           await send(.didLoadAccounts(accounts))
         }
       case .didLoadAccounts(let accounts):
