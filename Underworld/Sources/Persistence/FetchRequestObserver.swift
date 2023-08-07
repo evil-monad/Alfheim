@@ -37,8 +37,8 @@ public final class FetchRequestObserver<Result> where Result: NSFetchRequestResu
     }
   }
 
-  func fetch() {
-    delegate.fetch()
+  func start(fetch: Bool = true) {
+    delegate.start(fetch: fetch)
   }
 
   func cancel() {
@@ -76,26 +76,44 @@ final private class Observer<Result>: NSObject where Result: NSFetchRequestResul
     guard let fetchedObjects = controller.fetchedObjects as? [NSManagedObject] else { return }
     guard let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> else { return }
 
-    for fetched in fetchedObjects {
+    func observeObjects(objects: [NSManagedObject], observe: Bool) -> Set<NSManagedObjectID> {
       var observedObjects: Set<NSManagedObjectID> = []
-      for relationship in relationships {
-        //let value = fetched[keyPath: relationship.keyPath]
-        let value = fetched.value(forKeyPath: relationship.name)
-        if let toManyObjects = value as? Set<NSManagedObject> {
-          toManyObjects.forEach {
-            observedObjects.insert($0.objectID)
+      for object in objects {
+        for relationship in relationships {
+          //let value = fetched[keyPath: relationship.keyPath]
+          let value = object.value(forKeyPath: relationship.name)
+          if let toManyObjects = value as? Set<NSManagedObject> {
+            if relationship.isChildren {
+              observeObjects(objects: Array(toManyObjects), observe: false).forEach {
+                observedObjects.insert($0)
+              }
+            } else {
+              toManyObjects.forEach {
+                observedObjects.insert($0.objectID)
+              }
+            }
+          } else if let toOneObject = value as? NSManagedObject {
+            if relationship.isChildren {
+              observeObjects(objects: [toOneObject], observe: false).forEach {
+                observedObjects.insert($0)
+              }
+            } else {
+              observedObjects.insert(toOneObject.objectID)
+            }
+          } else {
+            assertionFailure("Invalid relationship observed for keyPath: \(relationship.keyPath)")
           }
-        } else if let toOneObject = value as? NSManagedObject {
-          observedObjects.insert(toOneObject.objectID)
-        } else {
-          assertionFailure("Invalid relationship observed for keyPath: \(relationship.keyPath)")
-          return
+        }
+
+        // only observe fetched objects
+        if observe, !observedObjects.intersection(updatedObjects.map(\.objectID)).isEmpty {
+          self.updatedObjects.insert(object.objectID)
         }
       }
-      if !observedObjects.intersection(updatedObjects.map(\.objectID)).isEmpty {
-        self.updatedObjects.insert(fetched.objectID)
-      }
+      return observedObjects
     }
+
+    let _ = observeObjects(objects: fetchedObjects, observe: true)
   }
 
   @objc
@@ -126,7 +144,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
     continuation?.finish()
   }
 
-  func fetch() {
+  func start(fetch: Bool = true) {
     guard let continuation = continuation else {
       return
     }
@@ -135,7 +153,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
 
     do {
       try controller.performFetch()
-      if let objects = controller.fetchedObjects {
+      if fetch, let objects = controller.fetchedObjects {
         continuation.yield(objects)
       }
     } catch {

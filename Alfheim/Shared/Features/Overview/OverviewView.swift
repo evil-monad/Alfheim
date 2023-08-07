@@ -130,7 +130,7 @@ private struct Header: View {
 }
 
 fileprivate extension EdgeInsets {
-  static let headerInsets = EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0)
+  static let headerInsets = EdgeInsets(top: 6, leading: 4, bottom: 0, trailing: 4)
 }
 
 ////#if DEBUG

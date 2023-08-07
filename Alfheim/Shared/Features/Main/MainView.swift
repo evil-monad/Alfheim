@@ -21,6 +21,7 @@ struct MainView: View {
     #if os(iOS)
     if horizontalSizeClass == .compact {
       ListNavigation(store: store)
+        .environment(\.defaultMinListHeaderHeight, 40)
     } else {
       SidebarNavigation(store: store)
     }

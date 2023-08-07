@@ -99,7 +99,8 @@ extension Transaction {
 
       init(date: Date, transactions: [Domain.Transaction]) {
         self.date = date
-        self.viewStates = IdentifiedArray(uniqueElements: transactions.map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
+        self.viewStates = IdentifiedArray(uniqueElements: transactions.sorted(by: { $0.date > $1.date })
+          .map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
       }
     }
   }

@@ -26,8 +26,14 @@ struct Overview: Reducer {
         return .run { [state] send in
           let stream: AsyncStream<[Domain.Account]> = persistent.observe(
             Domain.Account.all.where(Domain.Account.identifier == state.account.id),
-            relationships: Domain.Account.relationships
-          )
+            fetch: false,
+            relationships: Domain.Account.relationships) { accounts in
+              if let observed = accounts.first {
+                return Domain.Account.makeTree(root: observed)
+              } else {
+                return []
+              }
+            }
           for try await accounts in stream where !accounts.isEmpty {
             assert(accounts.count == 1 && accounts.first!.id == state.account.id)
             if let account = accounts.first {
@@ -39,6 +45,7 @@ struct Overview: Reducer {
       case .accountDidChange(let account):
         state.account.targets = account.targets
         state.account.sources = account.sources
+        state.account.children = account.children
         state.editor = Editor.State(target: state.account.summary)
         state.transactions = Transaction.State(source: .accounted(account: state.account, interval: state.timeInterval))
       case .toggleNewTransaction(let presenting):
