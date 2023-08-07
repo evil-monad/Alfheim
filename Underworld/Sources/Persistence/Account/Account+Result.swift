@@ -53,23 +53,28 @@ extension Domain.Account {
 
   @Sendable
   public static func makeTree(_ entities: [Database.Account]) -> [Domain.Account] {
-    func makeAccounts(accounts: Set<Database.Account>?, parent: Domain.Account?) -> [Domain.Account] {
-      guard let accounts = accounts else {
-        return []
-      }
+    return makeTree(children: Set(entities.filter { $0.parent == nil }), parent: nil)
+  }
 
-      return Array(accounts.sorted(by: { $0.name < $1.name })).flatMap { ele -> [Domain.Account] in
-        guard var model = Domain.Account(from: ele) else {
-          return []
-        }
-        model.parents = parent.map { [$0] }
-        let children = makeAccounts(accounts: ele.children, parent: model)
-        model.children = children.optional
-        return [model]
-      }
+  @Sendable
+  public static func makeTree(root: Database.Account) -> [Domain.Account] {
+    return makeTree(children: [root], parent: nil)
+  }
+
+  public static func makeTree(children accounts: Set<Database.Account>?, parent: Domain.Account?) -> [Domain.Account] {
+    guard let accounts = accounts else {
+      return []
     }
 
-    return makeAccounts(accounts: Set(entities.filter { $0.parent == nil }), parent: nil)
+    return Array(accounts.sorted(by: { $0.name < $1.name })).flatMap { ele -> [Domain.Account] in
+      guard var model = Domain.Account(from: ele) else {
+        return []
+      }
+      model.parents = parent.map { [$0] }
+      let children = makeTree(children: ele.children, parent: model)
+      model.children = children.optional
+      return [model]
+    }
   }
 
   public func encode(to context: NSManagedObjectContext) -> Database.Account {

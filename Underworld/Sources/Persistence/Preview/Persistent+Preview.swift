@@ -23,7 +23,7 @@ public final class PreviewPersistent: Persistent {
     return false
   }
 
-  public func observe<T>(_ request: FetchedRequest<T>, relationships: [Relationship], transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]> where T : FetchedResult {
+  public func observe<T>(_ request: FetchedRequest<T>, fetch: Bool, relationships: [Relationship], transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]> where T : FetchedResult {
     return .init {
       $0.yield([])
       $0.finish()

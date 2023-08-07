@@ -37,8 +37,8 @@ public final class FetchRequestObserver<Result> where Result: NSFetchRequestResu
     }
   }
 
-  func fetch() {
-    delegate.fetch()
+  func start(fetch: Bool = true) {
+    delegate.start(fetch: fetch)
   }
 
   func cancel() {
@@ -126,7 +126,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
     continuation?.finish()
   }
 
-  func fetch() {
+  func start(fetch: Bool = true) {
     guard let continuation = continuation else {
       return
     }
@@ -135,7 +135,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
 
     do {
       try controller.performFetch()
-      if let objects = controller.fetchedObjects {
+      if fetch, let objects = controller.fetchedObjects {
         continuation.yield(objects)
       }
     } catch {

@@ -15,7 +15,12 @@ import Database
 public protocol Persistent {
   var context: NSManagedObjectContext { get }
 
-  func observe<T>(_ request: FetchedRequest<T>, relationships: [Relationship], transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]>
+  func observe<T>(
+    _ request: FetchedRequest<T>,
+    fetch: Bool,
+    relationships: [Relationship],
+    transform: @Sendable @escaping ([T.ResultType]) -> [T]
+  ) -> AsyncStream<[T]> where T : FetchedResult
   func asyncObserve<T>(_ request: FetchedRequest<T>) async -> AsyncStream<[T]>
 
   func fetch<T>(_ request: FetchedRequest<T>) async throws -> [T]
@@ -45,8 +50,8 @@ public protocol Persistent {
 }
 
 public extension Persistent {
-  func observe<T>(_ request: FetchedRequest<T>, relationships: [Relationship] = [], transform: @Sendable @escaping ([T.ResultType]) -> [T] = T.map) -> AsyncStream<[T]> {
-    observe(request, relationships: relationships, transform: transform)
+  func observe<T>(_ request: FetchedRequest<T>, fetch: Bool = true, relationships: [Relationship] = [], transform: @Sendable @escaping ([T.ResultType]) -> [T] = T.map) -> AsyncStream<[T]> {
+    observe(request, fetch: fetch, relationships: relationships, transform: transform)
   }
 }
 

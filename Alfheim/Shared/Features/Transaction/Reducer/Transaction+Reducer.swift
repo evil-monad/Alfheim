@@ -21,7 +21,10 @@ extension Transaction {
         var effects = [Effect<Action>]()
         effects.append(
           .run { send in
-            let stream: AsyncStream<[Domain.Transaction]> = persistent.observe(Domain.Transaction.all.sort("date", ascending: false))
+            let stream: AsyncStream<[Domain.Transaction]> = persistent.observe(
+              Domain.Transaction.all.sort("date", ascending: false),
+              fetch: false
+            )
             for try await transactions in stream {
               await send(.transactionsDidChange(transactions))
             }
@@ -32,12 +35,18 @@ extension Transaction {
             .run { send in
               let stream: AsyncStream<[Domain.Account]> = persistent.observe(
                 Domain.Account.all.where(Domain.Account.identifier == account.id),
-                relationships: Domain.Account.relationships
-              )
+                fetch: false,
+                relationships: Domain.Account.relationships) { accounts in
+                  if let observed = accounts.first {
+                    return Domain.Account.makeTree(root: observed)
+                  } else {
+                    return []
+                  }
+                }
               for try await accounts in stream where !accounts.isEmpty {
                 assert(accounts.count == 1 && accounts.first!.id == account.id)
-                if let account = accounts.first {
-                  await send(.accountDidChange(account))
+                if let observed = accounts.first {
+                  await send(.accountDidChange(observed))
                 }
               }
             }

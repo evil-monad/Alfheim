@@ -18,7 +18,7 @@ public protocol AccountProtocol {
   var emoji: String? { get set }
 
   var children: [Account.ID]? { get set }
-  var parents: Account.ID? { get set }
+  var parent: Account.ID? { get set }
 }
 
 public struct Account: Equatable, Identifiable {
@@ -34,7 +34,7 @@ public struct Account: Equatable, Identifiable {
   public var sources: [Transaction]
 
   public var children: [Account]?
-  public var parents: [Account]? // Always <= 1
+  public var parents: [Account]? // Always <= 1. don't know why use `parents`
   public var parent: Account? {
     return parents?.first
   }

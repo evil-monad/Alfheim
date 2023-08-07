@@ -29,13 +29,18 @@ public final class CloudPersistent: Persistent {
     store.reloadContainer()
   }
 
-  public func observe<T>(_ request: FetchedRequest<T>, relationships: [Relationship], transform: @Sendable @escaping ([T.ResultType]) -> [T]) -> AsyncStream<[T]> where T : FetchedResult {
+  public func observe<T>(
+    _ request: FetchedRequest<T>,
+    fetch: Bool = true,
+    relationships: [Relationship],
+    transform: @Sendable @escaping ([T.ResultType]) -> [T]
+  ) -> AsyncStream<[T]> where T : FetchedResult {
     let fetchRequest = request.makeFetchRequest()
     let observer = FetchRequestObserver(fetchRequest: fetchRequest, context: context)
     return AsyncStream<[T]> { continuation in
       Task.detached {
         let observe = await observer.observe(relationships: relationships).map(transform)
-        observer.fetch()
+        observer.start(fetch: fetch)
         for await result in observe {
           continuation.yield(result)
         }
@@ -48,7 +53,7 @@ public final class CloudPersistent: Persistent {
     let fetchRequest = request.makeFetchRequest()
     let observer = FetchRequestObserver(fetchRequest: fetchRequest, context: context)
     let observe = await observer.observe().map { T.map($0) }
-    observer.fetch()
+    observer.start()
     return observe.eraseToStream()
   }
 
