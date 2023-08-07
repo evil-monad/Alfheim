@@ -42,28 +42,28 @@ extension NSManagedObject: RelationshipValue {
 public struct Relationship {
   public let name: String
   public let keyPath: String // KeyPath<K, V>
-  public let children: Bool // children node
+  public let isChildren: Bool // children node
   public let isToMany: Bool
 
-  public init<K, V>(name: String, keyPath: KeyPath<K, V>, children: Bool, isToMany: Bool) {
+  public init<K, V>(name: String, keyPath: KeyPath<K, V>, isChildren: Bool, isToMany: Bool) {
     self.name = name
     self.keyPath = name // NSExpression(forKeyPath: keyPath).keyPath
-    self.children = children
+    self.isChildren = isChildren
     self.isToMany = true
   }
 }
 
 public extension Domain.Account {
   static var relationships = [
-    Relationship(name: "targets", keyPath: \Self.targets, children: false, isToMany: true),
-    Relationship(name: "sources", keyPath: \Self.sources, children: false, isToMany: true),
-    Relationship(name: "children", keyPath: \Self.children, children: true, isToMany: true),
+    Relationship(name: "targets", keyPath: \Self.targets, isChildren: false, isToMany: true),
+    Relationship(name: "sources", keyPath: \Self.sources, isChildren: false, isToMany: true),
+    Relationship(name: "children", keyPath: \Self.children, isChildren: true, isToMany: true),
   ]
 }
 
 public extension Domain.Transaction {
   static var relationships = [
-    Relationship(name: "target", keyPath: \Self.target, children: false, isToMany: false),
-    Relationship(name: "target", keyPath: \Self.source, children: false, isToMany: false),
+    Relationship(name: "target", keyPath: \Self.target, isChildren: false, isToMany: false),
+    Relationship(name: "target", keyPath: \Self.source, isChildren: false, isToMany: false),
   ]
 }
