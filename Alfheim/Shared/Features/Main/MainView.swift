@@ -36,13 +36,23 @@ struct SidebarNavigation: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    NavigationView {
+    NavigationSplitView {
       Sidebar(store: store)
         .task {
           store.send(.loadAll)
         }
-      // detail view in iPad
-      Text("Sidebar navigation")
+    } detail: {
+      SplitDetail(store: store)
+    }
+  }
+}
+
+struct SplitDetail: View {
+  let store: Store<App.State, App.Action>
+
+  var body: some View {
+    WithViewStore(store, observe: { $0.path }) { vs in
+      Text("Selected")
     }
   }
 }
@@ -51,7 +61,7 @@ struct Sidebar: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    HomeView(store: store)
+    HomeView(store: store.scope(state: \.home, action: { .home($0) }))
       .listStyle(.insetGrouped)
       .navigationBarTitle("Clic")
       .toolbar {
@@ -116,7 +126,7 @@ struct ContentView: View {
 
   var body: some View {
     WithViewStore(store, observe: { $0.contentState }) { vs in
-      HomeView(store: store)
+      HomeView(store: store.scope(state: \.home, action: { .home($0) }))
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
         .toolbar {

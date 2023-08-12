@@ -10,13 +10,12 @@ import SwiftUI
 import ComposableArchitecture
 
 struct EditAccountView: View {
-  @Environment(\.dismiss) var dismiss
   let store: Store<EditAccount.State, EditAccount.Action>
 
   let mode: EditAccount.Mode
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       WithViewStore(store, observe: { $0 }) { vs in
         EditAccountForm(store: store)
           .navigationTitle(vs.isNew ? "New Account" : "Edit Account")
@@ -24,8 +23,7 @@ struct EditAccountView: View {
             ToolbarItem(placement: .confirmationAction) {
               Button {
                 let action = EditAccount.Action.save(vs.snapshot, mode: vs.isNew ? .new : .update)
-                 vs.send(action)
-                dismiss()
+                vs.send(action)
               } label: {
                 Text("Save").bold()
               }
@@ -33,7 +31,7 @@ struct EditAccountView: View {
             }
             ToolbarItem(placement: .cancellationAction) {
               Button {
-                dismiss()
+                vs.send(.delegate(.dismiss))
               } label: {
                 Text("Cancel")
               }
@@ -41,7 +39,6 @@ struct EditAccountView: View {
           }
       }
     }
-    .navigationViewStyle(.stack)
     .task {
       store.send(.loadAccounts)
     }

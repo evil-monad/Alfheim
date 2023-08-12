@@ -143,7 +143,7 @@ enum Transactions {
 
 extension Transaction.State {
   enum Filter: LocalizedStringKey, CaseIterable, Hashable {
-    case none = "None"
+    case none = "None" // default transaction source, not equals to all
     case week = "This Week"
     case month = "This Month"
     case year = "This Year"

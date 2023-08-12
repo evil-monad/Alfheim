@@ -101,7 +101,7 @@
 		FAF2AA47241DF9F200EE40AA /* Overview+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA46241DF9F200EE40AA /* Overview+State.swift */; };
 		FAF2AA49241DFA0D00EE40AA /* Overview+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2AA48241DFA0D00EE40AA /* Overview+Action.swift */; };
 		FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF380332413FAC800C592D4 /* CloudKit.framework */; };
-		FAF5EC52293E37A80092D833 /* Home+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5EC51293E37A70092D833 /* Home+State.swift */; };
+		FAF5EC52293E37A80092D833 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5EC51293E37A70092D833 /* HomeFeature.swift */; };
 		FAF5EC54293E47300092D833 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5EC53293E47300092D833 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -223,7 +223,7 @@
 		FAF2AA48241DFA0D00EE40AA /* Overview+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Overview+Action.swift"; sourceTree = "<group>"; };
 		FAF380312413FAA700C592D4 /* Alfheim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alfheim.entitlements; sourceTree = "<group>"; };
 		FAF380332413FAC800C592D4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		FAF5EC51293E37A70092D833 /* Home+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+State.swift"; sourceTree = "<group>"; };
+		FAF5EC51293E37A70092D833 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		FAF5EC53293E47300092D833 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -445,6 +445,7 @@
 		FAC2BC0C25CE340700169800 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				FAC4A3542A87A41200241A7C /* Home */,
 				FAA2331A26E3491A009C9925 /* Settings */,
 				FA7368E82688A9A000BCF659 /* Statistics */,
 				FAC2BC3625CED0B300169800 /* Editor */,
@@ -462,8 +463,6 @@
 				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				1F45EBD824235F130058AEDC /* MainView.swift */,
 				FA8E94C5276E056F0020DB47 /* Main+State.swift */,
-				FAF5EC53293E47300092D833 /* HomeView.swift */,
-				FAF5EC51293E37A70092D833 /* Home+State.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -525,6 +524,15 @@
 			name = Editor;
 			path = Alfheim/Shared/Features/Editor;
 			sourceTree = SOURCE_ROOT;
+		};
+		FAC4A3542A87A41200241A7C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				FAF5EC53293E47300092D833 /* HomeView.swift */,
+				FAF5EC51293E37A70092D833 /* HomeFeature.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
 		};
 		FAC7923D263405420037746C /* Reducer */ = {
 			isa = PBXGroup;
@@ -781,7 +789,7 @@
 				FAC2BC3B25CED0B400169800 /* ComposerView.swift in Sources */,
 				FAF2AA37241DF75900EE40AA /* Transaction+Reducer.swift in Sources */,
 				1F91CA02241A4CE000B552E7 /* Transaction+State.swift in Sources */,
-				FAF5EC52293E37A80092D833 /* Home+State.swift in Sources */,
+				FAF5EC52293E37A80092D833 /* HomeFeature.swift in Sources */,
 				1F91CA04241A4CEE00B552E7 /* Transaction+Action.swift in Sources */,
 				FA020B2526BFD4A500369350 /* CompositionView.swift in Sources */,
 				FA66C7D92427B40000462C46 /* SearchBar.swift in Sources */,

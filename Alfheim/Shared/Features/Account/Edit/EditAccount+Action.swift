@@ -10,7 +10,7 @@ import Foundation
 import Domain
 
 extension EditAccount {
-  enum Action {
+  enum Action: Equatable {
     case save(Domain.Account, mode: App.Action.EditMode)
     case edit(Domain.Account)
     case new
@@ -18,7 +18,7 @@ extension EditAccount {
     case loadAccounts
     case didLoadAccounts([Domain.Account])
 
-    enum Field {
+    enum Field: Equatable {
       case name(String)
       case introduction(String)
       case currency(Currency)
@@ -26,5 +26,12 @@ extension EditAccount {
       case tag(String)
       case emoji(String?)
     }
+
+    enum Delegate: Equatable {
+      case dismiss
+      case saved
+    }
+
+    case delegate(Delegate)
   }
 }

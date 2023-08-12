@@ -13,17 +13,10 @@ import ComposableArchitecture
 extension RealWorld {
   enum Action {
     case lifecycle(SceneLifecycle.Action)
-    case overview(Overview.Action)
-    //case editor(Editor)
-    //  case settings(Settings)
-    //  case transactions(Transactions)
-    //  case catemoji(Catemoji)
-
-    //  case startImport
-    //  case finishImport
 
     // home
     case home(Home.Action)
+    case overview(Overview.Action)
 
     // Account
     case loadAll
@@ -42,7 +35,6 @@ extension RealWorld {
     case newTransaction
     case editAccount(EditAccount.Action)
 
-    case selectMenu(Home.MenuItem?)
     case transaction(Transaction.Action)
 
     // settings

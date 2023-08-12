@@ -87,26 +87,21 @@ struct RealWorld: Reducer {
           try await persistent.delete(account)
         }
 
-      case .selectMenu(let item):
-        if let item = item {
-          let allTransactions = state.home.accounts.flatMap {
-            $0.transactions(.current)
-          }
-          let filter = item.filter.transactionFilter
-          let transaction = Transaction.State(source: .list(title: item.filter.name, transactions: allTransactions.uniqued(), filter: filter))
-          state.home.selection = item
-          state.path.append(.transation(transaction))
-        } else {
-          state.home.selection = nil
-          return .concatenate(.cancel(id: CancelID.fetch))
-        }
+      case let .home(.select(.some(.account(account)))):
+        let overview = Overview.State(account: account)
+        state.path.append(.overview(overview))
         return .none
 
-      case .transactionDidChange(let transactions):
-        // TODO: find changed transaction, and update account
-        if let selection = state.home.selection {
-          return .send(.selectMenu(selection))
+      case let .home(.select(.some(.menu(item)))):
+        let allTransactions = state.home.accounts.flatMap {
+          $0.transactions(.depth)
         }
+        let filter = item.filter.transactionFilter
+        let transaction = Transaction.State(source: .list(title: item.filter.name, transactions: allTransactions.uniqued(), filter: filter))
+        state.path.append(.transation(transaction))
+        return .none
+
+      case .transactionDidChange:
         return .none
 
       default:
@@ -116,6 +111,10 @@ struct RealWorld: Reducer {
     }
     .forEach(\.path, action: /Action.path) {
       App.Path()
+    }
+
+    Scope(state: \.home, action: /App.Action.home) {
+      Home()
     }
 
     Scope(state: \.editAccount, action: /App.Action.editAccount) {

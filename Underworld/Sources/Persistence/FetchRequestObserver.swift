@@ -145,7 +145,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
   }
 
   func start(fetch: Bool = true) {
-    guard let continuation = continuation else {
+    guard let continuation else {
       return
     }
 
@@ -168,7 +168,7 @@ final private class Delegate<Result>: NSObject, NSFetchedResultsControllerDelega
   }
 
   public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    guard let continuation = continuation, let objects = self.controller.fetchedObjects else {
+    guard let continuation, let objects = self.controller.fetchedObjects else {
       return
     }
 

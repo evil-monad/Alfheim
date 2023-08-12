@@ -37,6 +37,20 @@ extension EditAccount {
       case introduction
     }
 
+    init(account: Domain.Account) {
+      name = account.name
+      introduction = account.introduction
+      group = account.group.rawValue
+      currency = account.currency
+      tag = account.tag
+      emoji = account.emoji
+      parent = account.parent?.summary
+      mode = .edit(account)
+    }
+
+    init() {
+    }
+
     var accounts: [Domain.Account] = []
 
     var mode: Mode = .new
