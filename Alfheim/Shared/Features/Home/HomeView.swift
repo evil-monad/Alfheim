@@ -61,28 +61,6 @@ struct HomeView: View {
         action: Home.Destination.Action.edit
       ) { store in
         EditAccountView(store: store, mode: .edit)
-//        NavigationStack {
-//          EditAccountForm(store: store)
-//            .navigationTitle("Edit Account")
-//            .toolbar {
-//              ToolbarItem(placement: .confirmationAction) {
-//                Button {
-//                  //let action = EditAccount.Action.save(vs.snapshot, mode: vs.isNew ? .new : .update)
-//                  //vs.send(action)
-//                } label: {
-//                  Text("Save").bold()
-//                }
-//                //.disabled(!vs.edit.isValid)
-//              }
-//              ToolbarItem(placement: .cancellationAction) {
-//                Button {
-//                  vs.send(.cancelEdit)
-//                } label: {
-//                  Text("Cancel")
-//                }
-//              }
-//            }
-//        }
       }
     }
   }

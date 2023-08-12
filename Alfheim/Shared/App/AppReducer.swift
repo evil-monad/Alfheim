@@ -45,7 +45,6 @@ struct RealWorld: Reducer {
 
       case .accountDidChange(let accounts):
         state.home = Home.State(accounts: accounts, selection: state.home.selection)
-        state.overviews = IdentifiedArray(uniqueElements: accounts.map { Overview.State(account: $0) })
         return .none
 
       case .fetchAccounts:
@@ -60,31 +59,9 @@ struct RealWorld: Reducer {
 
       case .cleanup:
         return .run { [state] _ in
-          for account in state.accounts {
+          for account in state.home.accounts {
             try await persistent.delete(account)
           }
-        }
-
-      case .addAccount(let presenting):
-        state.editAccount.reset(.new)
-        state.isAddingAccount = presenting
-        return .none
-
-      case let .account(presenting, account):
-        if let account = account {
-          state.editAccount.reset(.edit(account))
-        } else {
-          state.editAccount.reset(.new)
-        }
-        state.isAccountSelected = presenting
-        return .none
-
-      case .deleteAccount(let account):
-        if !account.canDelete {
-          return .none
-        }
-        return .run { _ in
-          try await persistent.delete(account)
         }
 
       case let .home(.select(.some(.account(account)))):
@@ -113,16 +90,12 @@ struct RealWorld: Reducer {
       App.Path()
     }
 
+    Scope(state: \.main, action: /App.Action.main) {
+      Main()
+    }
+
     Scope(state: \.home, action: /App.Action.home) {
       Home()
-    }
-
-    Scope(state: \.editAccount, action: /App.Action.editAccount) {
-      EditAccount()
-    }
-
-    Scope(state: \.settings, action: /App.Action.settings) {
-      Settings()
     }
 
     Reduce { state, action in

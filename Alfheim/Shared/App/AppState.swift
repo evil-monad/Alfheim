@@ -14,17 +14,9 @@ import Domain
 extension RealWorld {
   struct State: Equatable {
     var hasInitialized: Bool = false
-    var overviews: IdentifiedArrayOf<Overview.State> = []
-    //var editor = Editor()
 
+    var main = Main.State()
     var home = Home.State()
-
-    var settings = Settings.State()
-
-    var isAddingAccount: Bool = false
-    var editAccount = EditAccount.State()
-    var isAccountSelected: Bool = false
-
     var path = StackState<Path.State>()
   }
 
@@ -47,15 +39,5 @@ extension RealWorld {
         Transaction()
       }
     }
-  }
-}
-
-extension RealWorld.State {
-  var accounts: [Domain.Account] {
-    overviews.map { $0.account }
-  }
-
-  var rootAccounts: [Domain.Account] {
-    accounts.filter { $0.root }
   }
 }

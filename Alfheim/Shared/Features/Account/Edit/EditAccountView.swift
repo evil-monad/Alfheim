@@ -38,9 +38,9 @@ struct EditAccountView: View {
             }
           }
       }
-    }
-    .task {
-      store.send(.loadAccounts)
+      .task {
+        store.send(.loadAccounts)
+      }
     }
   }
 }

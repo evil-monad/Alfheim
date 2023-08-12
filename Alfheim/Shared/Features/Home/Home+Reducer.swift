@@ -56,6 +56,9 @@ struct Home: Reducer {
 
     case delete(Domain.Account)
     case edit(Domain.Account)
+
+    case cancelEdit
+    case editDone
   }
 
   enum Selection: Equatable, Hashable {
@@ -63,11 +66,13 @@ struct Home: Reducer {
     case account(Domain.Account)
   }
 
+  @Dependency(\.persistent) var persistent
+
   struct Destination: Reducer {
     enum State: Equatable {
       case edit(EditAccount.State)
     }
-    enum Action: Equatable {
+    enum Action: Equatable, Sendable {
       case edit(EditAccount.Action)
     }
 
@@ -81,7 +86,6 @@ struct Home: Reducer {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       enum CancelID: Hashable {
-        case observe
         case fetch
       }
 
@@ -101,23 +105,28 @@ struct Home: Reducer {
         state.selection = .menu(item)
         return .none
 
-      case .destination:
-        return .none
-
       case .edit(let account):
         state.destination = .edit(EditAccount.State(account: account))
         return .none
 
-//      case .destination(.edit(.delegate)):
-//        state.destination = nil
-//        return .none
-
-      case .delete:
+      case .destination(.presented(.edit(.delegate))):
+        state.destination = nil
         return .none
+
+      case .delete(let account):
+        if !account.canDelete {
+          return .none
+        }
+        return .run { _ in
+          try await persistent.delete(account)
+        }
 
       default:
         return .none
       }
+    }
+    .ifLet(\.$destination, action: /Action.destination) {
+      Destination()
     }
   }
 }

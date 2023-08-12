@@ -14,9 +14,10 @@ extension RealWorld {
   enum Action {
     case lifecycle(SceneLifecycle.Action)
 
+    case main(Main.Action)
+
     // home
     case home(Home.Action)
-    case overview(Overview.Action)
 
     // Account
     case loadAll
@@ -28,17 +29,7 @@ extension RealWorld {
     // Transaction
     case transactionDidChange([Domain.Transaction])
 
-    case addAccount(presenting: Bool)
-    case account(presenting: Bool, Domain.Account?)
-    case deleteAccount(Domain.Account)
-
     case newTransaction
-    case editAccount(EditAccount.Action)
-
-    case transaction(Transaction.Action)
-
-    // settings
-    case settings(Settings.Action)
 
     // navigation path
     case path(StackAction<Path.State, Path.Action>)

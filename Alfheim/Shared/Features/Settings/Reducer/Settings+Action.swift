@@ -9,7 +9,7 @@
 import Foundation
 
 extension Settings {
-  enum Action {
+  enum Action: Equatable {
     case sheet(isPresented: Bool)
     case selectAppIcon(AppIcon)
   }

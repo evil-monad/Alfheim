@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AppIcon: String, CaseIterable {
+enum AppIcon: String, CaseIterable, Equatable {
   case primary
   case filled
 }

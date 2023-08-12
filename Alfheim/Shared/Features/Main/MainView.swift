@@ -51,8 +51,12 @@ struct SplitDetail: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.path }) { vs in
-      Text("Selected")
+    WithViewStore(store, observe: { $0.home.selection }) { vs in
+      if let selection = vs.state {
+        Text("Selected")
+      } else {
+        Text("Select account")
+      }
     }
   }
 }
@@ -61,34 +65,36 @@ struct Sidebar: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    HomeView(store: store.scope(state: \.home, action: { .home($0) }))
-      .listStyle(.insetGrouped)
-      .navigationBarTitle("Clic")
-      .toolbar {
-        ToolbarItem(placement: .primaryAction) {
-          Button {
-            store.send(.newTransaction)
-          } label: {
-            Image(systemName: "plus.circle")
-          }
-        }
-        ToolbarItemGroup(placement: .bottomBar) {
-          HStack {
+    WithViewStore(store, observe: { $0.main }) { vs in
+      HomeView(store: store.scope(state: \.home, action: { .home($0) }))
+        .listStyle(.insetGrouped)
+        .navigationBarTitle("Clic")
+        .toolbar {
+          ToolbarItem(placement: .primaryAction) {
             Button {
-              //vs.send(.cleanup)
-              store.send(.settings(.sheet(isPresented: true)))
+              store.send(.newTransaction)
             } label: {
-              Image(systemName: "gear")
-            }
-            Spacer()
-            Button {
-              store.send(.addAccount(presenting: true))
-            } label: {
-              Text("Add Account")
+              Image(systemName: "plus.circle")
             }
           }
+          ToolbarItemGroup(placement: .bottomBar) {
+            HStack {
+              Button {
+                //vs.send(.cleanup)
+                vs.send(.main(.settings))
+              } label: {
+                Image(systemName: "gear")
+              }
+              Spacer()
+              Button {
+                vs.send(.main(.newAccount))
+              } label: {
+                Text("Add Account")
+              }
+            }
+          }
         }
-      }
+    }
   }
 }
 
@@ -125,7 +131,7 @@ struct ContentView: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.contentState }) { vs in
+    WithViewStore(store, observe: { $0.main }) { vs in
       HomeView(store: store.scope(state: \.home, action: { .home($0) }))
         .listStyle(.insetGrouped)
         .navigationBarTitle("Clic")
@@ -140,36 +146,44 @@ struct ContentView: View {
           ToolbarItemGroup(placement: .bottomBar) {
             HStack {
               Button {
-                vs.send(.settings(.sheet(isPresented: true)))
+                vs.send(.main(.settings))
               } label: {
                 Image(systemName: "gear")
               }
               Spacer()
               Button {
-                vs.send(.addAccount(presenting: true))
+                vs.send(.main(.newAccount))
               } label: {
                 Text("Add Account")
               }
             }
           }
         }
-        .sheet(isPresented: vs.binding(get: \.isAccountComposerPresented, send: App.Action.addAccount)) {
-          EditAccountView(
-            store: store.scope(
-              state: \.editAccount,
-              action: App.Action.editAccount),
-            mode: .new
-          )
+        .sheet(
+          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
+          state: /Main.Destination.State.newAccount,
+          action: Main.Destination.Action.newAccount
+        ) { store in
+          EditAccountView(store: store, mode: .new)
         }
         .sheet(
-          isPresented: vs.binding(get: \.isSettingsPresented, send: { .settings(.sheet(isPresented: $0)) })
-        ) {
-          SettingsView(
-            store: store.scope(
-              state: \.settings,
-              action: App.Action.settings
-            )
-          )
+          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
+          state: /Main.Destination.State.settings,
+          action: Main.Destination.Action.settings
+        ) { store in
+          NavigationStack {
+            SettingsView(store: store)
+              .navigationTitle("Settings")
+              .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                  Button {
+                    vs.send(.main(.dismiss))
+                  } label: {
+                    Text("Done").bold()
+                  }
+                }
+              }
+          }
         }
     }
   }

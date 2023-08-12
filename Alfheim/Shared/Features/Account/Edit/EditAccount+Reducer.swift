@@ -69,7 +69,7 @@ struct EditAccount: Reducer {
         }
         state.isValid = env.validator.validate(state: state)
 
-      case .delegate:
+      default:
         return .none
       }
       return .none

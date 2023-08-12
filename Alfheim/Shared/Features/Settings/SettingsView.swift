@@ -11,66 +11,53 @@ import ComposableArchitecture
 
 struct SettingsView: View {
   let store: Store<Settings.State, Settings.Action>
-  @Environment(\.dismiss) var dismiss
 
   var body: some View {
     WithViewStore(store, observe: { $0 }) { vs in
-      NavigationView {
-        List {
-          Section {
-            NavigationLink {
-              CloudView()
-            } label: {
-              Text("Cloud").fontWeight(.medium)
-            }
-          }
-
-          Section {
-            NavigationLink {
-              AppearanceView()
-            } label: {
-              Text("Appearance").fontWeight(.medium)
-            }
-
-            NavigationLink {
-              AppIconView(store: store)
-            } label: {
-              Text("App Icon").fontWeight(.medium)
-            }
-          }
-
-          Section {
-            NavigationLink {
-              AboutView()
-            } label: {
-              Text("About").fontWeight(.medium)
-            }
-
-            NavigationLink {
-              HelpView()
-            } label: {
-              Text("Help").fontWeight(.medium)
-            }
-
-            HStack {
-              Text("Version").fontWeight(.medium)
-              Spacer()
-              Text(vs.appVersion)
-            }
+      List {
+        Section {
+          NavigationLink {
+            CloudView()
+          } label: {
+            Text("Cloud").fontWeight(.medium)
           }
         }
-        .listStyle(.insetGrouped)
-        .navigationTitle("Settings")
-        .toolbar {
-          ToolbarItem(placement: .cancellationAction) {
-            Button {
-              dismiss()
-            } label: {
-              Text("Done").bold()
-            }
+
+        Section {
+          NavigationLink {
+            AppearanceView()
+          } label: {
+            Text("Appearance").fontWeight(.medium)
+          }
+
+          NavigationLink {
+            AppIconView(store: store)
+          } label: {
+            Text("App Icon").fontWeight(.medium)
+          }
+        }
+
+        Section {
+          NavigationLink {
+            AboutView()
+          } label: {
+            Text("About").fontWeight(.medium)
+          }
+
+          NavigationLink {
+            HelpView()
+          } label: {
+            Text("Help").fontWeight(.medium)
+          }
+
+          HStack {
+            Text("Version").fontWeight(.medium)
+            Spacer()
+            Text(vs.appVersion)
           }
         }
       }
+      .listStyle(.insetGrouped)
     }
   }
 }
