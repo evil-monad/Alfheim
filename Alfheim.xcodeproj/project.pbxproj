@@ -447,14 +447,14 @@
 		FAC2BC0C25CE340700169800 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				FAC2BC0D25CE342300169800 /* Main */,
 				FAC4A3542A87A41200241A7C /* Home */,
-				FAA2331A26E3491A009C9925 /* Settings */,
-				FA7368E82688A9A000BCF659 /* Statistics */,
+				FAC2BC0E25CE343800169800 /* Overview */,
 				FAC2BC3625CED0B300169800 /* Editor */,
 				FAC2BC1225CE34B300169800 /* Transaction */,
 				FAC2BC0F25CE346E00169800 /* Account */,
-				FAC2BC0E25CE343800169800 /* Overview */,
-				FAC2BC0D25CE342300169800 /* Main */,
+				FAA2331A26E3491A009C9925 /* Settings */,
+				FA7368E82688A9A000BCF659 /* Statistics */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -462,7 +462,6 @@
 		FAC2BC0D25CE342300169800 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				1F45EBD824235F130058AEDC /* MainView.swift */,
 				FAC4A3552A88A6D400241A7C /* MainView+Split.swift */,
 				FA8E94C5276E056F0020DB47 /* Main+Reducer.swift */,
@@ -589,6 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				FA9D20822748AED100413E6E /* Scene */,
+				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				FAEABD6225CE3011003D866E /* AppStore.swift */,
 				FAEABD4D25CE2D7C003D866E /* AppState.swift */,
 				FAEABD5A25CE3005003D866E /* AppAction.swift */,
