@@ -25,7 +25,6 @@
 		1F91CA04241A4CEE00B552E7 /* Transaction+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA03241A4CEE00B552E7 /* Transaction+Action.swift */; };
 		1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F91CA07241A4D9800B552E7 /* Account+Reducer.swift */; };
 		782403F423F6D79F00478338 /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F323F6D79F00478338 /* TransactionRow.swift */; };
-		782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F523F6DBAF00478338 /* TransactionsView.swift */; };
 		782403F823F83A6600478338 /* AccountDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782403F723F83A6600478338 /* AccountDetail.swift */; };
 		783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793C425D0DA2C00ECD0D4 /* macOS.swift */; };
 		783793CA25D1111E00ECD0D4 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 783793C925D1111E00ECD0D4 /* ComposableArchitecture */; };
@@ -152,7 +151,6 @@
 		1F91CA03241A4CEE00B552E7 /* Transaction+Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Action.swift"; sourceTree = "<group>"; };
 		1F91CA07241A4D9800B552E7 /* Account+Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Reducer.swift"; sourceTree = "<group>"; };
 		782403F323F6D79F00478338 /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
-		782403F523F6DBAF00478338 /* TransactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsView.swift; sourceTree = "<group>"; };
 		782403F723F83A6600478338 /* AccountDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetail.swift; sourceTree = "<group>"; };
 		783793C425D0DA2C00ECD0D4 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
 		783793CF25D128EF00ECD0D4 /* Editor+Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Editor+Reducer.swift"; sourceTree = "<group>"; };
@@ -501,7 +499,6 @@
 				789E8E6F23EA96FC006D180B /* TransactionList.swift */,
 				782403F323F6D79F00478338 /* TransactionRow.swift */,
 				FA03680F241CD5C50038A26E /* TransactionRow+ViewState.swift */,
-				782403F523F6DBAF00478338 /* TransactionsView.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -741,7 +738,6 @@
 				783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */,
 				FAA2332226E34C14009C9925 /* Settings+Reducer.swift in Sources */,
 				783793D325D128F000ECD0D4 /* Editor+Reducer.swift in Sources */,
-				782403F623F6DBAF00478338 /* TransactionsView.swift in Sources */,
 				FA020B2C26C8DBA700369350 /* EditAccount+Form.swift in Sources */,
 				FAA2332026E34BB7009C9925 /* Settings+Action.swift in Sources */,
 				1F45EBD924235F130058AEDC /* MainView.swift in Sources */,
