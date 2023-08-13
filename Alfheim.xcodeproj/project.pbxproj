@@ -85,6 +85,7 @@
 		FAC2BC3A25CED0B400169800 /* CatemojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */; };
 		FAC2BC3B25CED0B400169800 /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC3825CED0B300169800 /* ComposerView.swift */; };
 		FAC2BC3C25CED0B400169800 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC2BC3925CED0B300169800 /* EditorView.swift */; };
+		FAC4A3562A88A6D500241A7C /* MainView+Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC4A3552A88A6D400241A7C /* MainView+Split.swift */; };
 		FAC88CD026FEFFF2005177BA /* DisclosureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */; };
 		FAC88CD226FF0EE7005177BA /* AccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC88CD126FF0EE7005177BA /* AccessoryView.swift */; };
 		FACF2A7A23FFD2B7003BB675 /* AccountDetailList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */; };
@@ -206,6 +207,7 @@
 		FAC2BC3725CED0B300169800 /* CatemojiPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatemojiPicker.swift; sourceTree = "<group>"; };
 		FAC2BC3825CED0B300169800 /* ComposerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
 		FAC2BC3925CED0B300169800 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		FAC4A3552A88A6D400241A7C /* MainView+Split.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainView+Split.swift"; sourceTree = "<group>"; };
 		FAC88CCF26FEFFF2005177BA /* DisclosureRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureRow.swift; sourceTree = "<group>"; };
 		FAC88CD126FF0EE7005177BA /* AccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryView.swift; sourceTree = "<group>"; };
 		FACF2A7923FFD2B7003BB675 /* AccountDetailList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailList.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 			children = (
 				FAE84B3B25B401AE0027E215 /* AppView.swift */,
 				1F45EBD824235F130058AEDC /* MainView.swift */,
+				FAC4A3552A88A6D400241A7C /* MainView+Split.swift */,
 				FA8E94C5276E056F0020DB47 /* Main+Reducer.swift */,
 			);
 			path = Main;
@@ -762,6 +765,7 @@
 				1F91CA08241A4D9800B552E7 /* Account+Reducer.swift in Sources */,
 				FAF2AA49241DFA0D00EE40AA /* Overview+Action.swift in Sources */,
 				1F91C9F4241A4BA000B552E7 /* Account+State.swift in Sources */,
+				FAC4A3562A88A6D500241A7C /* MainView+Split.swift in Sources */,
 				782403F423F6D79F00478338 /* TransactionRow.swift in Sources */,
 				FAC2BC3C25CED0B400169800 /* EditorView.swift in Sources */,
 				FAC88CD026FEFFF2005177BA /* DisclosureRow.swift in Sources */,

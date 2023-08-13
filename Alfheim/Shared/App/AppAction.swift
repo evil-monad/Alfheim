@@ -13,10 +13,9 @@ import ComposableArchitecture
 extension RealWorld {
   enum Action {
     case lifecycle(SceneLifecycle.Action)
+    case sidebar
 
     case main(Main.Action)
-
-    // home
     case home(Home.Action)
 
     // Account
@@ -31,7 +30,10 @@ extension RealWorld {
 
     case newTransaction
 
-    // navigation path
+    // navigation detail
+    case detail(Detail.Action)
+
+    // navigation stack path
     case path(StackAction<Path.State, Path.Action>)
   }
 }

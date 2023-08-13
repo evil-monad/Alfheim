@@ -17,10 +17,36 @@ extension RealWorld {
 
     var main = Main.State()
     var home = Home.State()
+
+    var sidebar: Bool = false
+    // for iPadOS
+    var detail: Detail.State?
+    // for iOS
     var path = StackState<Path.State>()
   }
 
   struct Path: Reducer {
+    enum State: Equatable {
+      case overview(Overview.State)
+      case transation(Transaction.State)
+    }
+
+    enum Action: Equatable {
+      case overview(Overview.Action)
+      case transation(Transaction.Action)
+    }
+
+    var body: some ReducerOf<Self> {
+      Scope(state: /State.overview, action: /Action.overview) {
+        Overview()
+      }
+      Scope(state: /State.transation, action: /Action.transation) {
+        Transaction()
+      }
+    }
+  }
+
+  struct Detail: Reducer {
     enum State: Equatable {
       case overview(Overview.State)
       case transation(Transaction.State)

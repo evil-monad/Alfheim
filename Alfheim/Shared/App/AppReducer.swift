@@ -64,9 +64,17 @@ struct RealWorld: Reducer {
           }
         }
 
+      case .sidebar:
+        state.sidebar = true
+        return .none
+
       case let .home(.select(.some(.account(account)))):
         let overview = Overview.State(account: account)
-        state.path.append(.overview(overview))
+        if state.sidebar {
+          state.detail = .overview(overview)
+        } else {
+          state.path.append(.overview(overview))
+        }
         return .none
 
       case let .home(.select(.some(.menu(item)))):
@@ -75,7 +83,12 @@ struct RealWorld: Reducer {
         }
         let filter = item.filter.transactionFilter
         let transaction = Transaction.State(source: .list(title: item.filter.name, transactions: allTransactions.uniqued(), filter: filter))
-        state.path.append(.transation(transaction))
+
+        if state.sidebar {
+          state.detail = .transation(transaction)
+        } else {
+          state.path.append(.transation(transaction))
+        }
         return .none
 
       case .transactionDidChange:
@@ -88,6 +101,9 @@ struct RealWorld: Reducer {
     }
     .forEach(\.path, action: /Action.path) {
       App.Path()
+    }
+    .ifLet(\.detail, action: /Action.detail) {
+      App.Detail()
     }
 
     Scope(state: \.main, action: /App.Action.main) {

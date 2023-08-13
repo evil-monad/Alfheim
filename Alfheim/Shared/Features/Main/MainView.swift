@@ -23,78 +23,11 @@ struct MainView: View {
       ListNavigation(store: store)
         .environment(\.defaultMinListHeaderHeight, 40)
     } else {
-      SidebarNavigation(store: store)
+      SplitNavigation(store: store)
     }
     #else
-    SidebarNavigation(store: store)
+    SplitNavigation(store: store)
     #endif
-  }
-}
-
-/// iPad & Mac
-struct SidebarNavigation: View {
-  let store: Store<App.State, App.Action>
-
-  var body: some View {
-    NavigationSplitView {
-      Sidebar(store: store)
-        .task {
-          store.send(.loadAll)
-        }
-    } detail: {
-      SplitDetail(store: store)
-    }
-  }
-}
-
-struct SplitDetail: View {
-  let store: Store<App.State, App.Action>
-
-  var body: some View {
-    WithViewStore(store, observe: { $0.home.selection }) { vs in
-      if let selection = vs.state {
-        Text("Selected")
-      } else {
-        Text("Select account")
-      }
-    }
-  }
-}
-
-struct Sidebar: View {
-  let store: Store<App.State, App.Action>
-
-  var body: some View {
-    WithViewStore(store, observe: { $0.main }) { vs in
-      HomeView(store: store.scope(state: \.home, action: { .home($0) }))
-        .listStyle(.insetGrouped)
-        .navigationBarTitle("Clic")
-        .toolbar {
-          ToolbarItem(placement: .primaryAction) {
-            Button {
-              store.send(.newTransaction)
-            } label: {
-              Image(systemName: "plus.circle")
-            }
-          }
-          ToolbarItemGroup(placement: .bottomBar) {
-            HStack {
-              Button {
-                //vs.send(.cleanup)
-                vs.send(.main(.settings))
-              } label: {
-                Image(systemName: "gear")
-              }
-              Spacer()
-              Button {
-                vs.send(.main(.newAccount))
-              } label: {
-                Text("Add Account")
-              }
-            }
-          }
-        }
-    }
   }
 }
 
