@@ -98,6 +98,7 @@ struct SplitDetail: View {
   let store: Store<App.State, App.Action>
 
   var body: some View {
+    WithViewStore(store, observe: { $0.detail }) { vs in
       IfLetStore(store.scope(state: \.detail, action: { .detail($0) })) { store in
         NavigationStackStore(self.store.scope(state: \.path, action: { .path($0) })) {
           SwitchStore(store) { state in
@@ -121,19 +122,20 @@ struct SplitDetail: View {
           case .overview:
             CaseLet(
               /App.Path.State.overview,
-              action: App.Path.Action.overview,
-              then: OverviewView.init(store:)
+               action: App.Path.Action.overview,
+               then: OverviewView.init(store:)
             )
           case .transation:
             CaseLet(
               /App.Path.State.transation,
-              action: App.Path.Action.transation,
-              then: TransactionList.init(store:)
+               action: App.Path.Action.transation,
+               then: TransactionList.init(store:)
             )
           }
         }
       } else: {
         Text("No selection")
       }
+    }
   }
 }

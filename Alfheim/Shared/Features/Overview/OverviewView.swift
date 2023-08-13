@@ -19,7 +19,7 @@ struct OverviewView: View {
   }
 
   var body: some View {
-    WithViewStore(store, observe: { $0.contentState }) { vs in
+    WithViewStore(store, observe: { $0 }) { vs in
       List {
         Section {
           AccountCard(store: store)
@@ -36,7 +36,7 @@ struct OverviewView: View {
           StatisticsSection(store: store)
         }
       }
-      .navigationTitle(vs.accountName)
+      .navigationTitle(vs.account.name)
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Button {
@@ -44,7 +44,7 @@ struct OverviewView: View {
           } label: {
             Image(systemName: "plus.circle")
           }
-          .disabled(vs.isRootAccount)
+          .disabled(vs.account.root)
         }
       }
       .sheet(isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })) {
@@ -58,6 +58,7 @@ struct OverviewView: View {
       .onAppear {
         vs.send(.onAppear)
       }
+      .id(vs.account.id)
     }
   }
 }

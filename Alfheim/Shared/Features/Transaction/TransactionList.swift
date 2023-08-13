@@ -70,6 +70,7 @@ struct TransactionList: View {
       .onAppear {
         vs.send(.onAppear)
       }
+      .id(vs.id)
     }
   }
 
