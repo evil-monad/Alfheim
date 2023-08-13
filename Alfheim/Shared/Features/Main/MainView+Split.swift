@@ -37,6 +37,7 @@ struct Sidebar: View {
     WithViewStore(store, observe: { $0.main }) { vs in
       HomeView(store: store.scope(state: \.home, action: { .home($0) }))
         .listStyle(.insetGrouped)
+        .tint(Color(UIColor.systemGray4))
         .navigationBarTitle("Clic")
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
@@ -61,6 +62,32 @@ struct Sidebar: View {
                 Text("Add Account")
               }
             }
+          }
+        }
+        .sheet(
+          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
+          state: /Main.Destination.State.newAccount,
+          action: Main.Destination.Action.newAccount
+        ) { store in
+          EditAccountView(store: store, mode: .new)
+        }
+        .sheet(
+          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
+          state: /Main.Destination.State.settings,
+          action: Main.Destination.Action.settings
+        ) { store in
+          NavigationStack {
+            SettingsView(store: store)
+              .navigationTitle("Settings")
+              .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                  Button {
+                    vs.send(.main(.dismiss))
+                  } label: {
+                    Text("Done").bold()
+                  }
+                }
+              }
           }
         }
     }
