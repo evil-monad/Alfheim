@@ -10,6 +10,11 @@ import Foundation
 import CoreData
 
 public final class PreviewPersistent: Persistent {
+  public func bootstrap() async throws {
+    let boostrap = Bootstrap(context: context)
+    try boostrap.start()
+  }
+
   public func update<T: FetchedResult, V>(_ id: T.ID, keyPath: WritableKeyPath<T.ResultType, V>, value: V) async throws -> T {
     let object = try context.fetchOne(T.all.where(T.identifier == id))
     return T.decode(from: object!)!

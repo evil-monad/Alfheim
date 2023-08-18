@@ -29,6 +29,15 @@ public final class CloudPersistent: Persistent {
     store.reloadContainer()
   }
 
+  public func bootstrap() async throws {
+    let empty = try await fetch(Domain.Account.all.sort("name", ascending: true)).isEmpty
+    if empty {
+      let boostrap = Bootstrap(context: context)
+      try boostrap.start()
+      // boostrap.migrate()
+    }
+  }
+
   public func observe<T>(
     _ request: FetchedRequest<T>,
     fetch: Bool = true,
