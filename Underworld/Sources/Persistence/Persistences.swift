@@ -14,4 +14,3 @@ public enum Usage {
   case preview // Memory
   case extensions
 }
-

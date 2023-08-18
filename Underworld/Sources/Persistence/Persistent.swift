@@ -15,6 +15,8 @@ import Database
 public protocol Persistent {
   var context: NSManagedObjectContext { get }
 
+  func bootstrap() async throws
+
   func observe<T>(
     _ request: FetchedRequest<T>,
     fetch: Bool,
