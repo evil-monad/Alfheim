@@ -15,6 +15,7 @@ extension RealWorld {
   public struct State: Equatable {
     var hasInitialized: Bool = false
 
+    var lifecycle = SceneLifecycle.State()
     var main = Main.State()
     var home = Home.State()
 

@@ -31,6 +31,10 @@ public struct SceneLifecycle: Reducer {
         return .run { _ in
           try await persistent.bootstrap()
         }
+      case .didEnterBackground:
+        return .run { send in
+          persistent.save()
+        }
       default:
         return .none
       }

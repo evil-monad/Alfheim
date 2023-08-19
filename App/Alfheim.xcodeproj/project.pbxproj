@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,8 +15,6 @@
 		1F39992D23D69C0700E6BBD9 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F39992C23D69C0700E6BBD9 /* Colors.xcassets */; };
 		1F45EBE22423652A0058AEDC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F45EBE12423652A0058AEDC /* InfoPlist.strings */; };
 		783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793C425D0DA2C00ECD0D4 /* macOS.swift */; };
-		FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2C2A741B5D00CC68DF /* Persistence */; };
-		FA267C2F2A741B6200CC68DF /* Alne in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2E2A741B6200CC68DF /* Alne */; };
 		FA83858524A479EF0011E0D7 /* Filled40x40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */; };
 		FA83858624A479EF0011E0D7 /* Filled40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857E24A479EF0011E0D7 /* Filled40x40@2x.png */; };
 		FA83858724A479EF0011E0D7 /* Filled60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857F24A479EF0011E0D7 /* Filled60x60@2x.png */; };
@@ -25,10 +23,7 @@
 		FA83858A24A479EF0011E0D7 /* Filled20x20@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858224A479EF0011E0D7 /* Filled20x20@3x.png */; };
 		FA83858B24A479EF0011E0D7 /* Filled60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */; };
 		FA83858C24A479EF0011E0D7 /* Filled20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */; };
-		FA9D207B273FE96100413E6E /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207A273FE96100413E6E /* Domain */; };
-		FA9D207D2740090200413E6E /* Database in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207C2740090200413E6E /* Database */; };
 		FAB324B32A8F47F800D180F8 /* Features in Frameworks */ = {isa = PBXBuildFile; productRef = FAB324B22A8F47F800D180F8 /* Features */; };
-		FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = FABFB2EC2A74E90B0023FF0E /* Charts */; };
 		FAEAA03F24612645003C6799 /* emojis.json in Resources */ = {isa = PBXBuildFile; fileRef = FAEAA03E24612644003C6799 /* emojis.json */; };
 		FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF380332413FAC800C592D4 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
@@ -89,11 +84,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA9D207B273FE96100413E6E /* Domain in Frameworks */,
-				FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */,
-				FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */,
-				FA267C2F2A741B6200CC68DF /* Alne in Frameworks */,
-				FA9D207D2740090200413E6E /* Database in Frameworks */,
 				FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */,
 				FAB324B32A8F47F800D180F8 /* Features in Frameworks */,
 			);
@@ -206,11 +196,6 @@
 			);
 			name = Alfheim;
 			packageProductDependencies = (
-				FA9D207A273FE96100413E6E /* Domain */,
-				FA9D207C2740090200413E6E /* Database */,
-				FA267C2C2A741B5D00CC68DF /* Persistence */,
-				FA267C2E2A741B6200CC68DF /* Alne */,
-				FABFB2EC2A74E90B0023FF0E /* Charts */,
 				FAB324B22A8F47F800D180F8 /* Features */,
 			);
 			productName = Alfheim;
@@ -595,29 +580,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA267C2C2A741B5D00CC68DF /* Persistence */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Persistence;
-		};
-		FA267C2E2A741B6200CC68DF /* Alne */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Alne;
-		};
-		FA9D207A273FE96100413E6E /* Domain */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Domain;
-		};
-		FA9D207C2740090200413E6E /* Database */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Database;
-		};
 		FAB324B22A8F47F800D180F8 /* Features */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Features;
-		};
-		FABFB2EC2A74E90B0023FF0E /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -109,30 +109,16 @@ public struct RealWorld: Reducer {
       App.Detail()
     }
 
+    Scope(state: \.lifecycle, action: /App.Action.lifecycle) {
+      SceneLifecycle()
+    }
+
     Scope(state: \.main, action: /App.Action.main) {
       Main()
     }
 
     Scope(state: \.home, action: /App.Action.home) {
       Home()
-    }
-
-    Reduce { state, action in
-      switch action {
-      case .lifecycle(.willConnect):
-        // TODO: load all data
-        return .none
-      case .lifecycle(.willEnterForeground):
-        // TODO: Sync iCloud, Subscribe
-        return .none
-      case .lifecycle(.didEnterBackground):
-        // TODO: Unsubscribe
-        return .none
-      case .lifecycle:
-        return .none
-      default:
-        return .none
-      }
     }
   }
 }
