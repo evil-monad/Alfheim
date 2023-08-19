@@ -25,10 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
-    //if let name = UIApplication.shared.alternateIconName?.lowercased(), let icon = AppIcon(rawValue: name) {
-    //  state.settings.appIcon = icon
-    //}
-
     sceneStore.send(.lifecycle(.willConnect))
 
     // Start app story

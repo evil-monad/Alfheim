@@ -53,10 +53,10 @@ extension FetchedRequest {
   func makeFetchRequest() -> NSFetchRequest<Result.ResultType> {
     let fetchRequest = Result.fetchRequest()
     fetchRequest.resultType = .managedObjectResultType
-    if let limit = fetchLimit {
-      fetchRequest.fetchLimit = limit
+    if let fetchLimit {
+      fetchRequest.fetchLimit = fetchLimit
     }
-    if let predicate = predicate {
+    if let predicate {
       fetchRequest.predicate = predicate
     }
     if !sortDescriptors.isEmpty {

@@ -53,7 +53,7 @@ extension Overview {
     }
 
     private var periodTransactions: [Domain.Transaction] {
-      if let timeInterval = timeInterval {
+      if let timeInterval {
         return allTransactions
           .filter { $0.date >= timeInterval.start && $0.date <= timeInterval.end }
       } else {
