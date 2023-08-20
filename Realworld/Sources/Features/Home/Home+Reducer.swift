@@ -67,6 +67,7 @@ public struct Home: Reducer {
   }
 
   @Dependency(\.persistent) var persistent
+  @Dependency(\.continuousClock) var clock
 
   public struct Destination: Reducer {
     public enum State: Equatable {
@@ -91,7 +92,10 @@ public struct Home: Reducer {
 
       switch action {
       case .onAppear:
-        return .none
+        return .run { send in
+          try await self.clock.sleep(for: .milliseconds(200))
+          await send(.select(nil), animation: .default)
+        }
 
       case .select(.none):
         state.selection = nil

@@ -55,6 +55,9 @@ struct HomeView: View {
         .buttonStyle(.plain)
         .tint(Color(UIColor.systemGray4))
       }
+      .onAppear {
+        store.send(.onAppear)
+      }
       .sheet(
         store: self.store.scope(state: \.$destination, action: { .destination($0) }),
         state: /Home.Destination.State.edit,
@@ -125,17 +128,11 @@ struct QuickMenu: View {
         ForEach(vs.menus) { item in
           MenuRow(item, selection: vs.selection)
             .onTapGesture {
-              vs.send(.select(.menu(item)))
+              vs.send(.select(.menu(item)), animation: .linear(duration: 0.15))
             }
         }
       }
       .onLongPressGesture {}
-      .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) {
-          // selection = nil
-          vs.send(.select(nil))
-        }
-      }
     }
   }
 }
