@@ -20,7 +20,7 @@ struct SettingsView: View {
           NavigationLink {
             CloudView()
           } label: {
-            Text("Cloud").fontWeight(.medium)
+            Text("Cloud")
           }
         }
 
@@ -28,13 +28,13 @@ struct SettingsView: View {
           NavigationLink {
             AppearanceView()
           } label: {
-            Text("Appearance").fontWeight(.medium)
+            Text("Appearance")
           }
 
           NavigationLink {
             AppIconView(store: store)
           } label: {
-            Text("App Icon").fontWeight(.medium)
+            Text("App Icon")
           }
         }
 
@@ -42,23 +42,24 @@ struct SettingsView: View {
           NavigationLink {
             AboutView()
           } label: {
-            Text("About").fontWeight(.medium)
+            Text("About")
           }
 
           NavigationLink {
             HelpView()
           } label: {
-            Text("Help").fontWeight(.medium)
+            Text("Help")
           }
 
           HStack {
-            Text("Version").fontWeight(.medium)
+            Text("Version")
             Spacer()
             Text(vs.appVersion)
           }
         }
       }
       .listStyle(.insetGrouped)
+      .fontWeight(.regular)
     }
   }
 }
