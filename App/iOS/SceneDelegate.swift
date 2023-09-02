@@ -18,6 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private lazy var store: AppStore = {
     return AppStore(initialState: App.State()) {
       RealWorld()
+        ._printChanges()
     }
   }()
 
