@@ -27,7 +27,8 @@ struct EditorView: View {
         Section {
           HStack {
             AccountPicker(
-              vs.state.groupedRootAccounts,
+              style: .compact,
+              accounts: vs.state.groupedRootAccounts,
               selection: vs.binding(get: { $0.source }, send: { .changed(.source($0)) })
             ) {
               selectedAccount(vs.source)
@@ -51,7 +52,8 @@ struct EditorView: View {
           }
           HStack {
             AccountPicker(
-              vs.state.groupedRootAccounts,
+              style: .compact,
+              accounts: vs.state.groupedRootAccounts,
               selection: vs.binding(get: { $0.target }, send: { .changed(.target($0)) })
             ) {
               selectedAccount(vs.target)

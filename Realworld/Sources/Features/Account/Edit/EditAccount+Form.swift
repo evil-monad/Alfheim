@@ -35,8 +35,9 @@ struct EditAccountForm: View {
 
         Section {
           AccountPicker(
-            vs.state.groupedRootAccounts,
-            selection: vs.binding(get: { $0.parent }, send: { .changed(.parent($0)) })) {
+            accounts: vs.state.groupedRootAccounts,
+            selection: vs.binding(get: { $0.parent }, send: { .changed(.parent($0)) })
+          ) {
               Text("Group")
           }
           EmojiPicker(

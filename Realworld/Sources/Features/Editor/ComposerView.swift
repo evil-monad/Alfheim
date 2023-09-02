@@ -16,7 +16,7 @@ struct ComposerView: View {
   let mode: EditorView.Mode
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       WithViewStore(store, observe: { $0 }) { vs in
         EditorView(store: store)
           .navigationTitle(vs.isNew ? " New Transaction" : "Edit Transaction")

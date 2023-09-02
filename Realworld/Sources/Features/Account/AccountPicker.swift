@@ -51,14 +51,16 @@ extension View {
 }
 
 struct AccountPicker<Label>: View where Label: View {
-  @Environment(\.accountPickerStyle) private var style
+  // When using env within NavigationStack will cause binding changed
+  //@Environment(\.accountPickerStyle) private var style
 
-  @State private var isContentActive: Bool = false
+  private var style: AccountPickerStyle = .automatic
   private let selection: Binding<Domain.Account.Summary?>
   private let label: Label
   private let accounts: [String: [Domain.Account]]
 
-  init(_ accounts: [String: [Domain.Account]],
+  init(style: AccountPickerStyle = DefaultAccountPickerStyle(),
+       accounts: [String: [Domain.Account]],
        selection: Binding<Domain.Account.Summary?>,
        @ViewBuilder label: @escaping () -> Label) {
     self.accounts = accounts
@@ -69,7 +71,7 @@ struct AccountPicker<Label>: View where Label: View {
   @ViewBuilder
   var body: some View {
     if style is DefaultAccountPickerStyle {
-      NavigationLink(destination: content, isActive: $isContentActive) {
+      NavigationLink(destination: content) {
         HStack {
           label
           Spacer()
@@ -80,7 +82,7 @@ struct AccountPicker<Label>: View where Label: View {
       ZStack {
         label
 
-        NavigationLink(destination: content, isActive: $isContentActive) {
+        NavigationLink(destination: content) {
           EmptyView()
         }
         .buttonStyle(.plain)
@@ -94,7 +96,6 @@ struct AccountPicker<Label>: View where Label: View {
     Hierarchy(accounts) { account in
       Button {
         selection.wrappedValue = account.summary
-        isContentActive = false
       } label: {
         HStack {
           Group {
