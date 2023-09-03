@@ -35,11 +35,12 @@ struct EditAccountForm: View {
 
         Section {
           AccountPicker(
-            accounts: vs.state.groupedRootAccounts,
+            accounts: vs.groupedRootAccounts,
             selection: vs.binding(get: { $0.parent }, send: { .changed(.parent($0)) })
           ) {
-              Text("Group")
+            Text("Group")
           }
+
           EmojiPicker(
             selection: vs.binding(get: \.emoji,
                                   send: { .changed(.emoji($0)) })
@@ -68,6 +69,39 @@ struct EditAccountForm: View {
         }
       }
       .listStyle(InsetGroupedListStyle())
+    }
+  }
+
+  private var accountPicker: some View {
+    WithViewStore(store, observe: { $0 }) { vs in
+      NavigationLink {
+        HierarchyAccountPicker(
+          vs.groupedRootAccounts
+        ) { account in
+          Button {
+            vs.send(.changed(.parent(account.summary)))
+            // popback
+          } label: {
+            HStack {
+              Group {
+                if vs.parent == account.summary {
+                  Image(systemName: "checkmark").foregroundColor(.blue)
+                } else {
+                  Text("\(account.emoji ?? "")")
+                }
+              }
+              .frame(width: 22)
+              Text(account.name)
+            }
+          }
+        }
+      } label: {
+        HStack {
+          Text("Group")
+          Spacer()
+          Text(vs.parent?.name ?? "")
+        }
+      }
     }
   }
 }

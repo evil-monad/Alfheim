@@ -63,6 +63,7 @@ struct AccountPicker<Label>: View where Label: View {
        accounts: [String: [Domain.Account]],
        selection: Binding<Domain.Account.Summary?>,
        @ViewBuilder label: @escaping () -> Label) {
+    self.style = style
     self.accounts = accounts
     self.selection = selection
     self.label = label()
@@ -115,6 +116,28 @@ struct AccountPicker<Label>: View where Label: View {
       } else {
         Text(group.uppercased())
       }
+    }
+    .listStyle(.insetGrouped)
+  }
+}
+
+struct HierarchyAccountPicker<Label>: View where Label: View {
+  private let accounts: [String: [Domain.Account]]
+
+  @ViewBuilder
+  private let label: (Domain.Account) -> Label
+
+  init(_ accounts: [String: [Domain.Account]],
+       @ViewBuilder label: @escaping (Domain.Account) -> Label) {
+    self.accounts = accounts
+    self.label = label
+  }
+
+  var body: some View {
+    Hierarchy(accounts) { account in
+      label(account)
+    } header: { _ in
+      EmptyView()
     }
     .listStyle(.insetGrouped)
   }
