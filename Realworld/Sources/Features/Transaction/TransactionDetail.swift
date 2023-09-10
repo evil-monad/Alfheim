@@ -14,8 +14,8 @@ struct TransactionDetail: View {
   var body: some View {
     List {
       Section {
-        HStack {
-          Field("Amount", value: "\(state.amount)")
+        Field("Amount", value: "\(state.displayAmount)")
+        Field("Account") {
           Text(state.from)
             .font(.footnote).fontWeight(.medium)
             .foregroundColor(.green)
@@ -40,28 +40,38 @@ struct TransactionDetail: View {
 
       Section {
         Field("Payee", value: state.transaction.payee)
-        Field("Number", value: "\(state.transaction.number)")
+        Field("Number", value: "\(state.transaction.number ?? "0")")
         Field("Repeat", value: "\(state.transaction.repeated)")
-        Field("Cleared", value: "\(state.transaction.cleared)")
+        Field("Cleared", value: "\(state.transaction.cleared)".capitalized)
       }
     }
   }
+}
 
-  struct Field: View {
-    let name: String
-    let content: Text
+private struct Field<Content: View>: View {
+  let name: String
+  let content: Content
 
-    init(_ name: String, value: String?) {
-      self.name = name
-      self.content = Text(value ?? "")
+  init(_ name: String, @ViewBuilder content: () -> Content) {
+    self.name = name
+    self.content = content()
+  }
+
+  var body: some View {
+    HStack {
+      Text(name)
+        .foregroundColor(.primary)
+      Spacer()
+      content
+        .foregroundColor(.secondary)
     }
+  }
+}
 
-    var body: some View {
-      HStack {
-        Text(name)
-          .foregroundColor(.primary)
-        content
-      }
+extension Field where Content == Text {
+  init(_ name: String, value: String?) {
+    self.init(name) {
+      Text(value ?? "")
     }
   }
 }
@@ -74,7 +84,7 @@ struct TransactionDetail_Previews: PreviewProvider {
 
 extension Domain.Account.Summary {
   static func mock(name: String) -> Domain.Account.Summary {
-    Domain.Account.Summary(id: UUID(), name: "Cash", introduction: "Cash account", group: .assets, currency: .cny, tag: "", emoji: "", descendants: nil, ancestors: nil)
+    Domain.Account.Summary(id: UUID(), name: "Cash", introduction: "Cash account", group: .assets, currency: .cny, tag: "", emoji: "💵", descendants: nil, ancestors: nil)
   }
 }
 
