@@ -46,15 +46,11 @@ struct ListNavigation: View {
           store.send(.loadAll)
         }
     } destination: { store in
-      switch store.state {
-      case .overview:
-        if let store = store.scope(state: \.overview, action: \.overview) {
-          OverviewView(store: store)
-        }
-      case .transation:
-        if let store = store.scope(state: \.transation, action: \.transation) {
-          TransactionList(store: store)
-        }
+      switch store.case {
+      case let .overview(store):
+        OverviewView(store: store)
+      case let .transation(store):
+        TransactionList(store: store)
       }
     }
   }

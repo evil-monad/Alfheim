@@ -29,27 +29,10 @@ extension RealWorld {
     public init() {}
   }
 
-  @Reducer
-  public struct Path {
-    @ObservableState
-    public enum State: Equatable {
-      case overview(Overview.State)
-      case transation(Transaction.State)
-    }
-
-    public enum Action: Equatable {
-      case overview(Overview.Action)
-      case transation(Transaction.Action)
-    }
-
-    public var body: some ReducerOf<Self> {
-      Scope(state: \.overview, action: \.overview) {
-        Overview()
-      }
-      Scope(state: \.transation, action: \.transation) {
-        Transaction()
-      }
-    }
+  @Reducer(state: .equatable)
+  public enum Path {
+    case overview(Overview)
+    case transation(Transaction)
   }
 
   @Reducer

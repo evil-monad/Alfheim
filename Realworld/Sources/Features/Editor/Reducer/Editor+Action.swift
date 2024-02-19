@@ -11,6 +11,7 @@ import Domain
 import Kit
 import ComposableArchitecture
 
+/*
 extension Editor {
   public enum Action: BindableAction, Equatable {
     case save(Domain.Transaction, mode: App.Action.EditMode)
@@ -38,3 +39,4 @@ extension Editor {
      */
   }
 }
+*/

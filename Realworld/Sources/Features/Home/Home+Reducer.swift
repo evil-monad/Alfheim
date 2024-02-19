@@ -46,7 +46,7 @@ public struct Home {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     enum Delegate: Equatable {
       case delete(Domain.Account)
       case edit(Domain.Account?)
@@ -71,20 +71,9 @@ public struct Home {
   @Dependency(\.persistent) var persistent
   @Dependency(\.continuousClock) var clock
 
-  @Reducer
-  public struct Destination {
-    public enum State: Equatable {
-      case edit(EditAccount.State)
-    }
-    public enum Action: Equatable {
-      case edit(EditAccount.Action)
-    }
-
-    public var body: some ReducerOf<Self> {
-      Scope(state: \.edit, action: \.edit) {
-        EditAccount()
-      }
-    }
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case edit(EditAccount)
   }
 
   public var body: some ReducerOf<Self> {
@@ -132,9 +121,7 @@ public struct Home {
         return .none
       }
     }
-    .ifLet(\.$destination, action: \.destination) {
-      Destination()
-    }
+    .ifLet(\.$destination, action: \.destination)
   }
 }
 

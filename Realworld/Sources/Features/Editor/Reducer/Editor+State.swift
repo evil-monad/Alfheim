@@ -20,6 +20,16 @@ public struct Editor {
   @Dependency(\.persistent) var persistent
   @Dependency(\.validator) var validator
 
+  public enum Action: BindableAction, Equatable {
+    case save(Domain.Transaction, mode: App.Action.EditMode)
+    case edit(Domain.Transaction)
+    case new
+    case binding(BindingAction<State>)
+    case loadAccounts
+    case didLoadAccounts([Domain.Account])
+    case focused(Editor.State.FocusField?)
+  }
+  
   /// Composer, editor state
   @ObservableState
   public struct State: Equatable {
@@ -144,6 +154,52 @@ public struct Editor {
       accounts.filter { $0.root }.flatMap { $0.children ?? [] }
     }
   }
+
+  public var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      struct ValidationId: Hashable {}
+
+      switch action {
+      case .new:
+        state.reset(.new)
+      case .edit(let transaction):
+        state.reset(.edit(transaction))
+      case let .save(model, mode):
+        switch mode {
+        case .new:
+          return .run { send in
+            try await persistent.insert(model, relationships: [
+              (keyPath: \.target, value: Domain.Account(model.target)),
+              (keyPath: \.source, value: Domain.Account(model.source)),
+            ])
+          }
+        case .update:
+          return .run { send in
+            try await persistent.update(model, relationships: [
+              (keyPath: \.target, value: Domain.Account(model.target)),
+              (keyPath: \.source, value: Domain.Account(model.source)),
+            ])
+          }
+        case .delete:
+          fatalError("Editor can't delete")
+        }
+      case .loadAccounts:
+        return .run { send in
+          let accounts = try await persistent.fetch(Domain.Account.all.sort("name", ascending: true)) { Domain.Account.makeTree($0) }
+          await send(.didLoadAccounts(accounts))
+        }
+      case .didLoadAccounts(let accounts):
+        state.accounts = accounts
+        break
+      case .binding:
+        state.isValid = validator.validate(state: state)
+      case .focused(let field):
+        state.focusField = field
+      }
+      return .none
+    }
+  }
+
 }
 
 extension String {

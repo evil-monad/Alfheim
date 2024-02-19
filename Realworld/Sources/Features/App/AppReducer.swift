@@ -72,6 +72,9 @@ public struct RealWorld {
         return .none
 
       case let .home(.select(.some(.account(account)))):
+        guard state.home.selection != .account(account) else {
+          return .none
+        }
         let overview = Overview.State(account: account)
         if state.sidebar {
           state.detail = .overview(overview)
@@ -81,6 +84,10 @@ public struct RealWorld {
         return .none
 
       case let .home(.select(.some(.menu(item)))):
+        guard state.home.selection != .menu(item) else {
+          return .none
+        }
+
         let allTransactions = state.home.accounts.flatMap {
           $0.transactions(.depth)
         }
@@ -102,9 +109,7 @@ public struct RealWorld {
       }
       return .none
     }
-    .forEach(\.path, action: \.path) {
-      App.Path()
-    }
+    .forEach(\.path, action: \.path)
     .ifLet(\.detail, action: \.detail) {
       App.Detail()
     }

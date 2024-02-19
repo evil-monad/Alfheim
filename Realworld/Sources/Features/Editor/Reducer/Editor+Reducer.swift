@@ -11,8 +11,8 @@ import ComposableArchitecture
 import Persistence
 import Domain
 
+/*
 extension Editor {
-  
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       struct ValidationId: Hashable {}
@@ -91,3 +91,4 @@ extension Editor {
     }
   }
 }
+*/

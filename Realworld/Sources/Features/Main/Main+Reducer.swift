@@ -18,34 +18,17 @@ public struct Main {
     @Presents var destination: Destination.State?
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     case newAccount
     case settings
     case destination(PresentationAction<Destination.Action>)
     case dismiss
   }
 
-  @Reducer
-  public struct Destination {
-    @ObservableState
-    public enum State: Equatable {
-      case newAccount(EditAccount.State)
-      case settings(Settings.State)
-    }
-    public enum Action: Equatable {
-      case newAccount(EditAccount.Action)
-      case settings(Settings.Action)
-    }
-
-    public var body: some ReducerOf<Self> {
-      EmptyReducer()
-      .ifCaseLet(/State.newAccount, action: /Action.newAccount) {
-        EditAccount()
-      }
-      .ifCaseLet(/State.settings, action: /Action.settings) {
-        Settings()
-      }
-    }
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case newAccount(EditAccount)
+    case settings(Settings)
   }
 
   public var body: some ReducerOf<Self> {
@@ -71,8 +54,6 @@ public struct Main {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
-      Destination()
-    }
+    .ifLet(\.$destination, action: \.destination)
   }
 }

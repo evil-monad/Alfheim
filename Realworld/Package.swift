@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Underworld"),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.7.0"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.8.0"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     ],
     targets: [
