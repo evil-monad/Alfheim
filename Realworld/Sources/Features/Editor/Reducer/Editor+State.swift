@@ -15,13 +15,13 @@ import Database
 import Persistence
 import Kit
 
-public struct Editor: Reducer {
+@Reducer
+public struct Editor {
   @Dependency(\.persistent) var persistent
   @Dependency(\.validator) var validator
-}
 
-extension Editor {
   /// Composer, editor state
+  @ObservableState
   public struct State: Equatable {
     public enum Mode: Equatable {
       case new
@@ -50,8 +50,8 @@ extension Editor {
 
     var date: Date = Date()
     var notes: String = ""
-    var payee: String?
-    var number: String?
+    var payee: String = ""
+    var number: String = ""
 
     var repeated: Repeat = .never
     var cleared: Bool = true
@@ -68,85 +68,81 @@ extension Editor {
     var isNew: Bool {
       return mode.isNew
     }
-  }
-}
 
-extension Editor.State {
-  mutating func reset(_ mode: Mode) {
-    switch mode {
-    case .new:
-      amount = ""
-      currency = .cny
-      date = Date()
-      notes = ""
-      payee = nil
-      number = nil
-      repeated = .never
-      cleared = true
-      source = nil
-      // target = nil
-      attachments = []
-    case .edit(let transaction):
-      amount = "\(transaction.amount)"
-      currency = transaction.currency
-      date = transaction.date
-      notes = transaction.notes
-      payee = transaction.payee
-      number = transaction.number
-      repeated = Repeat(rawValue: Int(transaction.repeated)) ?? .never
-      cleared = transaction.cleared
-      source = transaction.source
-      target = transaction.target
-      attachments = transaction.attachments
+    mutating func reset(_ mode: Mode) {
+      switch mode {
+      case .new:
+        amount = ""
+        currency = .cny
+        date = Date()
+        notes = ""
+        payee = ""
+        number = ""
+        repeated = .never
+        cleared = true
+        source = nil
+        // target = nil
+        attachments = []
+      case .edit(let transaction):
+        amount = "\(transaction.amount)"
+        currency = transaction.currency
+        date = transaction.date
+        notes = transaction.notes
+        payee = transaction.payee ?? ""
+        number = transaction.number ?? ""
+        repeated = Repeat(rawValue: Int(transaction.repeated)) ?? .never
+        cleared = transaction.cleared
+        source = transaction.source
+        target = transaction.target
+        attachments = transaction.attachments
+      }
+      self.mode = mode
     }
-    self.mode = mode
-  }
-}
 
-extension Editor.State {
-  var transaction: Domain.Transaction {
-    switch mode {
-    case .new:
-      return Domain.Transaction(
-        id: UUID(),
-        amount: Double(amount)!,
-        currency: Int16(currency.rawValue),
-        date: date,
-        notes: notes,
-        payee: payee,
-        number: number,
-        repeated: Int16(repeated.rawValue),
-        cleared: cleared,
-        flagged: false,
-        target: target!,
-        source: source!,
-        attachments: attachments
-      )
-    case .edit(let transaction):
-      return Domain.Transaction(
-        id: transaction.id,
-        amount: Double(amount)!,
-        currency: Int16(currency.rawValue),
-        date: date,
-        notes: notes,
-        payee: payee,
-        number: number,
-        repeated: Int16(repeated.rawValue),
-        cleared: cleared,
-        flagged: false,
-        target: target!,
-        source: source!,
-        attachments: attachments
-      )
+    var transaction: Domain.Transaction {
+      switch mode {
+      case .new:
+        return Domain.Transaction(
+          id: UUID(),
+          amount: Double(amount)!,
+          currency: Int16(currency.rawValue),
+          date: date,
+          notes: notes,
+          payee: payee,
+          number: number,
+          repeated: Int16(repeated.rawValue),
+          cleared: cleared,
+          flagged: false,
+          target: target!,
+          source: source!,
+          attachments: attachments
+        )
+      case .edit(let transaction):
+        return Domain.Transaction(
+          id: transaction.id,
+          amount: Double(amount)!,
+          currency: Int16(currency.rawValue),
+          date: date,
+          notes: notes,
+          payee: payee,
+          number: number,
+          repeated: Int16(repeated.rawValue),
+          cleared: cleared,
+          flagged: false,
+          target: target!,
+          source: source!,
+          attachments: attachments
+        )
+      }
     }
-  }
 
-  var groupedRootAccounts: [String: [Domain.Account]] {
-    return rootAccounts.grouped(by: { $0.group.rawValue })
-  }
+    var groupedRootAccounts: [String: [Domain.Account]] {
+      return rootAccounts.grouped(by: { $0.group.rawValue })
+    }
 
-  var rootAccounts: [Domain.Account] {
-    accounts.filter { $0.root }.flatMap { $0.children ?? [] }
+    var rootAccounts: [Domain.Account] {
+      accounts.filter { $0.root }.flatMap { $0.children ?? [] }
+    }
   }
 }
 

@@ -11,11 +11,13 @@ import ComposableArchitecture
 import Persistence
 import Domain
 
-public struct EditAccount: Reducer {
+@Reducer
+public struct EditAccount {
   @Dependency(\.persistent) var persistent
   @Dependency(\.account) var env
 
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     Reduce { state, action in
       struct ValidationId: Hashable {}
 
@@ -51,6 +53,7 @@ public struct EditAccount: Reducer {
       case .didLoadAccounts(let accounts):
         state.accounts = accounts
 
+      /*
       case .changed(let field):
         switch field {
         case .name(let value):
@@ -68,6 +71,13 @@ public struct EditAccount: Reducer {
           state.group = value?.group.rawValue ?? ""
         }
         state.isValid = env.validator.validate(state: state)
+       */
+
+      case .binding:
+        state.isValid = env.validator.validate(state: state)
+
+      case .binding(\.parent):
+        state.group = state.parent?.group.rawValue ?? ""
 
       default:
         return .none

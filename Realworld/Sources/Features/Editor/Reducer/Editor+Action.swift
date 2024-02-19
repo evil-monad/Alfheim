@@ -9,17 +9,19 @@
 import Foundation
 import Domain
 import Kit
+import ComposableArchitecture
 
 extension Editor {
-  public enum Action: Equatable {
+  public enum Action: BindableAction, Equatable {
     case save(Domain.Transaction, mode: App.Action.EditMode)
     case edit(Domain.Transaction)
     case new
-    case changed(Field)
+    case binding(BindingAction<State>)
     case loadAccounts
     case didLoadAccounts([Domain.Account])
     case focused(Editor.State.FocusField?)
 
+    /*
     public enum Field: Equatable {
       case amount(String)
       case currency(Currency)
@@ -33,5 +35,6 @@ extension Editor {
       case cleared(Bool)
       case attachment
     }
+     */
   }
 }

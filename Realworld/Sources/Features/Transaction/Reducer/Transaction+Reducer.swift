@@ -76,7 +76,7 @@ extension Transaction {
         return .run { send in
           try await persistent.delete(transaction)
         }
-      case .filter(let selection):
+      case .filtered(let selection):
         state.filter = selection
       default:
         break

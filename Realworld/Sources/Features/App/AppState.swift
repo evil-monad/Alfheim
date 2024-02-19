@@ -12,6 +12,7 @@ import ComposableArchitecture
 import Domain
 
 extension RealWorld {
+  @ObservableState
   public struct State: Equatable {
     var hasInitialized: Bool = false
 
@@ -28,7 +29,9 @@ extension RealWorld {
     public init() {}
   }
 
-  public struct Path: Reducer {
+  @Reducer
+  public struct Path {
+    @ObservableState
     public enum State: Equatable {
       case overview(Overview.State)
       case transation(Transaction.State)
@@ -40,16 +43,18 @@ extension RealWorld {
     }
 
     public var body: some ReducerOf<Self> {
-      Scope(state: /State.overview, action: /Action.overview) {
+      Scope(state: \.overview, action: \.overview) {
         Overview()
       }
-      Scope(state: /State.transation, action: /Action.transation) {
+      Scope(state: \.transation, action: \.transation) {
         Transaction()
       }
     }
   }
 
-  public struct Detail: Reducer {
+  @Reducer
+  public struct Detail {
+    @ObservableState
     public enum State: Equatable {
       case overview(Overview.State)
       case transation(Transaction.State)
@@ -61,10 +66,10 @@ extension RealWorld {
     }
 
     public var body: some ReducerOf<Self> {
-      Scope(state: /State.overview, action: /Action.overview) {
+      Scope(state: \.overview, action: \.overview) {
         Overview()
       }
-      Scope(state: /State.transation, action: /Action.transation) {
+      Scope(state: \.transation, action: \.transation) {
         Transaction()
       }
     }

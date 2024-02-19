@@ -14,6 +14,7 @@ import ComposableArchitecture
 
 extension Overview {
   /// Overview view state
+  @ObservableState
   public struct State: Equatable, Identifiable {
     var hasInitialized: Bool = false
     var isEditorPresented: Bool = false

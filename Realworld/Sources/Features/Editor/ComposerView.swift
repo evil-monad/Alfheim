@@ -17,29 +17,27 @@ struct ComposerView: View {
 
   var body: some View {
     NavigationStack {
-      WithViewStore(store, observe: { $0 }) { vs in
-        EditorView(store: store)
-          .navigationTitle(vs.isNew ? " New Transaction" : "Edit Transaction")
-          .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-              Button {
-                let action = Editor.Action.save(vs.transaction, mode: vs.isNew ? .new : .update)
-                vs.send(action)
-                dismiss()
-              } label: {
-                Text("Save").bold()
-              }
-              .disabled(!vs.isValid)
+      EditorView(store: store)
+        .navigationTitle(store.isNew ? " New Transaction" : "Edit Transaction")
+        .toolbar {
+          ToolbarItem(placement: .confirmationAction) {
+            Button {
+              let action = Editor.Action.save(store.transaction, mode: store.isNew ? .new : .update)
+              store.send(action)
+              dismiss()
+            } label: {
+              Text("Save").bold()
             }
-            ToolbarItem(placement: .cancellationAction) {
-              Button {
-                dismiss()
-              } label: {
-                Text("Cancel")
-              }
+            .disabled(!store.isValid)
+          }
+          ToolbarItem(placement: .cancellationAction) {
+            Button {
+              dismiss()
+            } label: {
+              Text("Cancel")
             }
           }
-      }
+        }
     }
     .navigationViewStyle(.stack)
     .task {

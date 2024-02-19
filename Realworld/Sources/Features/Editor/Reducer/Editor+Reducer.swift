@@ -49,6 +49,10 @@ extension Editor {
       case .didLoadAccounts(let accounts):
         state.accounts = accounts
         break
+      case .binding:
+        state.isValid = validator.validate(state: state)
+
+      /*
       case .changed(let field):
         switch field {
         case .amount(let value):
@@ -79,6 +83,7 @@ extension Editor {
           state.attachments = []
         }
         state.isValid = validator.validate(state: state)
+       */
       case .focused(let field):
         state.focusField = field
       }

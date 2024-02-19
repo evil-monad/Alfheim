@@ -16,12 +16,12 @@ import ComposableArchitecture
 import Alne
 import Persistence
 
-public struct Transaction: Reducer {
+@Reducer
+public struct Transaction {
   @Dependency(\.persistent) var persistent
-}
 
-extension Transaction {
   /// Transaction list view state
+  @ObservableState
   public struct State: Equatable, Identifiable {
     var source: Transactions.Source
 
@@ -83,9 +83,10 @@ extension Transaction {
       }
 
       let sections = Dictionary(grouping: filteredTransactions) { transaction in
-        return transaction.date.start(of: .day)
-      }.map { Transaction.State.SectionedTransaction(date: $0, transactions: $1) }
-      .sorted(by: { $0.date > $1.date })
+          return transaction.date.start(of: .day)
+        }
+        .map { Transaction.State.SectionedTransaction(date: $0, transactions: $1) }
+        .sorted(by: { $0.date > $1.date })
 
       return IdentifiedArray(uniqueElements: sections)
     }
@@ -101,6 +102,18 @@ extension Transaction {
         self.date = date
         self.viewStates = IdentifiedArray(uniqueElements: transactions.sorted(by: { $0.date > $1.date })
           .map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
+      }
+    }
+
+    public enum Filter: LocalizedStringKey, CaseIterable, Hashable {
+      case none = "None" // default transaction source, not equals to all
+      case week = "This Week"
+      case month = "This Month"
+      case year = "This Year"
+      case all = "All"
+
+      public var name: LocalizedStringKey {
+        rawValue
       }
     }
   }
@@ -137,20 +150,6 @@ enum Transactions {
       case let .accounted(account, _):
         return account.transactions(.depth)
       }
-    }
-  }
-}
-
-public extension Transaction.State {
-  enum Filter: LocalizedStringKey, CaseIterable, Hashable {
-    case none = "None" // default transaction source, not equals to all
-    case week = "This Week"
-    case month = "This Month"
-    case year = "This Year"
-    case all = "All"
-
-    var name: LocalizedStringKey {
-      rawValue
     }
   }
 }

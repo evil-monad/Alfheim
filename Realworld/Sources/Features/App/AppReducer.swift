@@ -16,12 +16,12 @@ import Persistence
 
 public typealias App = RealWorld
 
-public struct RealWorld: Reducer {
+@Reducer
+public struct RealWorld {
 
   @Dependency(\.persistent) var persistent
 
-  public init() {
-  }
+  public init() {}
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -102,22 +102,22 @@ public struct RealWorld: Reducer {
       }
       return .none
     }
-    .forEach(\.path, action: /Action.path) {
+    .forEach(\.path, action: \.path) {
       App.Path()
     }
-    .ifLet(\.detail, action: /Action.detail) {
+    .ifLet(\.detail, action: \.detail) {
       App.Detail()
     }
 
-    Scope(state: \.lifecycle, action: /App.Action.lifecycle) {
+    Scope(state: \.lifecycle, action: \.lifecycle) {
       SceneLifecycle()
     }
 
-    Scope(state: \.main, action: /App.Action.main) {
+    Scope(state: \.main, action: \.main) {
       Main()
     }
 
-    Scope(state: \.home, action: /App.Action.home) {
+    Scope(state: \.home, action: \.home) {
       Home()
     }
   }

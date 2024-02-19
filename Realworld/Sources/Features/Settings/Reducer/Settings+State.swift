@@ -8,9 +8,11 @@
 
 import Foundation
 import Kit
+import ComposableArchitecture
 
 extension Settings {
   /// Settings view state
+  @ObservableState
   public struct State: Equatable {
     var isPresented: Bool = false
     var appIcon: AppIcon = .primary

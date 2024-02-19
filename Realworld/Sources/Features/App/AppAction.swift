@@ -11,6 +11,7 @@ import Domain
 import ComposableArchitecture
 
 extension RealWorld {
+  @CasePathable
   public enum Action {
     case lifecycle(SceneLifecycle.Action)
     case sidebar

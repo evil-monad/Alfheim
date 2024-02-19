@@ -10,10 +10,12 @@ import Foundation
 import Domain
 import ComposableArchitecture
 
-public struct Main: Reducer {
+@Reducer
+public struct Main {
 
+  @ObservableState
   public struct State: Equatable {
-    @PresentationState var destination: Destination.State?
+    @Presents var destination: Destination.State?
   }
 
   public enum Action: Equatable {
@@ -23,7 +25,9 @@ public struct Main: Reducer {
     case dismiss
   }
 
-  public struct Destination: Reducer {
+  @Reducer
+  public struct Destination {
+    @ObservableState
     public enum State: Equatable {
       case newAccount(EditAccount.State)
       case settings(Settings.State)

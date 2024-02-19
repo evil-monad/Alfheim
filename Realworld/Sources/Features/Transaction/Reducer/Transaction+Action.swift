@@ -8,8 +8,10 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension Transaction {
+  @CasePathable
   public enum Action: Equatable {
     case editTransaction(Domain.Transaction)
     case didEditTransaction
@@ -19,7 +21,7 @@ extension Transaction {
     case showStatistics([Domain.Transaction], interval: DateInterval)
     case dimissStatistics
 
-    case filter(selection: Transaction.State.Filter)
+    case filtered(Transaction.State.Filter)
 
     case onAppear
 

@@ -11,7 +11,8 @@ import ComposableArchitecture
 import Domain
 import Persistence
 
-public struct Overview: Reducer {
+@Reducer
+public struct Overview {
   @Dependency(\.persistent) var persistent
 
   public var body: some ReducerOf<Self> {
@@ -58,11 +59,11 @@ public struct Overview: Reducer {
       return .none
     }
 
-    Scope(state: \.editor, action: /Action.editor) {
+    Scope(state: \.editor, action: \.editor) {
       Editor()
     }
 
-    Scope(state: \.transactions, action: /Action.transaction) {
+    Scope(state: \.transactions, action: \.transaction) {
       Transaction()
     }
   }
