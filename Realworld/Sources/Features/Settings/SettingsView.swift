@@ -14,53 +14,51 @@ struct SettingsView: View {
   let store: Store<Settings.State, Settings.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List {
-        Section {
-          NavigationLink {
-            CloudView()
-          } label: {
-            Text("Cloud")
-          }
-        }
-
-        Section {
-          NavigationLink {
-            AppearanceView()
-          } label: {
-            Text("Appearance")
-          }
-
-          NavigationLink {
-            AppIconView(store: store)
-          } label: {
-            Text("App Icon")
-          }
-        }
-
-        Section {
-          NavigationLink {
-            AboutView()
-          } label: {
-            Text("About")
-          }
-
-          NavigationLink {
-            HelpView()
-          } label: {
-            Text("Help")
-          }
-
-          HStack {
-            Text("Version")
-            Spacer()
-            Text(vs.appVersion)
-          }
+    List {
+      Section {
+        NavigationLink {
+          CloudView()
+        } label: {
+          Text("Cloud")
         }
       }
-      .listStyle(.insetGrouped)
-      .fontWeight(.regular)
+
+      Section {
+        NavigationLink {
+          AppearanceView()
+        } label: {
+          Text("Appearance")
+        }
+
+        NavigationLink {
+          AppIconView(store: store)
+        } label: {
+          Text("App Icon")
+        }
+      }
+
+      Section {
+        NavigationLink {
+          AboutView()
+        } label: {
+          Text("About")
+        }
+
+        NavigationLink {
+          HelpView()
+        } label: {
+          Text("Help")
+        }
+
+        HStack {
+          Text("Version")
+          Spacer()
+          Text(store.appVersion)
+        }
+      }
     }
+    .listStyle(.insetGrouped)
+    .fontWeight(.regular)
   }
 }
 
@@ -69,10 +67,11 @@ struct SettingsView_Previews: PreviewProvider {
   static var previews: some View {
     SettingsView(
       store: Store(
-        initialState: Settings.State(isPresented: false, appIcon: .primary)) {
+        initialState: Settings.State(isPresented: false, appIcon: .primary)
+      ) {
           Settings()
         }
-      )
+    )
   }
 }
 #endif

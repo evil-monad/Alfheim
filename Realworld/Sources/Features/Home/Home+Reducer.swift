@@ -16,12 +16,14 @@ enum QuickFilter: Int, Hashable, Identifiable {
   var id: Int { rawValue }
 }
 
-public struct Home: Reducer {
+@Reducer
+public struct Home {
+  @ObservableState
   public struct State: Equatable {
     var accounts: [Domain.Account]
     var menus: IdentifiedArrayOf<MenuItem>
     var selection: Selection?
-    @PresentationState var destination: Destination.State?
+    @Presents var destination: Destination.State?
 
     init(accounts: [Domain.Account] = [], selection: Selection? = nil) {
       self.accounts = accounts
@@ -44,7 +46,7 @@ public struct Home: Reducer {
     }
   }
 
-  public enum Action: Equatable {
+  public enum Action {
     enum Delegate: Equatable {
       case delete(Domain.Account)
       case edit(Domain.Account?)
@@ -69,19 +71,9 @@ public struct Home: Reducer {
   @Dependency(\.persistent) var persistent
   @Dependency(\.continuousClock) var clock
 
-  public struct Destination: Reducer {
-    public enum State: Equatable {
-      case edit(EditAccount.State)
-    }
-    public enum Action: Equatable {
-      case edit(EditAccount.Action)
-    }
-
-    public var body: some ReducerOf<Self> {
-      Scope(state: /State.edit, action: /Action.edit) {
-        EditAccount()
-      }
-    }
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case edit(EditAccount)
   }
 
   public var body: some ReducerOf<Self> {
@@ -129,9 +121,7 @@ public struct Home: Reducer {
         return .none
       }
     }
-    .ifLet(\.$destination, action: /Action.destination) {
-      Destination()
-    }
+    .ifLet(\.$destination, action: \.destination)
   }
 }
 

@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Domain
+import ComposableArchitecture
 
 extension EditAccount {
   public enum Mode {
@@ -17,6 +18,7 @@ extension EditAccount {
   }
 
   /// Composer, editor state
+  @ObservableState
   public struct State: Equatable {
     enum Mode: Equatable {
       case new
@@ -48,8 +50,7 @@ extension EditAccount {
       mode = .edit(account)
     }
 
-    public init() {
-    }
+    public init() {}
 
     var accounts: [Domain.Account] = []
 

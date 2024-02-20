@@ -31,111 +31,97 @@ struct SplitNavigation: View {
 }
 
 struct Sidebar: View {
-  let store: Store<App.State, App.Action>
+  @Bindable var store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.main }) { vs in
-      HomeView(store: store.scope(state: \.home, action: { .home($0) }))
-        .listStyle(.insetGrouped)
-        .tint(Color(UIColor.systemGray4))
-        .navigationBarTitle("Clic")
-        .toolbar {
-          ToolbarItem(placement: .primaryAction) {
+    HomeView(store: store.scope(state: \.home, action: \.home))
+      .listStyle(.insetGrouped)
+      .tint(Color(UIColor.systemGray4))
+      .navigationBarTitle("Clic")
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Button {
+            store.send(.newTransaction)
+          } label: {
+            Image(systemName: "plus.circle")
+          }
+        }
+        ToolbarItemGroup(placement: .bottomBar) {
+          HStack {
             Button {
-              store.send(.newTransaction)
+              //vs.send(.cleanup)
+              store.send(.main(.settings))
             } label: {
-              Image(systemName: "plus.circle")
+              Image(systemName: "gear")
             }
-          }
-          ToolbarItemGroup(placement: .bottomBar) {
-            HStack {
-              Button {
-                //vs.send(.cleanup)
-                vs.send(.main(.settings))
-              } label: {
-                Image(systemName: "gear")
-              }
-              Spacer()
-              Button {
-                vs.send(.main(.newAccount))
-              } label: {
-                Text("Add Account")
-              }
+            Spacer()
+            Button {
+              store.send(.main(.newAccount))
+            } label: {
+              Text("Add Account")
             }
           }
         }
-        .sheet(
-          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
-          state: /Main.Destination.State.newAccount,
-          action: Main.Destination.Action.newAccount
-        ) { store in
-          EditAccountView(store: store, mode: .new)
-        }
-        .sheet(
-          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
-          state: /Main.Destination.State.settings,
-          action: Main.Destination.Action.settings
-        ) { store in
-          NavigationStack {
-            SettingsView(store: store)
-              .navigationTitle("Settings")
-              .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                  Button {
-                    vs.send(.main(.dismiss))
-                  } label: {
-                    Text("Done").bold()
-                  }
+      }
+      .sheet(
+        item: $store.scope(
+          state: \.main.destination?.newAccount,
+          action: \.main.destination.newAccount
+        )
+      ) { store in
+        EditAccountView(store: store, mode: .new)
+      }
+      .sheet(
+        item: $store.scope(
+          state: \.main.destination?.settings,
+          action: \.main.destination.settings
+        )
+      ) { store in
+        NavigationStack {
+          SettingsView(store: store)
+            .navigationTitle("Settings")
+            .toolbar {
+              ToolbarItem(placement: .cancellationAction) {
+                Button {
+                  self.store.send(.main(.dismiss))
+                } label: {
+                  Text("Done").bold()
                 }
               }
-          }
+            }
         }
-    }
+      }
   }
 }
 
 struct SplitDetail: View {
-  let store: Store<App.State, App.Action>
+  @Bindable var store: StoreOf<App>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.detail }) { vs in
-      IfLetStore(store.scope(state: \.detail, action: { .detail($0) })) { store in
-        NavigationStackStore(self.store.scope(state: \.path, action: { .path($0) })) {
-          SwitchStore(store) { state in
-            switch state {
-            case .overview:
-              CaseLet(
-                /App.Detail.State.overview,
-                 action: App.Detail.Action.overview,
-                 then: OverviewView.init(store:)
-              )
-            case .transation:
-              CaseLet(
-                /App.Detail.State.transation,
-                 action: App.Detail.Action.transation,
-                 then: TransactionList.init(store:)
-              )
+    if let detail = store.scope(state: \.detail, action: \.detail) {
+      NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+        Group {
+          switch detail.state {
+          case .overview:
+            if let store = detail.scope(state: \.overview, action: \.overview) {
+              OverviewView(store: store)
+            }
+          case .transation:
+            if let store = detail.scope(state: \.transation, action: \.transation) {
+              TransactionList(store: store)
             }
           }
-        } destination: {
-          switch $0 {
-          case .overview:
-            CaseLet(
-              /App.Path.State.overview,
-               action: App.Path.Action.overview,
-               then: OverviewView.init(store:)
-            )
-          case .transation:
-            CaseLet(
-              /App.Path.State.transation,
-               action: App.Path.Action.transation,
-               then: TransactionList.init(store:)
-            )
-          }
         }
-      } else: {
-        Text("No selection")
+      } destination: { store in
+        switch store.case {
+        case let .overview(store):
+          OverviewView(store: store)
+        case let .transation(store):
+          TransactionList(store: store)
+        }
       }
+    } else {
+      Text("No selection")
     }
   }
 }

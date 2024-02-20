@@ -13,94 +13,91 @@ import Domain
 import Components
 
 struct EditAccountForm: View {
-  let store: Store<EditAccount.State, EditAccount.Action>
+  @Bindable var store: StoreOf<EditAccount>
   @FocusState private var focus: EditAccount.State.FocusField?
-  
+
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List {
-        Section {
-          TextField(
-            "Name",
-            text: vs.binding(get: \.name, send: { .changed(.name($0)) })
-          )
-          .focused($focus, equals: .name)
+    List {
+      Section {
+        TextField(
+          "Name",
+          text: $store.name
+        )
+        .focused($focus, equals: .name)
 
-          TextField(
-            "Description",
-            text: vs.binding(get: \.introduction, send: { .changed(.introduction($0)) })
-          )
-          .focused($focus, equals: .introduction)
+        TextField(
+          "Description",
+          text: $store.introduction
+        )
+        .focused($focus, equals: .introduction)
+      }
+
+      Section {
+        AccountPicker(
+          accounts: store.groupedRootAccounts,
+          selection: $store.parent
+        ) {
+          Text("Group")
         }
 
-        Section {
-          AccountPicker(
-            accounts: vs.groupedRootAccounts,
-            selection: vs.binding(get: { $0.parent }, send: { .changed(.parent($0)) })
-          ) {
-            Text("Group")
-          }
-
-          EmojiPicker(
-            selection: vs.binding(get: \.emoji,
-                                  send: { .changed(.emoji($0)) })
-          ) {
-            Text("Emoji")
-          }
+        EmojiPicker(
+          selection: $store.emoji
+        ) {
+          Text("Emoji")
         }
+      }
 
-        Section {
-          ForEach(Tagit.allCases) { tag in
-            HStack {
-              Circle().fill(Color(tagit: tag)).frame(width: 20, height: 20)
-              Text(tag.name)
-              Spacer()
-              if tag.rawValue == vs.tag {
-                Image(systemName: "checkmark")
-                  .font(Font.body.bold())
-                  .foregroundColor(.blue)
-              }
+      Section {
+        ForEach(Tagit.allCases) { tag in
+          HStack {
+            Circle().fill(Color(tagit: tag)).frame(width: 20, height: 20)
+            Text(tag.name)
+            Spacer()
+            if tag.rawValue == store.tag {
+              Image(systemName: "checkmark")
+                .font(Font.body.bold())
+                .foregroundColor(.blue)
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-              vs.send(.changed(.tag(tag.rawValue)))
-            }
+          }
+          .contentShape(Rectangle())
+          .onTapGesture {
+            store.send(.binding(.set(\.tag, tag.rawValue)))
+            // store.send(.changed(.tag(tag.rawValue)))
           }
         }
       }
-      .listStyle(InsetGroupedListStyle())
     }
+    .listStyle(.insetGrouped)
   }
 
   private var accountPicker: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      NavigationLink {
-        HierarchyAccountPicker(
-          vs.groupedRootAccounts
-        ) { account in
-          Button {
-            vs.send(.changed(.parent(account.summary)))
-            // popback
-          } label: {
-            HStack {
-              Group {
-                if vs.parent == account.summary {
-                  Image(systemName: "checkmark").foregroundColor(.blue)
-                } else {
-                  Text("\(account.emoji ?? "")")
-                }
+    NavigationLink {
+      HierarchyAccountPicker(
+        store.groupedRootAccounts
+      ) { account in
+        Button {
+          store.send(.binding(.set(\.parent, account.summary)))
+          // store.send(.changed(.parent(account.summary)))
+          // popback
+        } label: {
+          HStack {
+            Group {
+              if store.parent == account.summary {
+                Image(systemName: "checkmark").foregroundColor(.blue)
+              } else {
+                Text("\(account.emoji ?? "")")
               }
-              .frame(width: 22)
-              Text(account.name)
             }
+            .frame(width: 22)
+            Text(account.name)
           }
         }
-      } label: {
-        HStack {
-          Text("Group")
-          Spacer()
-          Text(vs.parent?.name ?? "")
-        }
+      }
+    } label: {
+      HStack {
+        Text("Group")
+        Spacer()
+        Text(store.parent?.name ?? "")
       }
     }
   }
