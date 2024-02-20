@@ -10,7 +10,8 @@ import Foundation
 import ComposableArchitecture
 import Persistence
 
-public struct SceneLifecycle: Reducer {
+@Reducer
+public struct SceneLifecycle {
   @Dependency(\.persistent) var persistent
 
   public struct State: Equatable {}

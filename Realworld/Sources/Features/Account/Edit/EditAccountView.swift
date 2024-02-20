@@ -16,31 +16,29 @@ struct EditAccountView: View {
 
   var body: some View {
     NavigationStack {
-      WithViewStore(store, observe: { $0 }) { vs in
-        EditAccountForm(store: store)
-          .navigationTitle(vs.isNew ? "New Account" : "Edit Account")
-          .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-              Button {
-                let action = EditAccount.Action.save(vs.snapshot, mode: vs.isNew ? .new : .update)
-                vs.send(action)
-              } label: {
-                Text("Save").bold()
-              }
-              .disabled(!vs.isValid)
+      EditAccountForm(store: store)
+        .navigationTitle(store.isNew ? "New Account" : "Edit Account")
+        .toolbar {
+          ToolbarItem(placement: .confirmationAction) {
+            Button {
+              let action = EditAccount.Action.save(store.snapshot, mode: store.isNew ? .new : .update)
+              store.send(action)
+            } label: {
+              Text("Save").bold()
             }
-            ToolbarItem(placement: .cancellationAction) {
-              Button {
-                vs.send(.delegate(.dismiss))
-              } label: {
-                Text("Cancel")
-              }
+            .disabled(!store.isValid)
+          }
+          ToolbarItem(placement: .cancellationAction) {
+            Button {
+              store.send(.delegate(.dismiss))
+            } label: {
+              Text("Cancel")
             }
           }
-      }
-      .task {
-        store.send(.loadAccounts)
-      }
+        }
+        .task {
+          store.send(.loadAccounts)
+        }
     }
   }
 }

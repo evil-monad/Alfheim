@@ -37,7 +37,7 @@ struct AppearanceView: View {
           }
       }
     }
-    .onChange(of: selectedAppearance) { value in
+    .onChange(of: selectedAppearance) {
       Appearance.shared.overrideDisplayMode()
     }
     .navigationTitle("Appearance")

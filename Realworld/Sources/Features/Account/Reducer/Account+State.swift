@@ -8,8 +8,10 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension Account {
+  @ObservableState
   struct State: Equatable {
     var accounts: [Domain.Account] = []
 

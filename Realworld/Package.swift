@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7.1
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Realworld",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v17)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Underworld"),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", exact: "1.0.0"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.8.0"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0"),
     ],
     targets: [

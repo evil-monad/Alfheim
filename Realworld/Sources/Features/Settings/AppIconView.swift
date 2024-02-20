@@ -14,32 +14,31 @@ struct AppIconView: View {
   let store: Store<Settings.State, Settings.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List(AppIcon.allCases) { icon in
-        HStack(spacing: 10) {
-          Image(uiImage: UIImage(named: icon.icon) ?? UIImage())
-            .cornerRadius(13.36)
-            .overlay(
-              RoundedRectangle(cornerRadius: 13.36)
-                .stroke(Color.primary.opacity(0.1), lineWidth: 0.5))
-            .shadow(color: Color.primary.opacity(0.1), radius: 4)
+    List(AppIcon.allCases) { icon in
+      HStack(spacing: 10) {
+        Image(uiImage: UIImage(named: icon.icon) ?? UIImage())
+          .cornerRadius(13.36)
+          .overlay(
+            RoundedRectangle(cornerRadius: 13.36)
+              .stroke(Color.primary.opacity(0.1), lineWidth: 0.5))
+          .shadow(color: Color.primary.opacity(0.1), radius: 4)
 
-          Text(icon.name)
-          Spacer()
-          if icon == vs.appIcon {
-            Image(systemName: "checkmark")
-              .font(Font.body.bold())
-              .foregroundColor(.blue)
-          }
-        }
-        .padding(.vertical, 12)
-        .contentShape(Rectangle())
-        .onTapGesture {
-          vs.send(.selectAppIcon(icon))
+        Text(icon.name)
+        Spacer()
+        if icon == store.appIcon {
+          Image(systemName: "checkmark")
+            .font(Font.body.bold())
+            .foregroundColor(.blue)
         }
       }
-      .navigationBarTitle("App Icon")
+      .padding(.vertical, 12)
+      .contentShape(Rectangle())
+      .onTapGesture {
+        store.send(.selectAppIcon(icon))
+      }
     }
+    .navigationBarTitle("App Icon")
+
   }
 }
 
@@ -51,7 +50,7 @@ struct AppIconView_Previews: PreviewProvider {
         initialState: Settings.State(isPresented: false, appIcon: .primary)) {
           Settings()
         }
-      )
+    )
   }
 }
 #endif

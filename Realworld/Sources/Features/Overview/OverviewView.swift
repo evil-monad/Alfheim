@@ -12,54 +12,53 @@ import Domain
 import Charts
 
 struct OverviewView: View {
-  let store: Store<Overview.State, Overview.Action>
+  @Bindable var store: Store<Overview.State, Overview.Action>
 
   init(store: Store<Overview.State, Overview.Action>) {
     self.store = store
   }
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List {
-        Section {
-          AccountCard(store: store)
-            .frame(height: 200)
-        }
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color.clear)
+    List {
+      Section {
+        AccountCard(store: store)
+          .frame(height: 200)
+      }
+      .listRowInsets(EdgeInsets())
+      .listRowBackground(Color.clear)
 
-        if vs.showRecentTransactionsSection {
-          TransactionSection(store: store)
-        }
+      if store.showRecentTransactionsSection {
+        TransactionSection(store: store)
+      }
 
-        if vs.showStatisticsSection {
-          StatisticsSection(store: store)
-        }
+      if store.showStatisticsSection {
+        StatisticsSection(store: store)
       }
-      .navigationTitle(vs.account.name)
-      .toolbar {
-        ToolbarItem(placement: .primaryAction) {
-          Button {
-            vs.send(.toggleNewTransaction(presenting: true))
-          } label: {
-            Image(systemName: "plus.circle")
-          }
-          .disabled(vs.account.root)
-        }
-      }
-      .sheet(isPresented: vs.binding(get: \.isEditorPresented, send: { .toggleNewTransaction(presenting: $0) })) {
-        ComposerView(
-          store: store.scope(
-            state: \.editor,
-            action: Overview.Action.editor),
-          mode: .new
-        )
-      }
-      .onAppear {
-        vs.send(.onAppear)
-      }
-      .id(vs.account.id)
     }
+    .navigationTitle(store.account.name)
+    .toolbar {
+      ToolbarItem(placement: .primaryAction) {
+        Button {
+          store.send(.toggleNewTransaction(presenting: true))
+        } label: {
+          Image(systemName: "plus.circle")
+        }
+        .disabled(store.account.root)
+      }
+    }
+    .sheet(isPresented: $store.isEditorPresented.sending(\.toggleNewTransaction)) {
+      ComposerView(
+        store: store.scope(
+          state: \.editor,
+          action: \.editor
+        ),
+        mode: .new
+      )
+    }
+    .onAppear {
+      store.send(.onAppear)
+    }
+    .id(store.account.id)
   }
 }
 
@@ -67,20 +66,16 @@ private struct TransactionSection: View {
   let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.transactionState }) { vs in
-      Section {
-        ForEach(vs.recentTransactions) { transaction in
-          TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: vs.account.tagit, deposit: vs.account.summary.isAncestor(of: transaction.target)))
-        }
-        .listRowInsets(EdgeInsets.default)
-      } header: {
-        WithViewStore(store, observe: { $0 }) { vs in
-          NavigationLink(state: App.Path.State.transation(vs.transactions)) {
-            Header("Transactions")
-          }
-          .listRowInsets(.headerInsets)
-        }
+    Section {
+      ForEach(store.recentTransactions) { transaction in
+        TransactionRow(transaction: Transactions.ViewState(transaction: transaction, tag: store.account.tagit, deposit: store.account.summary.isAncestor(of: transaction.target)))
       }
+      .listRowInsets(EdgeInsets.default)
+    } header: {
+      NavigationLink(state: App.Path.State.transation(store.transactions)) {
+        Header("Transactions")
+      }
+      .listRowInsets(.headerInsets)
     }
   }
 }
@@ -89,25 +84,23 @@ private struct StatisticsSection: View {
   let store: Store<Overview.State, Overview.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      Section {
-        if vs.showTrendStatistics {
-          TrendView(
-            units: vs.trendUnit.map { Dimension(symbol: $0.name, value: $0.value) },
-            currency: vs.account.currency
-          )
-          .frame(height: 240)
-          .listRowInsets(EdgeInsets(top: 14, leading: 12, bottom: 16, trailing: 16))
-        } else {
-          CompositionView(
-            units: vs.compositonUnit.map { PieUnit(label: $0.name, value: $0.value, symbol: $0.symbol, color: $0.tagit.color) }
-          )
-          .listRowInsets(EdgeInsets(top: 14, leading: 12, bottom: 16, trailing: 16))
-        }
-      } header: {
-        Header("Statistics")
-          .listRowInsets(.headerInsets)
+    Section {
+      if store.showTrendStatistics {
+        TrendView(
+          units: store.trendUnit.map { Dimension(symbol: $0.name, value: $0.value) },
+          currency: store.account.currency
+        )
+        .frame(height: 240)
+        .listRowInsets(EdgeInsets(top: 14, leading: 12, bottom: 16, trailing: 16))
+      } else {
+        CompositionView(
+          units: store.compositonUnit.map { PieUnit(label: $0.name, value: $0.value, symbol: $0.symbol, color: $0.tagit.color) }
+        )
+        .listRowInsets(EdgeInsets(top: 14, leading: 12, bottom: 16, trailing: 16))
       }
+    } header: {
+      Header("Statistics")
+        .listRowInsets(.headerInsets)
     }
   }
 }

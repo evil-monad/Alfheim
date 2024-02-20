@@ -10,7 +10,8 @@ import Foundation
 import ComposableArchitecture
 import Persistence
 
-struct Account: Reducer {
+@Reducer
+struct Account {
   @Dependency(\.persistent) var persistent
 
   var body: some ReducerOf<Self> {

@@ -16,12 +16,30 @@ import ComposableArchitecture
 import Alne
 import Persistence
 
-public struct Transaction: Reducer {
+@Reducer
+public struct Transaction {
   @Dependency(\.persistent) var persistent
-}
 
-extension Transaction {
+  public enum Action: Equatable {
+    case editTransaction(Domain.Transaction)
+    case didEditTransaction
+
+    case delete(Domain.Transaction)
+    case toggleFlag(Domain.Transaction)
+    case showStatistics([Domain.Transaction], interval: DateInterval)
+    case dimissStatistics
+
+    case filtered(Transaction.State.Filter)
+
+    case onAppear
+
+    case transactionsDidChange([Domain.Transaction])
+    case accountDidChange(Domain.Account)
+  }
+
+
   /// Transaction list view state
+  @ObservableState
   public struct State: Equatable, Identifiable {
     var source: Transactions.Source
 
@@ -83,9 +101,10 @@ extension Transaction {
       }
 
       let sections = Dictionary(grouping: filteredTransactions) { transaction in
-        return transaction.date.start(of: .day)
-      }.map { Transaction.State.SectionedTransaction(date: $0, transactions: $1) }
-      .sorted(by: { $0.date > $1.date })
+          return transaction.date.start(of: .day)
+        }
+        .map { Transaction.State.SectionedTransaction(date: $0, transactions: $1) }
+        .sorted(by: { $0.date > $1.date })
 
       return IdentifiedArray(uniqueElements: sections)
     }
@@ -102,6 +121,91 @@ extension Transaction {
         self.viewStates = IdentifiedArray(uniqueElements: transactions.sorted(by: { $0.date > $1.date })
           .map { Transactions.ViewState(transaction: $0, tag: Tagit.alfheim, deposit: false, ommitedDate: true) })
       }
+    }
+
+    public enum Filter: LocalizedStringKey, CaseIterable, Hashable {
+      case none = "None" // default transaction source, not equals to all
+      case week = "This Week"
+      case month = "This Month"
+      case year = "This Year"
+      case all = "All"
+
+      public var name: LocalizedStringKey {
+        rawValue
+      }
+    }
+  }
+
+  public var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      struct FetchRequestId: Hashable {}
+
+      switch action {
+      case .onAppear:
+        var effects = [Effect<Action>]()
+        effects.append(
+          .run { send in
+            let stream: AsyncStream<[Domain.Transaction]> = persistent.observe(
+              Domain.Transaction.all.sort("date", ascending: false),
+              fetch: false
+            )
+            for try await transactions in stream {
+              await send(.transactionsDidChange(transactions))
+            }
+          }
+        )
+        if case let .accounted(account, _) = state.source {
+          effects.append(
+            .run { send in
+              let stream: AsyncStream<[Domain.Account]> = persistent.observe(
+                Domain.Account.all.where(Domain.Account.identifier == account.id),
+                fetch: false,
+                relationships: Domain.Account.relationships) { accounts in
+                  if let observed = accounts.first {
+                    return Domain.Account.makeTree(root: observed)
+                  } else {
+                    return []
+                  }
+                }
+              for try await accounts in stream where !accounts.isEmpty {
+                assert(accounts.count == 1 && accounts.first!.id == account.id)
+                if let observed = accounts.first {
+                  await send(.accountDidChange(observed))
+                }
+              }
+            }
+          )
+        }
+        return .merge(effects)
+      case .transactionsDidChange(let transactions):
+        switch state.source {
+        case let .list(title, _, filter):
+          state.source = .list(title: title, transactions: transactions.filtered(by: filter), filter: filter)
+          return .none
+        default:
+          return .none
+        }
+      case .accountDidChange(let account):
+        switch state.source {
+        case .accounted(_, let interval):
+          state.source = .accounted(account: account, interval: interval)
+        default:
+          return .none
+        }
+      case .toggleFlag(let transaction):
+        return .run { send in
+          try await persistent.update(transaction, keyPath: \Domain.Transaction.ResultType.flagged, value: !transaction.flagged)
+        }
+      case .delete(let transaction):
+        return .run { send in
+          try await persistent.delete(transaction)
+        }
+      case .filtered(let selection):
+        state.filter = selection
+      default:
+        break
+      }
+      return .none
     }
   }
 }
@@ -137,20 +241,6 @@ enum Transactions {
       case let .accounted(account, _):
         return account.transactions(.depth)
       }
-    }
-  }
-}
-
-public extension Transaction.State {
-  enum Filter: LocalizedStringKey, CaseIterable, Hashable {
-    case none = "None" // default transaction source, not equals to all
-    case week = "This Week"
-    case month = "This Month"
-    case year = "This Year"
-    case all = "All"
-
-    var name: LocalizedStringKey {
-      rawValue
     }
   }
 }

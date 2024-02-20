@@ -13,7 +13,7 @@ import Kit
 import Alne
 
 struct EditorView: View {
-  let store: Store<Editor.State, Editor.Action>
+  @Bindable var store: Store<Editor.State, Editor.Action>
   @FocusState private var focus: Editor.State.FocusField?
 
   enum Mode {
@@ -22,119 +22,117 @@ struct EditorView: View {
   }
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List {
-        Section {
-          HStack {
-            AccountPicker(
-              style: .compact,
-              accounts: vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.source }, send: { .changed(.source($0)) })
-            ) {
-              selectedAccount(vs.source)
-            }
-            .accountPickerStyle(.compact)
-
-            TextField(
-              "0.00",
-              text: vs.binding(get: { $0.amount }, send: { .changed(.amount($0)) })
-            )
-            .focused($focus, equals: .amount)
-            .keyboardType(.decimalPad)
-            .multilineTextAlignment(.trailing)
-            .padding(.trailing, -2.0)
-            .frame(minWidth: 150)
-
-            Text("\(vs.currency.symbol)")
-              .foregroundColor(.gray)
-              .opacity(0.8)
-              .padding(.trailing, -2.0)
-          }
-          HStack {
-            AccountPicker(
-              style: .compact,
-              accounts: vs.state.groupedRootAccounts,
-              selection: vs.binding(get: { $0.target }, send: { .changed(.target($0)) })
-            ) {
-              selectedAccount(vs.target)
-            }
-            .accountPickerStyle(.compact)
-            Spacer()
-            if let amount = Double(vs.amount) {
-              Text((-amount).formatted(.number.precision(.fractionLength(2))))
-                .foregroundColor(.gray)
-                .opacity(0.8)
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing, -2.0)
-            } else {
-              Text("0.00")
-                .foregroundColor(.gray)
-                .opacity(0.8)
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing, -2.0)
-            }
-            Text("\(vs.currency.symbol)")
-              .foregroundColor(.gray)
-              .opacity(0.8)
-              .padding(.trailing, -2.0)
-          }
-        }
-
-        Section {
-          DatePicker(
-            selection: vs.binding(get: \.date, send: { .changed(.date($0)) }),
-            in: ...Date(),
-            displayedComponents: [.date, .hourAndMinute]
+    List {
+      Section {
+        HStack {
+          AccountPicker(
+            style: .compact,
+            accounts: store.state.groupedRootAccounts,
+            selection: $store.source
           ) {
-            Text("Date")
+            selectedAccount(store.source)
           }
-          
-          Field("Notes") {
-            TextField(
-              "Notes",
-              text: vs.binding(get: \.notes, send: { .changed(.notes($0)) })
-            )
-            .multilineTextAlignment(.trailing)
-            .focused($focus, equals: .notes)
+          .accountPickerStyle(.compact)
+
+          TextField(
+            "0.00",
+            text: $store.amount
+          )
+          .focused($focus, equals: .amount)
+          .keyboardType(.decimalPad)
+          .multilineTextAlignment(.trailing)
+          .padding(.trailing, -2.0)
+          .frame(minWidth: 150)
+
+          Text("\(store.currency.symbol)")
+            .foregroundColor(.gray)
+            .opacity(0.8)
+            .padding(.trailing, -2.0)
+        }
+        HStack {
+          AccountPicker(
+            style: .compact,
+            accounts: store.state.groupedRootAccounts,
+            selection: $store.target
+          ) {
+            selectedAccount(store.target)
           }
+          .accountPickerStyle(.compact)
+          Spacer()
+          if let amount = Double(store.amount) {
+            Text((-amount).formatted(.number.precision(.fractionLength(2))))
+              .foregroundColor(.gray)
+              .opacity(0.8)
+              .multilineTextAlignment(.trailing)
+              .padding(.trailing, -2.0)
+          } else {
+            Text("0.00")
+              .foregroundColor(.gray)
+              .opacity(0.8)
+              .multilineTextAlignment(.trailing)
+              .padding(.trailing, -2.0)
+          }
+          Text("\(store.currency.symbol)")
+            .foregroundColor(.gray)
+            .opacity(0.8)
+            .padding(.trailing, -2.0)
+        }
+      }
+
+      Section {
+        DatePicker(
+          selection: $store.date,
+          in: ...Date(),
+          displayedComponents: [.date, .hourAndMinute]
+        ) {
+          Text("Date")
         }
 
-        Section {
-          Field("Payee") {
-            TextField(
-              "McDonalds",
-              text: vs.binding(get: { $0.payee ?? "" }, send: { .changed(.payee($0)) })
-            )
-            .multilineTextAlignment(.trailing)
-            .focused($focus, equals: .payee)
+        Field("Notes") {
+          TextField(
+            "Notes",
+            text: $store.notes
+          )
+          .multilineTextAlignment(.trailing)
+          .focused($focus, equals: .notes)
+        }
+      }
+
+      Section {
+        Field("Payee") {
+          TextField(
+            "McDonalds",
+            text: $store.payee
+          )
+          .multilineTextAlignment(.trailing)
+          .focused($focus, equals: .payee)
+        }
+        Field("Number") {
+          TextField(
+            "20200202",
+            text: $store.number
+          )
+          .multilineTextAlignment(.trailing)
+          .focused($focus, equals: .number)
+        }
+        Picker(selection: $store.repeated, label: Text("Repeat")) {
+          ForEach(Repeat.allCases, id: \.self) {
+            Text($0.name).tag($0)
           }
-          Field("Number") {
-            TextField(
-              "20200202",
-              text: vs.binding(get: { $0.number ?? "" }, send: { .changed(.number($0)) })
-            )
-            .multilineTextAlignment(.trailing)
-            .focused($focus, equals: .number)
-          }
-          Picker(selection: vs.binding(get: \.repeated, send: { .changed(.repeated($0)) }), label: Text("Repeat")) {
-            ForEach(Repeat.allCases, id: \.self) {
-              Text($0.name).tag($0)
-            }
-          }
-          Field("Cleared") {
-            Toggle(isOn: vs.binding(get: \.cleared, send: { .changed(.cleared($0)) })) {
-            }
+        }
+        Field("Cleared") {
+          Toggle(isOn: $store.cleared) {
           }
         }
       }
-      .listStyle(.insetGrouped)
-      .onChange(of: focus) { field in
-        vs.send(.focused(field))
-      }
-      .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-          self.focus = .amount
-        }
+    }
+    .listStyle(.insetGrouped)
+    .onChange(of: focus) { _, focus in
+      store.send(.focused(focus))
+    }
+    .onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+        self.focus = .amount
       }
     }
   }
