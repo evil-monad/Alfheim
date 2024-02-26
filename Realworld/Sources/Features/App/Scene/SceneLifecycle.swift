@@ -10,7 +10,8 @@ import Foundation
 import ComposableArchitecture
 import Persistence
 
-public struct SceneLifecycle: Reducer {
+@Reducer
+public struct SceneLifecycle {
   @Dependency(\.persistent) var persistent
 
   public struct State: Equatable {}
@@ -30,6 +31,10 @@ public struct SceneLifecycle: Reducer {
       case .willConnect:
         return .run { _ in
           try await persistent.bootstrap()
+        }
+      case .didEnterBackground:
+        return .run { send in
+          persistent.save()
         }
       default:
         return .none

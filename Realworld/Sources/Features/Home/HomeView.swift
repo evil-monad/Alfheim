@@ -11,57 +11,59 @@ import Domain
 import ComposableArchitecture
 
 struct HomeView: View {
-  let store: StoreOf<Home>
+  @Bindable var store: StoreOf<Home>
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      List(selection: vs.binding(get: \.selection, send: { .select($0) })) {
-        Section {
-          QuickMenu(store: store)
-            .listRowBackground(Color(.systemGroupedBackground))
-            .buttonStyle(.plain)
-            .onTapGesture {}
-            .onLongPressGesture {}
-        }
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color(.systemGroupedBackground))
-        .buttonStyle(.plain)
+    List(selection: $store.selection.sending(\.select)) {
+      Section {
+        QuickMenu(store: store)
+          .listRowBackground(Color(.systemGroupedBackground))
+          .buttonStyle(.plain)
+          .onTapGesture {}
+          .onLongPressGesture {}
+      }
+      .listRowSeparator(.hidden)
+      .listRowInsets(EdgeInsets())
+      .listRowBackground(Color(.systemGroupedBackground))
+      .buttonStyle(.plain)
 
-        Section {
-          OutlineGroup(vs.rootAccounts, children: \.children) { account in
-            AccountLink(account, selection: nil)
-              .contextMenu(account.root ? nil : ContextMenu {
-                Button {
-                  vs.send(.edit(account))
-                } label: {
-                  Label("Edit", systemImage: "pencil.circle")
-                }
-
-                Button(role: .destructive) {
-                  vs.send(.delete(account))
-                } label: {
-                  Label("Delete", systemImage: "trash.circle")
-                    .foregroundColor(.red)
-                }
+      Section {
+        OutlineGroup(store.rootAccounts, children: \.children) { account in
+          AccountLink(account, selection: nil)
+            .contextMenu(account.root ? nil : ContextMenu {
+              Button {
+                store.send(.edit(account))
+              } label: {
+                Label("Edit", systemImage: "pencil.circle")
               }
-              )
-          }
-        } header: {
-          Text("Accounts").font(.headline).foregroundColor(.primary)
+
+              Button(role: .destructive) {
+                store.send(.delete(account))
+              } label: {
+                Label("Delete", systemImage: "trash.circle")
+                  .foregroundColor(.red)
+              }
+            }
+            )
         }
-        .foregroundColor(.primary)
-        .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
-        .buttonStyle(.plain)
-        .tint(Color(UIColor.systemGray4))
+      } header: {
+        Text("Accounts").font(.headline).foregroundColor(.primary)
       }
-      .sheet(
-        store: self.store.scope(state: \.$destination, action: { .destination($0) }),
-        state: /Home.Destination.State.edit,
-        action: Home.Destination.Action.edit
-      ) { store in
-        EditAccountView(store: store, mode: .edit)
-      }
+      .foregroundColor(.primary)
+      .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 16))
+      .buttonStyle(.plain)
+      .tint(Color(UIColor.systemGray4))
+    }
+    .onAppear {
+      store.send(.onAppear)
+    }
+    .sheet(
+      item: $store.scope(
+        state: \.destination?.edit,
+        action: \.destination.edit
+      )
+    ) { store in
+      EditAccountView(store: store, mode: .edit)
     }
   }
 }
@@ -120,23 +122,15 @@ struct QuickMenu: View {
   private let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 18), count: 2)
 
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { vs in
-      LazyVGrid(columns: columns, spacing: 18) {
-        ForEach(vs.menus) { item in
-          MenuRow(item, selection: vs.selection)
-            .onTapGesture {
-              vs.send(.select(.menu(item)))
-            }
-        }
-      }
-      .onLongPressGesture {}
-      .onAppear {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) {
-          // selection = nil
-          vs.send(.select(nil))
-        }
+    LazyVGrid(columns: columns, spacing: 18) {
+      ForEach(store.menus) { item in
+        MenuRow(item, selection: store.selection)
+          .onTapGesture {
+            store.send(.select(.menu(item)), animation: .linear(duration: 0.15))
+          }
       }
     }
+    .onLongPressGesture {}
   }
 }
 

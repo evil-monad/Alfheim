@@ -8,8 +8,10 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension Overview {
+  @CasePathable
   public enum Action: Equatable {
     case onAppear
     case toggleNewTransaction(presenting: Bool)

@@ -8,13 +8,14 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension EditAccount {
-  public enum Action: Equatable {
+  public enum Action: BindableAction, Equatable {
     case save(Domain.Account, mode: App.Action.EditMode)
     case edit(Domain.Account)
     case new
-    case changed(Field)
+    case binding(BindingAction<State>)
     case loadAccounts
     case didLoadAccounts([Domain.Account])
 

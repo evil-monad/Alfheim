@@ -99,17 +99,19 @@ extension Account: Comparable {
 }
 
 public extension Account {
+  // includes self
   func descendants() -> [Account.ID] {
-    guard let children = children, children.isEmpty else {
-      return []
+    guard let children = children, !children.isEmpty else {
+      return [id]
     }
 
     return [id] + children.flatMap { $0.descendants() }
   }
 
+  // includes self
   func ancestors() -> [Account.ID] {
     guard let parent = parent else {
-      return []
+      return [id]
     }
 
     return [id] + parent.ancestors()

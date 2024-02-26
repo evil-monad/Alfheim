@@ -14,6 +14,7 @@ import ComposableArchitecture
 
 extension Overview {
   /// Overview view state
+  @ObservableState
   public struct State: Equatable, Identifiable {
     var hasInitialized: Bool = false
     var isEditorPresented: Bool = false
@@ -53,7 +54,7 @@ extension Overview {
     }
 
     private var periodTransactions: [Domain.Transaction] {
-      if let timeInterval = timeInterval {
+      if let timeInterval {
         return allTransactions
           .filter { $0.date >= timeInterval.start && $0.date <= timeInterval.end }
       } else {
@@ -70,7 +71,7 @@ extension Overview {
         .map { abs($0.amount) }
         .reduce(0.0, +)
 
-      let withdrawal = periodTransactions.filter { (account.summary.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.summary.isAncestor(of: $0.source) && $0.amount < 0)  }
+      let withdrawal = periodTransactions.filter { (account.summary.isAncestor(of: $0.target) && $0.amount >= 0 ) || (account.summary.isAncestor(of: $0.source) && $0.amount < 0) }
         .map { abs($0.amount) }
         .reduce(0.0, +)
 

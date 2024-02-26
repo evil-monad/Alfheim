@@ -13,116 +13,108 @@ import Domain
 
 public struct MainView: View {
   let store: StoreOf<App>
-  #if os(iOS)
+#if os(iOS)
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  #endif
+#endif
 
   public init(store: StoreOf<App>) {
     self.store = store
   }
 
   public var body: some View {
-    #if os(iOS)
+#if os(iOS)
     if horizontalSizeClass == .compact {
       ListNavigation(store: store)
         .environment(\.defaultMinListHeaderHeight, 40)
     } else {
       SplitNavigation(store: store)
     }
-    #else
+#else
     SplitNavigation(store: store)
-    #endif
+#endif
   }
 }
 
 /// iOS
 struct ListNavigation: View {
-  let store: Store<App.State, App.Action>
+  @Bindable var store: Store<App.State, App.Action>
 
   var body: some View {
-    NavigationStackStore(store.scope(state: \.path, action: { .path($0) })) {
+    NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
       ContentView(store: store)
         .task {
           store.send(.loadAll)
         }
-    } destination: {
-      switch $0 {
-      case .overview:
-        CaseLet(
-          /App.Path.State.overview,
-          action: App.Path.Action.overview,
-          then: OverviewView.init(store:)
-        )
-      case .transation:
-        CaseLet(
-          /App.Path.State.transation,
-          action: App.Path.Action.transation,
-          then: TransactionList.init(store:)
-        )
+    } destination: { store in
+      switch store.case {
+      case let .overview(store):
+        OverviewView(store: store)
+      case let .transation(store):
+        TransactionList(store: store)
       }
     }
   }
 }
 
 struct ContentView: View {
-  let store: Store<App.State, App.Action>
+  @Bindable var store: Store<App.State, App.Action>
 
   var body: some View {
-    WithViewStore(store, observe: { $0.main }) { vs in
-      HomeView(store: store.scope(state: \.home, action: { .home($0) }))
-        .listStyle(.insetGrouped)
-        .navigationBarTitle("Clic")
-        .toolbar {
-          ToolbarItem(placement: .primaryAction) {
+    HomeView(store: store.scope(state: \.home, action: \.home))
+      .listStyle(.insetGrouped)
+      .navigationBarTitle("Clic")
+      .toolbar {
+        ToolbarItem(placement: .primaryAction) {
+          Button {
+            store.send(.newTransaction)
+          } label: {
+            Image(systemName: "plus.circle")
+          }
+        }
+        ToolbarItemGroup(placement: .bottomBar) {
+          HStack {
             Button {
-              vs.send(.newTransaction)
+              store.send(.main(.settings))
             } label: {
-              Image(systemName: "plus.circle")
+              Image(systemName: "gear")
             }
-          }
-          ToolbarItemGroup(placement: .bottomBar) {
-            HStack {
-              Button {
-                vs.send(.main(.settings))
-              } label: {
-                Image(systemName: "gear")
-              }
-              Spacer()
-              Button {
-                vs.send(.main(.newAccount))
-              } label: {
-                Text("Add Account")
-              }
+            Spacer()
+            Button {
+              store.send(.main(.newAccount))
+            } label: {
+              Text("Add Account")
             }
           }
         }
-        .sheet(
-          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
-          state: /Main.Destination.State.newAccount,
-          action: Main.Destination.Action.newAccount
-        ) { store in
-          EditAccountView(store: store, mode: .new)
-        }
-        .sheet(
-          store: store.scope(state: \.main.$destination, action: { .main(.destination($0)) }),
-          state: /Main.Destination.State.settings,
-          action: Main.Destination.Action.settings
-        ) { store in
-          NavigationStack {
-            SettingsView(store: store)
-              .navigationTitle("Settings")
-              .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                  Button {
-                    vs.send(.main(.dismiss))
-                  } label: {
-                    Text("Done").bold()
-                  }
+      }
+      .sheet(
+        item: $store.scope(
+          state: \.main.destination?.newAccount,
+          action: \.main.destination.newAccount
+        )
+      ) { store in
+        EditAccountView(store: store, mode: .new)
+      }
+      .sheet(
+        item: $store.scope(
+          state: \.main.destination?.settings,
+          action: \.main.destination.settings
+        )
+      ) { store in
+        NavigationStack {
+          SettingsView(store: store)
+            .navigationTitle("Settings")
+            .toolbar {
+              ToolbarItem(placement: .cancellationAction) {
+                Button {
+                  self.store.send(.main(.dismiss))
+                } label: {
+                  Text("Done").bold()
                 }
               }
-          }
+            }
         }
-    }
+      }
   }
 }
 

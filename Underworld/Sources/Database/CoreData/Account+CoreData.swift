@@ -111,8 +111,8 @@ public extension Account {
 
 public extension Account {
   func descendants() -> [Account.ID] {
-    guard let children = children, children.isEmpty else {
-      return []
+    guard let children = children, !children.isEmpty else {
+      return [id]
     }
 
     return [id] + children.flatMap { $0.descendants() }
@@ -120,7 +120,7 @@ public extension Account {
 
   func ancestors() -> [Account.ID] {
     guard let parent = parent else {
-      return []
+      return [id]
     }
 
     return [id] + parent.ancestors()
