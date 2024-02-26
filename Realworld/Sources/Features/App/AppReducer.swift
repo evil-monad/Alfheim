@@ -16,12 +16,12 @@ import Persistence
 
 public typealias App = RealWorld
 
-public struct RealWorld: Reducer {
+@Reducer
+public struct RealWorld {
 
   @Dependency(\.persistent) var persistent
 
-  public init() {
-  }
+  public init() {}
 
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
@@ -72,6 +72,9 @@ public struct RealWorld: Reducer {
         return .none
 
       case let .home(.select(.some(.account(account)))):
+        guard state.home.selection != .account(account) else {
+          return .none
+        }
         let overview = Overview.State(account: account)
         if state.sidebar {
           state.detail = .overview(overview)
@@ -81,6 +84,10 @@ public struct RealWorld: Reducer {
         return .none
 
       case let .home(.select(.some(.menu(item)))):
+        guard state.home.selection != .menu(item) else {
+          return .none
+        }
+
         let allTransactions = state.home.accounts.flatMap {
           $0.transactions(.depth)
         }
@@ -102,37 +109,21 @@ public struct RealWorld: Reducer {
       }
       return .none
     }
-    .forEach(\.path, action: /Action.path) {
-      App.Path()
-    }
-    .ifLet(\.detail, action: /Action.detail) {
+    .forEach(\.path, action: \.path)
+    .ifLet(\.detail, action: \.detail) {
       App.Detail()
     }
 
-    Scope(state: \.main, action: /App.Action.main) {
+    Scope(state: \.lifecycle, action: \.lifecycle) {
+      SceneLifecycle()
+    }
+
+    Scope(state: \.main, action: \.main) {
       Main()
     }
 
-    Scope(state: \.home, action: /App.Action.home) {
+    Scope(state: \.home, action: \.home) {
       Home()
-    }
-
-    Reduce { state, action in
-      switch action {
-      case .lifecycle(.willConnect):
-        // TODO: load all data
-        return .none
-      case .lifecycle(.willEnterForeground):
-        // TODO: Sync iCloud, Subscribe
-        return .none
-      case .lifecycle(.didEnterBackground):
-        // TODO: Unsubscribe
-        return .none
-      case .lifecycle:
-        return .none
-      default:
-        return .none
-      }
     }
   }
 }

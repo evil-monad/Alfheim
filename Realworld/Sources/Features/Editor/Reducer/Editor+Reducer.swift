@@ -11,8 +11,8 @@ import ComposableArchitecture
 import Persistence
 import Domain
 
+/*
 extension Editor {
-  
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       struct ValidationId: Hashable {}
@@ -49,6 +49,10 @@ extension Editor {
       case .didLoadAccounts(let accounts):
         state.accounts = accounts
         break
+      case .binding:
+        state.isValid = validator.validate(state: state)
+
+      /*
       case .changed(let field):
         switch field {
         case .amount(let value):
@@ -79,6 +83,7 @@ extension Editor {
           state.attachments = []
         }
         state.isValid = validator.validate(state: state)
+       */
       case .focused(let field):
         state.focusField = field
       }
@@ -86,3 +91,4 @@ extension Editor {
     }
   }
 }
+*/

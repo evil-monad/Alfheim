@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,8 +15,7 @@
 		1F39992D23D69C0700E6BBD9 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F39992C23D69C0700E6BBD9 /* Colors.xcassets */; };
 		1F45EBE22423652A0058AEDC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F45EBE12423652A0058AEDC /* InfoPlist.strings */; };
 		783793C525D0DA2C00ECD0D4 /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783793C425D0DA2C00ECD0D4 /* macOS.swift */; };
-		FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2C2A741B5D00CC68DF /* Persistence */; };
-		FA267C2F2A741B6200CC68DF /* Alne in Frameworks */ = {isa = PBXBuildFile; productRef = FA267C2E2A741B6200CC68DF /* Alne */; };
+		FA1DF93F2B81F691007A31E1 /* Features in Frameworks */ = {isa = PBXBuildFile; productRef = FA1DF93E2B81F691007A31E1 /* Features */; };
 		FA83858524A479EF0011E0D7 /* Filled40x40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */; };
 		FA83858624A479EF0011E0D7 /* Filled40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857E24A479EF0011E0D7 /* Filled40x40@2x.png */; };
 		FA83858724A479EF0011E0D7 /* Filled60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83857F24A479EF0011E0D7 /* Filled60x60@2x.png */; };
@@ -25,10 +24,6 @@
 		FA83858A24A479EF0011E0D7 /* Filled20x20@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858224A479EF0011E0D7 /* Filled20x20@3x.png */; };
 		FA83858B24A479EF0011E0D7 /* Filled60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */; };
 		FA83858C24A479EF0011E0D7 /* Filled20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */; };
-		FA9D207B273FE96100413E6E /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207A273FE96100413E6E /* Domain */; };
-		FA9D207D2740090200413E6E /* Database in Frameworks */ = {isa = PBXBuildFile; productRef = FA9D207C2740090200413E6E /* Database */; };
-		FAB324B32A8F47F800D180F8 /* Features in Frameworks */ = {isa = PBXBuildFile; productRef = FAB324B22A8F47F800D180F8 /* Features */; };
-		FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = FABFB2EC2A74E90B0023FF0E /* Charts */; };
 		FAEAA03F24612645003C6799 /* emojis.json in Resources */ = {isa = PBXBuildFile; fileRef = FAEAA03E24612644003C6799 /* emojis.json */; };
 		FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF380332413FAC800C592D4 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
@@ -69,7 +64,8 @@
 		1F39992C23D69C0700E6BBD9 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1F45EBE12423652A0058AEDC /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		783793C425D0DA2C00ECD0D4 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
-		FA8293432A8F13B000198FC5 /* Realworld */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Realworld; path = ../Realworld; sourceTree = "<group>"; };
+		FA1DF9402B81F6EE007A31E1 /* Realworld */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Realworld; path = ../Realworld; sourceTree = "<group>"; };
+		FA1DF9412B81F70D007A31E1 /* Underworld */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Underworld; path = ../Underworld; sourceTree = "<group>"; };
 		FA83857D24A479EF0011E0D7 /* Filled40x40@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled40x40@3x.png"; sourceTree = "<group>"; };
 		FA83857E24A479EF0011E0D7 /* Filled40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled40x40@2x.png"; sourceTree = "<group>"; };
 		FA83857F24A479EF0011E0D7 /* Filled60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@2x.png"; sourceTree = "<group>"; };
@@ -78,7 +74,6 @@
 		FA83858224A479EF0011E0D7 /* Filled20x20@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@3x.png"; sourceTree = "<group>"; };
 		FA83858324A479EF0011E0D7 /* Filled60x60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled60x60@3x.png"; sourceTree = "<group>"; };
 		FA83858424A479EF0011E0D7 /* Filled20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filled20x20@2x.png"; sourceTree = "<group>"; };
-		FA9D2079273FE73300413E6E /* Underworld */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Underworld; path = ../Underworld; sourceTree = "<group>"; };
 		FAEAA03E24612644003C6799 /* emojis.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emojis.json; sourceTree = "<group>"; };
 		FAF380312413FAA700C592D4 /* Alfheim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alfheim.entitlements; sourceTree = "<group>"; };
 		FAF380332413FAC800C592D4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -89,13 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA9D207B273FE96100413E6E /* Domain in Frameworks */,
-				FA267C2D2A741B5D00CC68DF /* Persistence in Frameworks */,
-				FABFB2ED2A74E90B0023FF0E /* Charts in Frameworks */,
-				FA267C2F2A741B6200CC68DF /* Alne in Frameworks */,
-				FA9D207D2740090200413E6E /* Database in Frameworks */,
+				FA1DF93F2B81F691007A31E1 /* Features in Frameworks */,
 				FAF380342413FAC800C592D4 /* CloudKit.framework in Frameworks */,
-				FAB324B32A8F47F800D180F8 /* Features in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,8 +102,8 @@
 		1F3998EE23D6958700E6BBD9 = {
 			isa = PBXGroup;
 			children = (
-				FA8293432A8F13B000198FC5 /* Realworld */,
-				FA9D2079273FE73300413E6E /* Underworld */,
+				FA1DF9412B81F70D007A31E1 /* Underworld */,
+				FA1DF9402B81F6EE007A31E1 /* Realworld */,
 				FAEABD5225CE2F53003D866E /* macOS */,
 				1F3998F923D6958700E6BBD9 /* iOS */,
 				1F39991323D6958800E6BBD9 /* AlfheimTests */,
@@ -206,12 +196,7 @@
 			);
 			name = Alfheim;
 			packageProductDependencies = (
-				FA9D207A273FE96100413E6E /* Domain */,
-				FA9D207C2740090200413E6E /* Database */,
-				FA267C2C2A741B5D00CC68DF /* Persistence */,
-				FA267C2E2A741B6200CC68DF /* Alne */,
-				FABFB2EC2A74E90B0023FF0E /* Charts */,
-				FAB324B22A8F47F800D180F8 /* Features */,
+				FA1DF93E2B81F691007A31E1 /* Features */,
 			);
 			productName = Alfheim;
 			productReference = 1F3998F723D6958700E6BBD9 /* Alfheim.app */;
@@ -397,7 +382,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -452,7 +437,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -474,7 +459,7 @@
 				DEVELOPMENT_TEAM = DJ5N6T769K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -502,7 +487,7 @@
 				DEVELOPMENT_TEAM = DJ5N6T769K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -526,7 +511,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DJ5N6T769K;
 				INFOPLIST_FILE = AlfheimTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -548,7 +533,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DJ5N6T769K;
 				INFOPLIST_FILE = AlfheimTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -595,29 +580,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FA267C2C2A741B5D00CC68DF /* Persistence */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Persistence;
-		};
-		FA267C2E2A741B6200CC68DF /* Alne */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Alne;
-		};
-		FA9D207A273FE96100413E6E /* Domain */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Domain;
-		};
-		FA9D207C2740090200413E6E /* Database */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Database;
-		};
-		FAB324B22A8F47F800D180F8 /* Features */ = {
+		FA1DF93E2B81F691007A31E1 /* Features */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Features;
-		};
-		FABFB2EC2A74E90B0023FF0E /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Charts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

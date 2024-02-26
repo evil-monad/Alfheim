@@ -9,7 +9,8 @@
 import Foundation
 import ComposableArchitecture
 
-public struct Settings: Reducer {
+@Reducer
+public struct Settings {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {

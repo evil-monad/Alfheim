@@ -8,22 +8,24 @@
 
 import Foundation
 import Domain
+import ComposableArchitecture
 
 extension Transaction {
-  public enum Action: Equatable {
-    case editTransaction(Domain.Transaction)
-    case didEditTransaction
 
-    case delete(Domain.Transaction)
-    case toggleFlag(Domain.Transaction)
-    case showStatistics([Domain.Transaction], interval: DateInterval)
-    case dimissStatistics
-
-    case filter(selection: Transaction.State.Filter)
-
-    case onAppear
-
-    case transactionsDidChange([Domain.Transaction])
-    case accountDidChange(Domain.Account)
-  }
+//  public enum Action: Equatable {
+//    case editTransaction(Domain.Transaction)
+//    case didEditTransaction
+//
+//    case delete(Domain.Transaction)
+//    case toggleFlag(Domain.Transaction)
+//    case showStatistics([Domain.Transaction], interval: DateInterval)
+//    case dimissStatistics
+//
+//    case filtered(Transaction.State.Filter)
+//
+//    case onAppear
+//
+//    case transactionsDidChange([Domain.Transaction])
+//    case accountDidChange(Domain.Account)
+//  }
 }
